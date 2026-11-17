@@ -1074,7 +1074,7 @@ function normalize(raw){
   oi.extraOn=ri.extraOn===true||oi.rent>0;
   function list(src){if(!Array.isArray(src))return [];return src.map(function(x){var n=nn(x&&x.amount);return {name:String((x&&x.name)||'Item').slice(0,60),amount:(n!==null&&n>=0)?n:0};}).slice(0,60);}
   out.bills=list(raw.bills).map(function(b,i){var x=raw.bills[i]||{},en=nn(x.entered);var bad=x.freq!==undefined&&x.freq!==null&&BILL_FREQ_KEYS.indexOf(x.freq)<0;b.freq=BILL_FREQ_KEYS.indexOf(x.freq)>=0?x.freq:'monthly';b.fq=(x.fq||bad)?1:0; /* fq: frequency unknown, counted as monthly only until the user picks one */b.entered=(en!==null&&en>=0)?en:b.amount;b.est=x.est?1:0;return b;});out.partnerBudget=list(raw.partnerBudget);
-  var ip=ri.inp||{};oi.inp={you:cleanInp(ip.you),partner:cleanInp(ip.partner)};
+  var ip=ri.inp||{};oi.inp={you:cleanInp(ip.you,pyOf(oi.freq)),partner:cleanInp(ip.partner,pyOf(oi.partnerFreq))};
   refreshBills(out);
   var kinds=['card','car','loan','mortgage'],seen={};
   out.debts=raw.debts.map(function(d,i){
@@ -1115,10 +1115,14 @@ function billMonthly(amount,freq,perYear){
   if(freq==='yearly')return r2(a/12);
   return r2(a);
 }
-function cleanInp(o){
+function cleanInp(o,py){
   o=o||{};var d={mode:'deposit',amount:null,tax:20,rate:null,hours:null,rateBefore:true},out={mode:d.mode,amount:null,tax:20,rate:null,hours:null,rateBefore:true};
   if(o.mode==='before'||o.mode==='hourly'||o.mode==='varies')out.mode=o.mode;
   out.typ=null;['amount','rate','hours','typ'].forEach(function(k){var n=nn(o[k]);if(n!==null&&n>=0)out[k]=n;});
+  /* hours are stored as hours per WEEK (hoursUnit:'week'). Older saves held hours per paycheck: convert once, when the pay frequency is known, so they are never counted twice */
+  if(out.hours===null)out.hoursUnit='week';
+  else if(o.hoursUnit==='week')out.hoursUnit='week';
+  else if(py>0){out.hours=Math.round(out.hours*py/52*100)/100;out.hoursUnit='week';}
   var t=nn(o.tax);if(t!==null&&t>=0&&t<=90)out.tax=t;
   out.rateBefore=o.rateBefore!==false;
   /* IRS-estimate inputs (all taps): overtime paid at 1.5x (null = not asked yet), filing status, W-4 Step 2 box, state, and whether the tax % is still the app's estimate */
@@ -1135,12 +1139,12 @@ function payCalc(v,perYear){
   var otInfo=null,amt=Number(v.amount)||0,t=Math.min(90,Math.max(0,Number(v.tax)||0))/100,gross=null,net;
   if(v.mode==='before'){gross=amt;net=v.netAuto>0?Number(v.netAuto):amt*(1-t);}
   else if(v.mode==='hourly'){
-    var rate=Number(v.rate)||0,hrs=Number(v.hours)||0,capRaw=40*52/perYear,capH=r2(capRaw),otRaw=(v.ot===true&&hrs>capRaw+1e-9)?hrs-capRaw:0,otH=r2(otRaw),regH=r2(hrs-otRaw);
+    var rate=Number(v.rate)||0,wk=Number(v.hours)||0,hrs=wk*52/perYear,capRaw=40*52/perYear,capH=r2(capRaw),otRaw=(v.ot===true&&hrs>capRaw+1e-9)?hrs-capRaw:0,otH=r2(otRaw),regH=r2(hrs-otRaw);
     /* overtime: hours over 40 a week (weekly-equivalent) paid at 1.5x */
-    gross=r2(rate*(hrs-otRaw)+1.5*rate*otRaw);net=v.rateBefore?(v.netAuto>0?Number(v.netAuto):gross*(1-t)):gross;otInfo={reg:regH,ot:otH,cap:capH};
+    gross=r2(rate*(hrs-otRaw)+1.5*rate*otRaw);net=v.rateBefore?(v.netAuto>0?Number(v.netAuto):gross*(1-t)):gross;otInfo={reg:regH,ot:otH,cap:capH,hrs:r2(hrs),wk:wk};
   }
   else net=amt;
-  net=r2(net);return {gross:gross===null?null:r2(gross),net:net,monthly:r2(net*perYear/12),reg:otInfo?otInfo.reg:null,ot:otInfo?otInfo.ot:0,otCap:otInfo?otInfo.cap:null};
+  net=r2(net);return {gross:gross===null?null:r2(gross),net:net,monthly:r2(net*perYear/12),reg:otInfo?otInfo.reg:null,ot:otInfo?otInfo.ot:0,otCap:otInfo?otInfo.cap:null,hrs:otInfo?otInfo.hrs:null,wk:otInfo?otInfo.wk:null};
 }
 /* every-paycheck bills follow the pay schedule */
 function refreshBills(d){
@@ -2443,7 +2447,7 @@ var TAX_UI_YEAR=2026;
 function taxEstimate(v,py,gross){
   try{
     var h=v.mode==='hourly';
-    return estimateWithholding({hourly:h?v.rate:gross,hoursPerPeriod:h?v.hours:1,periodsPerYear:py,filingStatus:String(v.filing||'single').toUpperCase(),step2:!!v.two,
+    return estimateWithholding({hourly:h?v.rate:gross,hoursPerPeriod:h?v.hours*52/py:1,periodsPerYear:py,filingStatus:String(v.filing||'single').toUpperCase(),step2:!!v.two,
       state:v.state==='VA'?'VA':'OTHER',otherStatePct:v.state==='NONE'?0:(v.otherPct>=0?v.otherPct:4),otOver40:h&&v.ot===true});
   }catch(e){return null;}
 }
@@ -2456,7 +2460,15 @@ function readPayVals(who){
   }
   return v;
 }
-var HOURS_HINT={weekly:'a week',biweekly:'for the whole paycheck, usually about 80',semimonthly:'for the whole paycheck, about 86',monthly:'for the whole paycheck, about 173'};
+/* hours are always typed as hours in a normal WEEK; the paycheck's hours = weekly hours x 52 / paychecks a year */
+var PAY_WEEKS={weekly:'1 week',biweekly:'2 weeks',semimonthly:'about 2.17 weeks',monthly:'about 4.33 weeks'};
+function hrsFmt(n){return String(Math.round(n*10)/10);}
+function hoursHint(who){
+  var el=$('pHours-h');if(!el)return;
+  var f=who==='you'?(chipVal('freq2')||data.income.freq):(chipVal('pf')||data.income.partnerFreq),py=pyOf(f),h=pnum('pHours');
+  if(h>0)el.textContent='That’s '+hrsFmt(h*52/py)+' hours per paycheck ('+(PAY_WEEKS[f]||'2 weeks')+').';
+  else el.textContent='Hours you work in a normal week, not the whole paycheck. Most full-time jobs are 40.';
+}
 function payLiveText(who){
   var v=readPayVals(who),f=who==='you'?(chipVal('freq2')||data.income.freq):(chipVal('pf')||data.income.partnerFreq),py=pyOf(f),r=payCalc(v,py);
   if(!(r.net>0))return '';
@@ -2464,8 +2476,9 @@ function payLiveText(who){
   if(v.mode==='deposit')return 'That’s '+m+'.';
   if(v.mode==='varies')return 'We’ll plan with your low check, '+money0(r.net)+' each payday, '+m+'. Better weeks are extra.';
   if(v.mode==='before')return 'After about '+Math.round(v.tax*10)/10+'% tax: '+money0(r.net)+' each payday, '+m+'.';
-  var base=r.ot>0?fm(v.rate)+' × '+(Math.round(r.reg*100)/100)+' + '+fm(v.rate*1.5)+' × '+(Math.round(r.ot*100)/100)+' OT = '+fm(r.gross):fm(v.rate)+' × '+(Math.round(v.hours*100)/100)+' hours = '+fm(r.gross);
-  return v.rateBefore?base+' before tax. After about '+Math.round(v.tax*10)/10+'% tax: '+money0(r.net)+' each payday, '+m+'.':base+' each payday, '+m+'.';
+  var wkH=hrsFmt(v.hours),pw=PAY_WEEKS[f]||'2 weeks',hd=wkH+' hrs/week × '+pw+' = '+hrsFmt(r.hrs)+' hours';
+  var base=r.ot>0?hd+' ('+hrsFmt(r.reg)+' regular + '+hrsFmt(r.ot)+' overtime) → '+fm(r.gross):hd+' → '+fm(r.gross);
+  return v.rateBefore?fm(v.rate)+'/hr: '+base+' before tax. After about '+Math.round(v.tax*10)/10+'% tax: '+money0(r.net)+' each payday, '+m+'.':fm(v.rate)+'/hr: '+base+' each payday, '+m+'.';
 }
 /* IRS-table tax estimate for the pay step: fills the tax % (whole number) while the user has not typed their own */
 /* after a tax tap or a finished field, bring the % box, the estimate and the take-home line up above the sticky Next */
@@ -2477,7 +2490,8 @@ function taxReveal(){
 function taxRefresh(who){
   var box=$('pTaxIrs');if(!box)return;
   var v=readPayVals(who),py=taxPY(who);
-  var otb=$('pOtBox');if(otb){var wk=v.hours*py/52;otb.hidden=!(v.mode==='hourly'&&wk>40+1e-9);var oh=$('pOtH');if(oh&&!otb.hidden)oh.textContent=(Math.round(wk*10)/10)+' hours a week on average. Over 40 is paid at 1.5× if you say Yes.';}
+  var otb=$('pOtBox');if(otb){var wk=v.hours;otb.hidden=!(v.mode==='hourly'&&wk>40+1e-9);var oh=$('pOtH');if(oh&&!otb.hidden)oh.textContent=(Math.round(wk*10)/10)+' hours a week. Hours over 40 a week are paid at 1.5× if you say Yes.';}
+  hoursHint(who);
   var ob=$('pOthBox');if(ob)ob.hidden=v.state!=='OTHER';
   var show=v.mode==='before'||(v.mode==='hourly'&&v.rateBefore),est=$('pTaxEst');
   if(est)est.hidden=!show;
@@ -2506,7 +2520,7 @@ function payBody(who){
   h+='<div id="pVarBox"'+(pick==='varies'?'':' hidden')+'>'+mf('pLow',you?'A low take-home check, like a slow week':'Their low take-home check, like a slow week',nf(inp.mode==='varies'?inp.amount:null),{ph:'e.g. 900',hint:'Use a lower week so the plan holds up. We plan with this, and anything above it becomes a bonus.'})+mf('pTyp','A typical take-home check (optional)',nf(inp.typ),{ph:'e.g. 1,300',hint:'So you can see what a normal week looks like. It does not change the plan.'})+'</div>';
   h+='<div id="pBefBox"'+(pick==='before'?'':' hidden')+'>'+mf('pGross',you?'Pay each payday before tax':'Their pay each payday before tax',nf(gross),{ph:'e.g. 1,800',hint:'On your paycheck this is called gross pay.'})+'</div>';
   h+='<div id="pHrBox"'+(pick==='hourly'?'':' hidden')+'>'+mf('pRate','Hourly rate',nf(inp.rate),{ph:'e.g. 22',suf:'/hour',hint:'The rate on your paycheck or offer letter.'})+
-    '<div class="f"><label for="pHours" id="pHoursL">Hours you work</label><div class="mi np"><input id="pHours" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 40" value="'+esc(nf(inp.hours))+'" aria-describedby="pHours-h pHours-e" data-m="1"></div><div class="small muted hint" id="pHours-h"></div><div class="err" id="pHours-e" role="alert"></div></div>'+
+    '<div class="f"><label for="pHours" id="pHoursL">Hours you work each week</label><div class="mi np"><input id="pHours" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 40" value="'+esc(nf(inp.hours))+'" aria-describedby="pHours-h pHours-e" data-m="1"></div><div class="small muted hint" id="pHours-h"></div><div class="err" id="pHours-e" role="alert"></div></div>'+
     '<div id="pOtBox" hidden><div class="lbl" style="margin-top:12px" id="pOtL">Are hours over 40 a week paid as overtime (1.5×)?</div>'+chipsHtml('otq',[['yes','Yes'],['no','No']],inp.ot===true?'yes':'no',{label:'Overtime paid at one and a half times',cls:'sm'})+'<p class="small muted" id="pOtH"></p></div>'+
     '<div class="lbl" style="margin-top:12px">Is that rate before or after tax?</div>'+chipsHtml('rb',[['before','Before tax'],['after','After tax']],inp.rateBefore?'before':'after',{label:'Rate before or after tax',cls:'sm'})+'</div>';
   OB.taxAuto=inp.taxAuto!==false;
@@ -2522,14 +2536,12 @@ function payBody(who){
 function payTitle(who,mode){
   var you=who==='you',m=mode||OB.v['pm'+who]||cleanInp(data.income.inp&&data.income.inp[who]).mode,x=you?'your':'their';
   if(m==='before')return {t:you?'How much is your pay each payday before tax?':'How much is their pay each payday before tax?',s:'The amount on '+x+' paycheck before tax comes out. We take off the tax percent below to plan with what really reaches the bank.'};
-  if(m==='hourly')return {t:you?'What do you earn per hour?':'What do they earn per hour?',s:'The hourly rate and the hours worked each payday. We work out what reaches the bank.'};
+  if(m==='hourly')return {t:you?'What do you earn per hour?':'What do they earn per hour?',s:'The hourly rate and the hours you work in a normal week. We work out what reaches the bank each payday.'};
   if(m==='varies')return {t:you?'What is your low take-home check?':'What is their low take-home check?',s:'Pick a lower week, in take-home pay, so the plan still holds up.'};
   return you?{t:'How much lands in your bank each payday?',s:'Look at your bank deposit, not your pay before taxes.'}:{t:'How much does their paycheck deposit?',s:'Their take-home pay, the amount that reaches the bank account.'};
 }
 function payAfterRender(who){
   var f=who==='you'?(chipVal('freq2')||data.income.freq):(chipVal('pf')||data.income.partnerFreq);
-  var el=$('pHours-h');if(el)el.textContent='Hours '+(HOURS_HINT[f]||'for the whole paycheck')+'.';
-  var l=$('pHoursL');if(l)l.textContent=f==='weekly'?'Hours you work each week':'Hours you work each paycheck';
   var pick=chipVal('pm')||'deposit',rb=(chipVal('rb')||'before')==='before';
   $('pDepBox').hidden=pick!=='deposit';$('pVarBox').hidden=pick!=='varies';$('pBefBox').hidden=pick!=='before';$('pHrBox').hidden=pick!=='hourly';
   $('pTaxBox').hidden=!(pick==='before'||(pick==='hourly'&&rb));$('pNote').hidden=pick==='deposit';
@@ -2547,12 +2559,12 @@ function readPay(who){
   if(mode==='deposit')amt=need('pDep','Add '+who2+' take-home pay to continue');
   else if(mode==='varies'){amt=need('pLow','Add a low check to continue');var tp0=pm('pTyp',{max:1e6});if(!tp0.ok){setErr('pTyp',tp0.err);ok=false;}else if(tp0.val!=null&&amt!=null&&tp0.val<amt){setErr('pTyp','A typical check is usually at least your low one. Fix it or leave it blank');ok=false;}else{setErr('pTyp','');typ=tp0.val;}}
   else if(mode==='before'){amt=need('pGross','Add '+who2+' pay before tax to continue');}
-  else{rate=need('pRate','Add the hourly rate to continue');hrs=need('pHours','Add the hours worked to continue');}
+  else{rate=need('pRate','Add the hourly rate to continue');hrs=need('pHours','Add the hours you work in a week to continue');if(hrs!==null&&hrs>168){setErr('pHours','A week only has 168 hours. Type the hours in one week');ok=false;hrs=null;}}
   if(mode==='before'||(mode==='hourly'&&v.rateBefore)){
     var tp=pm('pTax',{max:90});if(!tp.ok){setErr('pTax',tp.err);ok=false;}else if(tp.val==null){setErr('pTax','');tax=20;}else{setErr('pTax','');tax=tp.val;}
   }
   if(!ok)return false;
-  var inp={mode:mode,typ:typ,amount:mode==='hourly'?null:amt,tax:tax,rate:rate,hours:hrs,rateBefore:v.rateBefore,ot:v.ot,filing:v.filing,two:v.two,state:v.state,otherPct:v.otherPct,taxAuto:!!OB.taxAuto,netAuto:v.netAuto};
+  var inp={mode:mode,typ:typ,amount:mode==='hourly'?null:amt,tax:tax,rate:rate,hours:hrs,hoursUnit:'week',rateBefore:v.rateBefore,ot:v.ot,filing:v.filing,two:v.two,state:v.state,otherPct:v.otherPct,taxAuto:!!OB.taxAuto,netAuto:v.netAuto};
   var r=payCalc(inp,pyOf(f));
   if(!(r.net>0)){setErr(mode==='deposit'?'pDep':mode==='before'?'pGross':mode==='varies'?'pLow':'pRate','Add '+who2+' pay to continue');return false;}
   inc.inp=inc.inp||{};inc.inp[who]=cleanInp(inp);

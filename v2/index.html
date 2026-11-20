@@ -575,6 +575,88 @@ dialog.flow[open]{display:flex;flex-direction:column}
 .taxmore{margin-top:6px}.taxmore summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--accent-text);font-weight:650}
 #pLive,#pTax{scroll-margin-bottom:16px}
 .onb-in .body{padding-bottom:28px}
+/* ===== Desktop / tablet layout. Everything below sits in min-width media queries (except two rules that only matter when their element is shown), so phones under 768px are untouched. ===== */
+.side-top{display:none}
+.rail{display:none}
+.legend .same{color:var(--muted);font-weight:650;font-size:13px;padding:1px 10px;border:1px dashed var(--line2);border-radius:999px}
+@media (min-width:768px){
+ .app{max-width:1040px;padding-left:28px;padding-right:28px}
+ svg.chart{max-width:none}
+ .legend{font-size:15px;gap:8px 18px}
+ .tblwrap{max-height:560px}
+ #schedWrap th{white-space:normal;line-height:1.2;vertical-align:bottom}
+ #schedWrap table{font-size:13px}
+ #schedWrap th,#schedWrap td{padding:8px 7px}
+ #schedWrap td:first-child{white-space:normal;min-width:84px}
+ .presets,.pills{flex-wrap:wrap;overflow:visible;scroll-snap-type:none}
+ .toast{max-width:min(560px,calc(100vw - 48px))}
+}
+/* two columns: 768-1099 (bottom tab bar stays) and again inside the content column at 1600+ */
+@media (min-width:768px) and (max-width:1099px),(min-width:1600px){
+ .screen:not([hidden]){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+ .screen>.card,.screen>.herorow,.screen>.rowlab,.screen>.presets{margin-top:0!important}
+ .screen>.sh,.screen>.herorow,#emptyToday,#emptyPlan,#rotCard,#cmpCard,#chartCard,#perCard,#schedCard,#tab-debts .tiles,#tab-debts>.card,.screen>.sample-bar{grid-column:1/-1}
+ #tab-today>.sh{grid-row:1}
+ body.desk3 #ringCard{grid-column:1/-1}
+ #tab-debts .tiles{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0}
+ #tab-plan>.sh{grid-row:1}#emptyPlan,#cmpCard{grid-row:2}
+ #whatif{grid-column:1;grid-row:3/span 4}
+ #lblPre{grid-column:2;grid-row:3;align-self:end;margin:0 2px!important}
+ #presets{grid-column:2;grid-row:4}
+ #customBox{grid-column:2;grid-row:5}
+ #planCard{grid-column:2;grid-row:6}
+ #chartCard{grid-row:7}#perCard{grid-row:8}#schedCard{grid-row:9}
+ #otCard{grid-column:1;grid-row:10}#moreCard{grid-column:2;grid-row:10}
+ #tab-money>.sh{grid-row:1}#cashCard{grid-column:1;grid-row:2/span 3}#billsCard,#actCard,#winsCard{grid-column:2}
+ #cmpCard{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px;align-items:start}
+ #cmpCard>.hd,#cmpCard>.note,#cmpCard>.seg,#cmpCard>.cmp-hd{grid-column:1/-1}
+ #cmpCard>.cmp{margin-top:0}
+ #cmpCard>.note:last-child{grid-column:1/-1}
+}
+/* three columns: sidebar | content | rail */
+@media (min-width:1100px){
+ :root{--sw:220px;--rw:340px}
+ body{display:grid;grid-template-columns:var(--sw) minmax(0,1fr) var(--rw);column-gap:22px;max-width:1600px;margin:0 auto;padding:0 22px;align-items:start}
+ .app{grid-column:2;grid-row:1;max-width:none;min-width:0;margin:0;padding:0 0 64px}
+ body.norail .app{grid-column:2/4}
+ .rail{display:block;min-width:0;grid-column:3;grid-row:1;position:sticky;top:0;max-height:100vh;overflow-y:auto;padding:30px 6px 28px;scrollbar-width:thin}
+ .rail>.card{margin-top:0}
+ .tabs{grid-column:1;grid-row:1;position:sticky;top:0;left:auto;right:auto;bottom:auto;width:auto;transform:none;height:100vh;align-self:start;display:flex;flex-direction:column;gap:22px;padding:30px 8px 24px;background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;border:0;border-radius:0;overflow-y:auto;scrollbar-width:thin}
+ .tabs .in{max-width:none;margin:0;grid-template-columns:1fr;gap:6px}
+ .tabs button{flex-direction:row;justify-content:flex-start;gap:14px;padding:0 18px;min-height:54px;font-size:17px;border-radius:18px;text-align:left}
+ .tabs button:hover{background:var(--glass-hi)}
+ .tabs button[aria-current="page"]{box-shadow:inset 0 0 0 1px var(--accent)}
+ .tabs button[aria-current="page"] .ico{transform:none}
+ .side-top{display:block}
+ .side-brand{font-family:ui-rounded,"SF Pro Rounded","InterSub",-apple-system,system-ui,sans-serif;font-size:26px;font-weight:800;letter-spacing:-.03em;padding:0 8px 18px}
+ .side-sum{padding:18px 18px 20px;border-radius:24px;background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--shadow)}
+ .side-n{font-size:34px;font-weight:800;line-height:1.05;letter-spacing:-.03em;margin-top:2px}
+ .side-d{font-size:24px;font-weight:800;line-height:1.1;margin-top:2px}
+ .toast{bottom:28px}
+ #schedWrap td:first-child{min-width:78px}
+}
+@media (min-width:1100px) and (max-width:1399px){
+ #schedWrap table{font-size:12.5px}
+ #schedWrap th,#schedWrap td{padding:7px 5px}
+}
+/* 1100-1279: slim sidebar (icons, short summary) so the content column keeps room for every table column */
+@media (min-width:1100px) and (max-width:1279px){
+ :root{--sw:92px;--rw:320px}
+ body{column-gap:18px;padding:0 16px}
+ .tabs{padding-left:4px;padding-right:4px}
+ .tabs button{flex-direction:column;justify-content:center;gap:3px;padding:0 2px;min-height:64px;font-size:12px;text-align:center}
+ .side-brand{font-size:19px;padding:0 0 14px;text-align:center}
+ .side-sum{padding:12px 6px;text-align:center;border-radius:18px}
+ .side-n{font-size:17px;letter-spacing:-.02em}.side-d{font-size:14px}
+ .side-sum .lab{font-size:11px;line-height:1.2}.side-sum .small{display:none}
+ .l-long{display:none}
+}
+@media (min-width:1280px){.l-short{display:none}}
+@media (min-width:1600px){
+ :root{--sw:244px;--rw:380px}
+ body{column-gap:28px;padding:0 28px}
+}
+@media (min-width:1900px){body{max-width:1760px}}
 </style>
 </head>
 <body>
@@ -590,6 +672,12 @@ dialog.flow[open]{display:flex;flex-direction:column}
 <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
 <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7M6 10v10h12V10M10 20v-6h4v6"/></symbol><symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13h6l-1 8 8-10h-6z"/></symbol><symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM11 18h2"/></symbol><symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9a14 14 0 0 1 18 0M6 12.5a9.5 9.5 0 0 1 12 0M9 16a5 5 0 0 1 6 0M12 19.5h.01"/></symbol><symbol id="i-car" viewBox="0 0 24 24"><path d="M5 16v-5l2-5h10l2 5v5M3 16h18M7.5 16v2M16.5 16v2M5 11h14"/></symbol><symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/></symbol><symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h3l2 11h10l2-8H7M9 20h.01M17 20h.01"/></symbol><symbol id="i-fuel" viewBox="0 0 24 24"><path d="M5 20V5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v15M4 20h11M14 9h2l2 2v6a1.5 1.5 0 0 0 3 0V8l-2-2M7 8h5"/></symbol><symbol id="i-baby" viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM5 21a7 7 0 0 1 14 0"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4 9a6 6 0 0 1 6-5h7m0 0l-3-3m3 3l-3 3M20 15a6 6 0 0 1-6 5H7m0 0l3-3m-3 3l3 3"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
 </defs></svg>
+<nav class="tabs" id="tabs" aria-label="Main"><div class="side-top" id="sideTop"></div><div class="in">
+<button type="button" data-go="today" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#i-today"/></svg><span>Today</span></button>
+<button type="button" data-go="plan"><svg class="ico" aria-hidden="true"><use href="#i-plan"/></svg><span>Plan</span></button>
+<button type="button" data-go="debts"><svg class="ico" aria-hidden="true"><use href="#i-debts"/></svg><span>Debts</span></button>
+<button type="button" data-go="money"><svg class="ico" aria-hidden="true"><use href="#i-money"/></svg><span>Money</span></button>
+</div></nav>
 <main class="app" id="app">
 
 <div class="sample-bar" id="sampleBar" role="status"><span><b>Example data</b> · these numbers are made up</span><button class="btn" type="button" id="clearSample">Clear example data</button></div>
@@ -633,7 +721,7 @@ dialog.flow[open]{display:flex;flex-direction:column}
     <div class="seg" role="group" aria-labelledby="lblMode" id="payMode"><button type="button" data-pm="real" aria-pressed="true">Real minimums (default)</button><button type="button" data-pm="plain" aria-pressed="false">Plain level (math view)</button></div>
     <p class="note" id="modeNote"></p>
   </div>
-  <div class="card">
+  <div class="card" id="chartCard">
     <div class="hd"><h2 id="h-chart">Your plan vs minimums</h2></div>
     <div id="chartBox"></div><div class="legend" id="legend"></div>
     <p class="sr" id="chartText"></p>
@@ -650,10 +738,10 @@ dialog.flow[open]{display:flex;flex-direction:column}
     </div>
     <div class="win" id="winOut"></div>
   </div>
-  <div class="card">
+  <div class="card" id="schedCard">
     <details id="schedDet"><summary id="schedSum">Month-by-month</summary><p class="note" id="schedNote" style="margin:0 0 10px"></p><div class="tblwrap" id="schedWrap" tabindex="0" role="region" aria-label="Payment schedule table, scrolls sideways"></div></details>
   </div>
-  <div class="card">
+  <div class="card" id="otCard">
     <details id="otDet"><summary id="h-ot" style="font-size:20px;font-weight:750">Got a one-time windfall?</summary>
     <p class="note" id="otNote" style="margin-top:6px"></p>
     <div class="otrow"><div class="f"><label for="otAmt">$ extra this time</label><input id="otAmt" type="text" inputmode="decimal" autocomplete="off" placeholder="1000"></div><button class="btn primary" type="button" id="otGo">Show me</button></div>
@@ -700,12 +788,7 @@ dialog.flow[open]{display:flex;flex-direction:column}
 
 <footer class="foot" id="foot"><p>Estimates only, not financial advice. Your data never leaves this device.</p></footer>
 </main>
-<nav class="tabs" id="tabs" aria-label="Main"><div class="in">
-<button type="button" data-go="today" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#i-today"/></svg><span>Today</span></button>
-<button type="button" data-go="plan"><svg class="ico" aria-hidden="true"><use href="#i-plan"/></svg><span>Plan</span></button>
-<button type="button" data-go="debts"><svg class="ico" aria-hidden="true"><use href="#i-debts"/></svg><span>Debts</span></button>
-<button type="button" data-go="money"><svg class="ico" aria-hidden="true"><use href="#i-money"/></svg><span>Money</span></button>
-</div></nav>
+<aside class="rail" id="rail" aria-label="Today: next payday and what to pay" hidden></aside>
 <dialog id="sheet" aria-labelledby="sheetTitle"></dialog>
 <dialog id="confirmDlg" class="center" aria-labelledby="confTitle"></dialog>
 <dialog id="celeb" class="celeb" aria-labelledby="celT"></dialog>
@@ -1853,7 +1936,7 @@ function seriesList(){
 }
 function renderChart(){
   if(!C.ctx){$('chartBox').innerHTML='';return;}
-  var ser=seriesList(),W=320,H=230,L=54,R=10,T=12,B=32;
+  var ser=seriesList(),dm=chartDims(),W=dm.w,H=dm.h,L=54,R=10,T=12,B=32;
   var t0,t1,zoom=!!C.win,sel='cur';
   if(zoom){t0=C.win.start;t1=C.win.end;}
   else{
@@ -1907,8 +1990,22 @@ function renderChart(){
     g+='<polyline points="'+p+'" fill="none" stroke="'+col+'" stroke-width="'+(isSel?4:2)+'" stroke-linejoin="round" stroke-linecap="round" opacity="'+(isSel?1:.7)+'"'+(l.s.key==='min'?' stroke-dasharray="6 4"':'')+'/>';
   });
   $('chartBox').innerHTML='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-labelledby="chTitle chDesc"><title id="chTitle">Total owed on cards and loans over time</title><desc id="chDesc">'+esc(chartSummary(ser,zoom))+'</desc>'+g+'</svg>';
-  $('legend').innerHTML=ser.map(function(s){return '<span><i style="background:'+(s.key==='min'?'var(--c-min)':'var(--c-cur)')+'"></i>'+esc(s.label)+'</span>';}).join('');
-  $('chartText').textContent=chartSummary(ser,zoom)+(zoom?' The chart is zoomed to your time window. Tap “Show full plan” to zoom back out.':'');
+  $('legend').innerHTML=ser.map(function(s){return '<span><i style="background:'+(s.key==='min'?'var(--c-min)':'var(--c-cur)')+'"></i>'+esc(s.label)+'</span>';}).join('')+(sameAsMin(ser)?'<span class="same">Same as minimums, so the two lines overlap</span>':'');
+  $('chartText').textContent=chartSummary(ser,zoom)+(sameAsMin(ser)?' Your plan is the same as minimums only, so the two lines overlap.':'')+(zoom?' The chart is zoomed to your time window. Tap “Show full plan” to zoom back out.':'');
+}
+/* chart size: phones keep the 320x230 box; on wide screens the box follows the real width so text stays readable (redrawn by chartResize in desktop.js) */
+function chartDims(){
+  var w=320,h=230;
+  if(window.innerWidth>=768){var bw=$('chartBox')?$('chartBox').clientWidth:0;if(bw>=320){w=Math.min(1100,Math.round(bw));h=Math.max(230,Math.min(420,Math.round(w*0.38)));}}
+  CHARTW=w;return {w:w,h:h};
+}
+var CHARTW=320;
+/* the plan line hides the minimums line when both are the same plan: say so instead of looking broken */
+function sameAsMin(ser){
+  var a=null,b=null;ser.forEach(function(s){if(s.key==='min')a=s;else if(s.key==='cur')b=s;});
+  if(!a||!b||a.pts.length!==b.pts.length)return false;
+  for(var i=0;i<a.pts.length;i++){if(a.pts[i].d.getTime()!==b.pts[i].d.getTime()||Math.abs(a.pts[i].v-b.pts[i].v)>0.005)return false;}
+  return true;
 }
 function chartSummary(ser,zoom){
   var p=['Today you owe '+money0(C.total)+' on cards and loans.'];
@@ -3663,6 +3760,52 @@ document.addEventListener('click',function(e){
   if(t.dataset.pdics){downloadPaydayICS();return;}
 });
 
+/* ===== Desktop layout (presentation only) =====
+   >= 1100px: left sidebar (nav + total owed + debt-free date) | content | right rail (the same Next payday / Do this today / Pay these card).
+   768-1099px: two columns of cards, the bottom tab bar stays.
+   Nothing here does money math: the rail is the existing #payCard node moved into #rail and drawn by renderPayCard(); the sidebar reads C.total / C.df / C.debtFree from compute(). */
+var DESK={mq3:(window.matchMedia?window.matchMedia('(min-width:1100px)'):null),opened:false};
+function isDesk3(){return !!(DESK.mq3&&DESK.mq3.matches);}
+function renderSide(){
+  var el=$('sideTop');if(!el)return;
+  var c=C.cur,date=!C.debtFree&&c&&!c.never&&C.df&&C.df.date?C.df.date:null;
+  var v=C.debtFree?'Done':(date?dMYs(date):(c&&c.never?'Not yet':'—'));
+  var sub=date?(plural(c.months,'month')+' to go'+(estItems().length?' · est.':'')):'';
+  el.innerHTML='<div class="side-brand"><span>Payoff</span></div>'
+    +'<div class="side-sum" role="group" aria-label="Where you stand"><div class="lab"><span class="l-long">Left to pay on cards and loans</span><span class="l-short">Owed</span></div><div class="side-n num">'+money0(C.total)+'</div>'
+    +'<div class="lab" style="margin-top:14px">Debt-free</div><div class="side-d num">'+esc(v)+'</div>'+(sub?'<div class="small muted">'+esc(sub)+'</div>':'')+'</div>';
+}
+function deskSync(t){
+  var rail=$('rail'),pc=$('payCard'),on=isDesk3()&&hasPlan();
+  document.body.classList.toggle('desk3',isDesk3());document.body.classList.toggle('norail',!on);
+  rail.hidden=!on;
+  if(on){
+    if(pc.parentNode!==rail)rail.appendChild(pc);
+    if(t!=='today')renderPayCard();           /* Today already drew it; other tabs draw it with the same function */
+    var d=$('payDet');if(d&&!DESK.opened){d.open=true;DESK.opened=true;}   /* "everything due" is open by default in the rail */
+    renderSide();
+  }else{
+    if(pc.parentNode===rail)$('tab-today').insertBefore(pc,$('ringCard'));
+    $('sideTop').innerHTML='';
+  }
+}
+/* keep the chart and the layout right when the window is resized or rotated */
+var deskRaf=0;
+function deskResize(){
+  if(deskRaf)return;
+  deskRaf=requestAnimationFrame(function(){deskRaf=0;
+    if(!data||!data.settings)return;
+    var t=data.settings.tab;
+    if((isDesk3()&&hasPlan())===$('rail').hidden||isDesk3()!==document.body.classList.contains('desk3')){renderTab(t);return;}
+    var bw=$('chartBox')?$('chartBox').clientWidth:0;
+    if(t==='plan'&&hasPlan()&&bw>0&&window.innerWidth>=768&&Math.abs(Math.min(1100,Math.round(bw))-CHARTW)>6)renderChart();
+    else if(t==='plan'&&hasPlan()&&window.innerWidth<768&&CHARTW!==320&&bw>0)renderChart();
+  });
+}
+window.addEventListener('resize',deskResize);
+if(window.ResizeObserver&&$('chartBox')){try{new ResizeObserver(deskResize).observe($('chartBox'));}catch(e){}}
+if(DESK.mq3&&DESK.mq3.addEventListener)DESK.mq3.addEventListener('change',deskResize);
+
 /* ===== Tabs, events, init ===== */
 function renderEmpty(t){
   var box=$(t==='today'?'emptyToday':'emptyPlan');
@@ -3678,8 +3821,9 @@ function showTab(t){
 function renderTab(t){
   var empty=!hasPlan();document.body.classList.toggle('nodebt',empty&&(t==='today'||t==='plan'));
   document.body.classList.toggle('isample',!!data.sample);
-  if(empty&&(t==='today'||t==='plan')){renderEmpty(t);return;}
+  if(empty&&(t==='today'||t==='plan')){renderEmpty(t);deskSync(t);return;}
   if(t==='today')renderToday();else if(t==='plan')renderPlan();else if(t==='debts')renderDebts();else renderMoney();
+  deskSync(t);
 }
 function renderAll(){
   var s=data.settings;if(expirePromos(data))save();

@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)" id="tcDark">
 <meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)" id="tcLight">
 <meta name="application-name" content="Payoff">
-<meta name="payoff-build" content="payoff-v3-1">
+<meta name="payoff-build" content="payoff-v3-1-1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Payoff">
@@ -860,6 +860,34 @@ input:not([type=checkbox]):not([type=radio]),select,textarea{position:relative} 
 :root{--tabsolid:rgba(14,17,24,.97)}:root[data-theme="light"]{--tabsolid:rgba(255,255,255,.97)}
 @media (prefers-color-scheme:light){:root[data-theme="auto"]{--tabsolid:rgba(255,255,255,.97)}}
 @media (min-width:700px){.app{padding-bottom:calc(110px + env(safe-area-inset-bottom))}}
+
+/* V3.1 Edit pay sheet: the "Left for debt" pill sat right on the last line of the form. Give the footer its own opaque band with a divider, and room under the form */
+.sheet.flowf .onb-foot.v3f{background:var(--s1);border-top:1px solid var(--line);padding-top:10px;position:relative;z-index:2}
+.sheet.flowf .sbody{padding-bottom:18px}
+/* V3.1 credit used */
+.uall{margin:4px 0 14px}.uall[hidden]{display:none}
+.uall-t{margin:2px 0 6px;font-size:var(--t1,15px)}.uall-t b{font-size:22px}
+.ubar{position:relative;height:10px;border-radius:6px;background:var(--line);margin:6px 0 2px;overflow:visible}
+.ubar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--accent)}
+.ubar i.hi{background:var(--red)}
+.ubar .mk{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:var(--text);opacity:.55}
+.ukey{position:relative;height:14px;font-size:11px;color:var(--muted)}
+.ukey span{position:absolute;transform:translateX(-50%)}
+.t-util{position:relative;z-index:1;margin-top:10px}
+.t-ul{font-size:15px;font-weight:600}
+.t-uk{color:var(--muted)}
+.t-flag{margin-top:6px;font-size:14px;font-weight:700;color:var(--red)}
+.t-flag-i{color:var(--red);font-size:13px}
+.t-rep{margin-top:6px;font-size:14px;font-weight:600;color:var(--accent-text)}
+.t-keep{position:relative;z-index:1;margin-top:8px;color:var(--muted)}
+.lnk.addlim{display:inline-flex;align-items:center;min-height:44px;min-width:44px;padding:0 6px;margin:2px 0 6px;font-weight:700}
+.crl{list-style:none;padding:0;margin:6px 0 0}.crl li{padding:3px 0}
+.crtog{display:flex;gap:12px;align-items:flex-start;min-height:44px;margin-top:14px;cursor:pointer}
+.crtog input{width:24px;height:24px;margin:2px 0 0;flex:none;accent-color:var(--accent)}
+.crtog small{display:block;font-size:13px;margin-top:2px}
+.tutil{margin-top:10px;padding-top:8px;border-top:1px solid var(--line)}
+.tutil p{margin:4px 0}
+.tutil .ac{color:var(--accent-text);font-weight:700}
 </style>
 </head>
 <body>
@@ -1025,6 +1053,28 @@ function orderDebts(list,strategy){
   else a.sort(function(p,q){return q.apr-p.apr||p.bal-q.bal;});
   return a;
 }
+/* V3.1 "Protect my credit score": where this month's extra goes (minimums are already paid). Returns the dollars paid.
+   cr.lim  = {id: credit limit} for cards with a limit entered (loans and cards without a limit are left out).
+   cr.promo = {id: last month index (1 = first simulated month) of a deferred-interest 0% promo}.
+   0) a deferred-interest promo whose minimum would not clear it by the promo's last month gets (bal - min*(monthsLeft-1))/monthsLeft
+      first, so its total payment is level at (bal+min)/monthsLeft (monthsLeft counts this month; soonest end first);
+   1-3) lines 90%, 50%, 30%: every card at or over the line is brought to just under it (1 cent under),
+        fewest dollars needed first, ties (within 1e-6) -> higher APR; all cards clear a line before the next line starts;
+   4) whatever is left follows the normal order (avalanche/snowball). 10% is never targeted. */
+function creditExtra(act,extra,strategy,cr,m){
+  var paid=0,lim=cr.lim||{},pr=cr.promo||{};
+  function pay(x,amt){var p=Math.min(extra,amt,x.bal);if(p>0){x.bal-=p;x.pm+=p;extra-=p;paid+=p;}}
+  act.filter(function(x){return pr[x.id]!=null&&pr[x.id]>=m&&x.due*(pr[x.id]-m)<x.bal-1e-9;}).sort(function(a,b){return pr[a.id]-pr[b.id];}).forEach(function(x){
+    if(extra<=0)return;var left=pr[x.id]-m+1;pay(x,Math.max(0,(x.bal-x.due*(left-1))/left));});
+  [0.9,0.5,0.3].forEach(function(L){
+    act.filter(function(x){return lim[x.id]>0&&x.bal>=L*lim[x.id]-1e-9;})
+      .map(function(x){return {x:x,need:x.bal-(L*lim[x.id]-0.01)};})
+      .sort(function(a,b){return Math.abs(a.need-b.need)>1e-6?a.need-b.need:b.x.apr-a.x.apr;})
+      .forEach(function(c){if(extra>0)pay(c.x,c.need);});
+  });
+  orderDebts(act.filter(function(x){return x.bal>0;}),strategy).forEach(function(x){if(extra>0)pay(x,x.bal);});
+  return paid;
+}
 /* One month = interest (APR/12) first, then payments. o.payment = level total per month (rollover); omit for "each pays its own minimum". */
 function simulate(debts,o){
   o=o||{};
@@ -1050,7 +1100,8 @@ function simulate(debts,o){
     var pay=rollover?Math.max(o.payment,sumDue):sumDue;
     s.forEach(function(x){if(x.done)return;x.bal-=x.due;x.pm+=x.due;paid+=x.due;});
     var extra=pay-sumDue+(fixedPays?extraM:0);
-    if(extra>1e-9){
+    if(extra>1e-9&&o.credit){paid+=creditExtra(s.filter(function(x){return !x.done&&x.bal>0;}),extra,strategy,o.credit,m);}   /* V3.1 "Protect my credit score" (only when o.credit is passed) */
+    else if(extra>1e-9){
       orderDebts(s.filter(function(x){return !x.done&&x.bal>0;}),strategy).forEach(function(x){
         if(extra<=0)return;var p=Math.min(extra,x.bal);x.bal-=p;x.pm+=p;extra-=p;paid+=p;});
     }
@@ -4143,12 +4194,14 @@ function v3Clean(o){
     if(typeof m.next==='string'&&/^\d{4}-\d\d-\d\d$/.test(m.next))r.next=m.next;
     if(m.plan===true||m.plan===false)r.plan=m.plan;
     if(m.aprHow==='solved'||m.aprHow==='typical'||m.aprHow==='card')r.aprHow=m.aprHow;
+    var cd=Number(m.close);if(isFinite(cd)&&cd>=1&&cd<=31&&Math.round(cd)===cd)r.close=cd;   /* V3.1 statement closing day */
     out.d[id]=r;
   });
+  if(o.credit===true)out.credit=true;   /* V3.1 Protect my credit score toggle */
   return out;
 }
-var V3=(function(){try{return v3Clean(JSON.parse(localStorage.getItem(V3UI_KEY)||'null'));}catch(e){return v3Blank();}})();
-function v3Save(){try{if(!Object.keys(V3.d).length&&!V3.guessSeen)localStorage.removeItem(V3UI_KEY);else localStorage.setItem(V3UI_KEY,JSON.stringify(V3));}catch(e){}}
+var V3=v3Blank();   /* V3.1 fix: loaded just after V3T below. In V3 this ran before V3T existed, v3Clean threw, and every reload started from blank UI data */
+function v3Save(){try{if(!Object.keys(V3.d).length&&!V3.guessSeen&&!V3.credit)localStorage.removeItem(V3UI_KEY);else localStorage.setItem(V3UI_KEY,JSON.stringify(V3));}catch(e){}}
 function v3Meta(id){return V3.d[id]||{};}
 
 /* ---------- debt types: what the user picks -> what the engine already knows ---------- */
@@ -4164,6 +4217,7 @@ var V3T={
   mort:{lab:'Mortgage (fixed bill)',name:'Mortgage',kind:'mortgage',tag:''},
   fixed:{lab:'Other fixed loan',name:'Fixed loan',kind:'loan',tag:''}
 };
+V3=(function(){try{return v3Clean(JSON.parse(localStorage.getItem(V3UI_KEY)||'null'));}catch(e){return v3Blank();}})();
 var V3_SHORT={promo:'0% promo',personal:'Personal',pay4:'Pay-in-4',medical:'Medical',other:'Other',mort:'Mortgage',fixed:'Fixed'};
 var V3_MAIN=['card','auto','student'],V3_MORE=['promo','personal','pay4','medical','other'];
 var CARD_APR_GUESS=24.99;
@@ -4224,13 +4278,16 @@ function dfQs(p,t,d,m,isNew,ctx){
     h+=qf(p+'Min','Minimum payment','The smallest payment on your statement, the '+gl('minimum','minimum')+'.',minV,{ph:'e.g. 85',ns:true,est:estMin,estTxt:'Our guess from your balance. Check your statement.'});
     h+=qf(p+'Apr','Interest rate','The yearly rate on your statement, often called the '+gl('apr','APR')+'.',aprV,{nopre:true,suf:'%',ph:'e.g. 22.9',ns:true,est:estApr,estTxt:'A typical card rate, our guess.'});
     h+=dueQ;
-    if(ctx==='sheet'&&!isNew)h+=qf(p+'Lim','Credit limit (optional)','Only used to show how much of the card you’re using.',d.limit,{ph:'e.g. 5,000'});
+    h+=qf(p+'Lim','Credit limit (optional)','The most you can charge on this card. We use it to show how much of the card you’re using. Not sure? Leave it blank and add it later.',d.limit,{ph:'e.g. 5,000',ns:true});
+    if(ctx==='sheet')h+=qf(p+'Close','Statement closing day (optional)','On your statement. Your balance on that day is what gets reported to the credit bureaus.',m.close,{nopre:true,mode:'numeric',ph:'e.g. 25'});
   }else if(t==='promo'){
     h+=qf(p+'Promo','When does the 0% end?','On your statement or card offer. We warn you 60 days before.',d.promoEnd||'',{type:'date',nopre:true});
     h+=qf(p+'After','Rate after the promo','What the rate jumps to once the 0% ends.',d.afterApr,{nopre:true,suf:'%',ph:'e.g. 26.99',ns:true});
     h+='<div class="f q" id="'+p+'Def-q"><div class="qlab"><span class="lbl0" id="'+p+'Def-l">If it isn’t paid off in time, is interest charged back to day one?</span></div><div class="small muted hint why">This is called deferred interest. Store cards often work this way. Check the offer terms.</div>'+chipsHtml(p+'def',[['yes','Yes'],['no','No'],['unsure','Not sure']],m.def||'',{label:'Deferred interest',cls:'sm three'})+'</div>';
     h+=qf(p+'Min','Minimum payment','The smallest payment on your statement, the '+gl('minimum','minimum')+'.',minV,{ph:'e.g. 40',ns:true,est:estMin,estTxt:'Our guess from your balance. Check your statement.'});
     h+=dueQ;
+    h+=qf(p+'Lim','Credit limit (optional)','The most you can charge on this card. We use it to show how much of the card you’re using. Not sure? Leave it blank and add it later.',d.limit,{ph:'e.g. 5,000',ns:true});
+    if(ctx==='sheet')h+=qf(p+'Close','Statement closing day (optional)','On your statement. Your balance on that day is what gets reported to the credit bureaus.',m.close,{nopre:true,mode:'numeric',ph:'e.g. 25'});
   }else if(isLoanT(t)){
     h+=qf(p+'Min','Monthly payment','What you pay on it each month.',minV,{ph:'e.g. 298',ns:true,est:estMin,estTxt:'Our guess for a typical '+V3T[t].name.toLowerCase()+'. Check your statement.'});
     h+=qf(p+'Apr','Interest rate','The yearly rate on your loan statement or app, often called the '+gl('apr','APR')+'.',aprV,{nopre:true,suf:'%',ph:'e.g. 6.5',ns:true,est:estApr,estTxt:m.aprHow==='solved'?'Worked out from your balance, payment and payments left. An estimate.':'A typical rate for a '+V3T[t].name.toLowerCase()+', our guess.'});
@@ -4363,6 +4420,11 @@ function dfRead(){
       if(ok){d.promoEnd=iso(pe);d.afterApr=af.val;d.apr=0;est.apr=0;}
       var df=chipVal(p+'def');if(df)m.def=df;
     }
+    var li={ok:true,val:null};
+    if(t==='card'||t==='promo'){   /* V3.1: credit limit required on cards and 0% promos; closing day optional */
+      li=num('Lim',{});if(li.ok&&li.val!==null&&!(li.val>0))bad(p+'Lim','Type the credit limit, or tap Not sure to leave it blank.');if(li.ok&&!(li.val>0))li.val=null;   /* optional: blank = no limit, never guessed */
+      var cl=num('Close',{min:1,max:31,whole:true,unit:'day'});if(cl.ok){if(cl.val)m.close=Math.round(cl.val);else delete m.close;}
+    }
     if(t==='medical'){
       var mp=chipVal(p+'mp');if(!mp)bad('ch-'+p+'mp','Pick Yes or No');
       else if(mp==='yes'){m.plan=true;if(mn.ok&&!(mn.val>0))bad(p+'Min','Add the monthly amount, or pick No');}
@@ -4384,7 +4446,7 @@ function dfRead(){
       }else{d.min=mn.val;est.min=0;}
       if(du.val===null||isEst('Due')){if(DF.isNew||!d.dueDay)d.dueDay=1;est.due=1;if(du.val!==null)d.dueDay=Math.round(du.val);}
       else{d.dueDay=Math.round(du.val);est.due=0;}
-      if($(p+'Lim')){var li=num('Lim',{});if(li.ok)d.limit=li.val;}
+      if(t==='card'||t==='promo')d.limit=li.val;else{d.limit=null;delete m.close;}
     }
   }
   if(!ok){Object.keys(errs).forEach(function(id){if(id.indexOf('ch-')===0){var e=$(id+'-e');if(e)e.textContent=errs[id];}else setErr(id,errs[id]);});
@@ -4418,7 +4480,8 @@ document.addEventListener('click',function(e){
   var t=e.target&&e.target.closest?e.target.closest('.df [data-chip],.df [data-dkmore],.df [data-ns]'):null;if(!t||!DF)return;
   var p=DF.p;
   if(t.dataset.dkmore!==undefined){e.stopPropagation();var bx=$(p+'MoreBox');bx.hidden=!bx.hidden;t.setAttribute('aria-expanded',String(!bx.hidden));var ml=t.querySelector('.mlab');if(ml)ml.textContent=bx.hidden?(t.dataset.short||'More'):'More';if(!bx.hidden){var f=bx.querySelector('[aria-pressed="true"]')||bx.querySelector('button');if(f)f.focus();}return;}
-  if(t.dataset.ns){e.stopPropagation();var el=$(t.dataset.ns);if(!el)return;var r=dfEstimate(t.dataset.ns);if(r[0]===null)return;el.value=String(r[0]);dfMarkEst(el,true,r[1]);setErr(el.id,'');DF.touched=true;dfLive();if(typeof updateBar==='function'&&OB&&typeof OB.step==='string')updateBar();return;}
+  if(t.dataset.ns){e.stopPropagation();var el=$(t.dataset.ns);if(!el)return;if(/Lim$/.test(t.dataset.ns)){el.value='';delete el.dataset.est;setErr(el.id,'');var nn=$(el.id+'-n');if(nn){nn.hidden=false;nn.textContent='Left blank. Add it any time from Debts to see how much of this card you’re using.';}DF.touched=true;dfLive();if(typeof updateBar==='function'&&OB&&typeof OB.step==='string')updateBar();return;}   /* V3.1: Not sure on the limit leaves it blank, never a guess */
+  var r=dfEstimate(t.dataset.ns);if(r[0]===null)return;el.value=String(r[0]);dfMarkEst(el,true,r[1]);setErr(el.id,'');DF.touched=true;dfLive();if(typeof updateBar==='function'&&OB&&typeof OB.step==='string')updateBar();return;}
   var nm=t.dataset.chip,v=t.dataset.val;
   if(nm===dfChip(p)){e.stopPropagation();if(!V3T[v])return;DF.t=v;DF.keepT=v;var er=$('ch-'+nm+'-e');if(er)er.textContent='';
     var nmEl=$(p+'Name');if(nmEl&&!nmEl.value)nmEl.placeholder=V3T[v].name;dfRender();var b2=document.querySelector('[data-chip="'+nm+'"][data-val="'+v+'"]');if(b2&&b2.offsetParent)b2.focus({preventScroll:true});else{var mb=$(p+'MoreBtn');if(mb)mb.focus({preventScroll:true});}
@@ -4833,6 +4896,7 @@ function reasonFor(it){
   var nm=shortName(nu.id),d=debtById(it.id),mn=d&&d.balance!==null?v3Min(d):0,above=it.amount-mn,w=minWord(d);
   var sN=v3SpreadN();
   if(sN)return above>0.5?'Includes '+money0(above)+' extra above the '+money0(mn)+' '+w+'. Extra is '+spreadNote(sN)+'.':(w==='payment'?'This is your regular payment. ':'This is the minimum. ')+'It keeps this account current. Extra is '+spreadNote(sN)+'.';
+  if(it.id===nu.id&&creditOn()&&creditWhy(nu.id))return (above>0.5?'Includes '+money0(above)+' extra above the '+money0(mn)+' '+w+'. ':'')+'Extra goes here first: '+creditWhy(nu.id)+'.';
   if(it.id===nu.id)return (above>0.5?'Includes '+money0(above)+' extra above the '+money0(mn)+' '+w+'. ':'')+(st==='snowball'?'Extra goes here first: it’s your smallest balance, so it’s gone soonest.':'Extra goes here first: it’s your highest rate ('+nu.apr+'% interest), so it costs you the most.');
   if(above>0.5)return 'Includes '+money0(above)+' above the '+money0(mn)+' '+w+', so this debt is paid off on schedule.';
   return (w==='payment'?'This is your regular payment. ':'This is the minimum. ')+'It keeps this account current while extra goes to '+esc(nm)+'.';
@@ -4840,7 +4904,7 @@ function reasonFor(it){
 /* A debt's required monthly amount. Car, student, personal and other loans: the monthly payment the person entered
    (or the labeled estimate saved in its place). Cards and promo cards: the app's minimum rule. */
 /* months pace (a level plan: the extra is spread so everything finishes together) -> its months; one-debt-at-a-time plans -> 0 */
-function v3SpreadN(){var c=C.cur,d=c&&c.def;return d&&d.kind==='months'&&!c.never&&!c.invalid?d.months:0;}
+function v3SpreadN(){if(typeof creditOn==='function'&&creditOn())return 0;var c=C.cur,d=c&&c.def;return d&&d.kind==='months'&&!c.never&&!c.invalid?d.months:0;}
 function spreadNote(n){return 'spread so everything is paid off in '+plural(n,'month');}
 function v3Min(d){
   if(!d||!(d.balance>0.005))return 0;
@@ -4991,6 +5055,7 @@ renderDebts=function(){_renderDebts0();
 whyOrderText=function(){
   var nu=nextUp(null),st=data.settings.strategy;if(!nu||!hasPlan())return '';var nm=shortName(nu.id),sN=v3SpreadN();
   if(sN)return 'Why this order: every real minimum is paid first, then the extra is '+spreadNote(sN)+'.';
+  if(creditOn()&&creditWhy(nu.id))return 'Why this order: every real minimum is paid first, then extra goes to '+nm+': '+creditWhy(nu.id)+'.';
   return st==='snowball'?'Why this order: every real minimum is paid first, then extra goes to '+nm+', your smallest balance, so you clear whole debts sooner.':'Why this order: every real minimum is paid first, then extra goes to '+nm+' ('+nu.apr+'% interest, your highest rate), which costs the least interest.';
 };
 var _extraHtml0=extraHtml;
@@ -5000,6 +5065,310 @@ extraHtml=function(r,x){return _extraHtml0(r,x).replace(/% APR/g,'% interest');}
 function v3SheetState(){var on=!!document.querySelector('dialog[open]')&&matchMedia('(max-width:699px)').matches;document.documentElement.classList.toggle('sheet-open',on);var t=$('tabs');if(t)t.inert=on;}
 (function(){var sm=HTMLDialogElement.prototype.showModal;HTMLDialogElement.prototype.showModal=function(){sm.apply(this,arguments);v3SheetState();};
   document.querySelectorAll('dialog').forEach(function(d){d.addEventListener('close',v3SheetState);});v3SheetState();})();
+
+/* ================= V3.1 credit limit + utilization (UI) + "Protect my credit score" (engine: creditExtra) ================= */
+/* sample: every card's limit is an example $5,000 (labeled on the tiles) */
+var _sampleData0=sampleData;
+sampleData=function(){var d=_sampleData0();d.debts.forEach(function(x){if(x.kind==='card')x.limit=5000;});return d;};
+function limOf(d){return d&&d.kind==='card'&&d.limit>0?d.limit:null;}
+function limCards(){return data.debts.filter(function(d){return limOf(d)&&d.balance!==null;});}
+/* whole percent that never rounds across a line: 29.6% shows 29%, not 30% */
+function upct(p){var r=Math.round(p);[10,30,50,90].forEach(function(L){if(p<L&&r>=L)r=L-1;});return Math.max(0,r);}
+function utilAll(bals){var b=0,l=0;limCards().forEach(function(d){l+=d.limit;b+=Math.max(0,bals?(bals[d.id]!=null?bals[d.id]:d.balance):d.balance);});return l>0?{bal:b,lim:l,p:100*b/l}:null;}
+function ubar(p,id){
+  return '<div class="ubar" role="img" aria-label="'+upct(p)+'% of the limit used"'+(id?' id="'+id+'"':'')+'><i style="width:'+Math.min(100,Math.max(0,p)).toFixed(1)+'%"'+(p>90?' class="hi"':'')+'></i><b class="mk" style="left:10%"></b><b class="mk" style="left:30%"></b></div>'+
+    '<div class="ukey" aria-hidden="true"><span style="left:10%">10%</span><span style="left:30%">30%</span></div>';
+}
+var UTIL_HINT='Under 30% helps your score; under 10% is best.';
+function utilLine(d){var p=100*Math.max(0,d.balance)/d.limit;return money0(d.balance)+' of '+money0(d.limit)+' used ('+upct(p)+'%)';}
+/* next statement closing date with this day; pay a few (3) days before it so the payment posts first */
+function closeDates(day){
+  var t=today,y=t.getFullYear(),mo=t.getMonth();
+  for(var k=0;k<3;k++){var c=new Date(y,mo+k,Math.min(day,dim(y,mo+k)));var by=addDays(c,-3);if(by>=t)return {close:c,by:by};}
+  return null;
+}
+function reportLine(d){
+  var m=v3Meta(d.id),L=limOf(d);if(!L||!m.close||!(d.balance>0)||d.balance<0.3*L-1e-9)return '';
+  var x=Math.ceil(d.balance-(0.3*L-0.01)-1e-9);if(x<=0)return '';   /* leaves 1 cent+ under 30%: $3,200 on $5,000 -> pay $1,701, leaving $1,499 (29.98%) */var cd=closeDates(m.close);if(!cd)return '';
+  return 'Pay '+money0(x)+' by '+dWk(cd.by)+' to report under 30%';
+}
+var KEEPOPEN='Keep paid-off cards open. Closing one shrinks your total limit and raises utilization. A small charge every few months keeps it active.';
+/* month a balance series first gets under a line (k = month index in the plan rows), or null */
+function crossK(rows,fn,L){for(var k=0;k<rows.length;k++){if(fn(rows[k])<L)return k;}return null;}
+function monthOfK(k){if(k===null)return null;if(k===0)return 'now';var ctx=C.ctx;return ctx?dMY(ctx.ms(k)):null;}
+function allP(r){var b=0,l=0;limCards().forEach(function(d){l+=d.limit;b+=Math.max(0,r.bal[d.id]!=null?r.bal[d.id]:d.balance);});return l?100*b/l:0;}
+/* monthly payments that land on or before the promo's end: due dates (this card's due day) from today on; at least 1 while the promo is still running */
+function promoPays(dueDay,end){var n=0,dd=cleanDay(dueDay||1);for(var k=0;k<121;k++){var y=today.getFullYear(),mo=today.getMonth()+k,dt=new Date(y,mo,Math.min(dd,dim(new Date(y,mo,1).getFullYear(),new Date(y,mo,1).getMonth())));if(dt<today)continue;if(dt>end)break;n++;}return Math.max(1,n);}
+/* engine options for "Protect my credit score": card limits + deferred-interest promos (last month index) */
+function creditOpt(){
+  var lim={},promo={},n=0;
+  data.debts.forEach(function(d){var L=limOf(d);if(L&&d.balance>0.005){lim[d.id]=L;n++;}
+    if(d.tag==='promo'&&d.balance>0.005&&v3Meta(d.id).def==='yes'&&d.promoEnd){var e=parseISO(d.promoEnd);if(e&&e>=today)promo[d.id]=promoPays(d.dueDay,e);}});
+  return n?{lim:lim,promo:promo}:null;
+}
+/* the toggle applies to every simulation that does not say otherwise (o.credit===false = normal order) */
+var _simulate0=simulate;
+var V3SIM=0;
+simulate=function(debts,o){
+  o=o||{};
+  if(o.credit===undefined&&V3.credit){var cr=creditOpt();if(cr){
+    o=Object.assign({},o,{credit:cr});
+    /* Finance Dude: with the toggle on, a months pace (level pays) becomes one debt at a time at the same monthly total */
+    if(o.levelPays){var tot=0;Object.keys(o.levelPays).forEach(function(k){tot+=Math.max(0,+o.levelPays[k]||0);});o.payment=tot+Math.max(0,+o.extraMonthly||0);o.strategy=data.settings.strategy;delete o.levelPays;delete o.extraMonthly;}
+  }}
+  else if(o.credit===false){o=Object.assign({},o);delete o.credit;}
+  V3SIM++;try{return _simulate0(debts,o);}finally{V3SIM--;}
+};
+function creditOn(){return !!(V3.credit&&creditOpt());}
+/* Month-1 post-interest, post-minimum balance + due (matches simulate() right before creditExtra runs) */
+function creditM1(d,bal,apr){
+  var b=Math.max(0,bal!=null?bal:(d?d.balance||0:0)),a=Math.max(0,apr!=null?apr:(d?d.apr||0:0));
+  var im=b*a/1200,b0=b+im,mn=d?minDue({min:(d.min!=null&&d.min>0)?d.min:null},b0,im):minDue({min:null},b0,im);
+  return {bal:Math.max(0,b0-mn),due:mn};
+}
+/* why a debt is elevated by Protect my credit score in Month 1 (null if not elevated -> normal order applies) */
+function creditTier(id,bal,apr){
+  var cr=creditOpt();if(!cr)return null;
+  var d=debtById(id),L=cr.lim[id],pr=cr.promo[id],m1=creditM1(d,bal,apr),b1=m1.bal;
+  if(b1<=1e-9)return null;
+  if(pr!=null&&pr>=1&&m1.due*(pr-1)<b1-1e-9)return {k:0,n:pr,kind:'promo',end:d&&d.promoEnd};
+  if(L>0){var lines=[0.9,0.5,0.3];for(var i=0;i<3;i++){if(b1>=lines[i]*L-1e-9)return {k:i+1,n:b1-(lines[i]*L-0.01),kind:'util',line:lines[i],L:L,b1:b1};}}
+  return null;
+}
+/* the order extra goes in Month 1 under creditExtra (first dollar): at-risk deferred promos, then 90% / 50% / 30% lines
+   evaluated on Month-1 post-interest, post-minimum balances (fewest dollars first, ties -> higher APR), then normal order. */
+function creditRank(list,st){
+  var g=[],rest=[];
+  list.forEach(function(x){var t=creditTier(x.id,x.bal,x.apr);if(t)g.push({x:x,k:t.k,n:t.n});else rest.push(x);});
+  g.sort(function(a,b){return a.k-b.k||(Math.abs(a.n-b.n)>1e-6?a.n-b.n:b.x.apr-a.x.apr);});
+  return g.map(function(c){return c.x;}).concat(_orderDebts0(rest,st));
+}
+var _orderDebts0=orderDebts;
+orderDebts=function(list,st){return (V3SIM===0&&creditOn())?creditRank(list,st):_orderDebts0(list,st);};
+/* reason text only when Protect my credit score actually elevates this debt; '' lets callers fall back to highest rate / smallest balance */
+function creditWhy(id,mode){
+  var d=debtById(id),cr=creditOpt();if(!d||!cr)return '';
+  if(mode==='windfall'){
+    var pr=cr.promo[id],L=cr.lim[id],mn=v3Min(d);
+    if(pr!=null&&pr>=1&&mn*pr<d.balance-1e-9){var pe=d.promoEnd?parseISO(d.promoEnd):null;return 'its 0% promo ends '+(pe?dMYs(pe):'soon')+' and minimums won’t clear it in time';}
+    if(L>0&&d.balance>=0.3*L-1e-9)return 'it’s at '+upct(100*d.balance/L)+'% of its limit, and Protect my credit score brings that down first';
+    return '';
+  }
+  var t=creditTier(id);if(!t)return '';
+  if(t.kind==='promo'){var pe2=t.end?parseISO(t.end):null;return 'its 0% promo ends '+(pe2?dMYs(pe2):'soon')+' and minimums won’t clear it in time';}
+  return 'it’s at '+upct(100*Math.max(d.balance,t.b1)/t.L)+'% of its limit, and Protect my credit score brings that down first';
+}
+/* both orders at the same monthly total (the current plan's), one debt at a time */
+function creditCompare(){
+  var c=C.cur,cr=creditOpt();if(!c||c.never||c.invalid||!cr||!Object.keys(cr.lim).length||!(c.payment>0)||c.def.kind==='min')return null;
+  var st=data.settings.strategy,P=c.payment;
+  var a=simulate(C.inp,{payment:P,strategy:st,credit:false}),b=simulate(C.inp,{payment:P,strategy:st,credit:cr});
+  if(a.never||b.never)return null;
+  var r={P:P,extra:b.totalInterest-a.totalInterest,all:[monthOfK(crossK(a.rows,allP,30)),monthOfK(crossK(b.rows,allP,30))],cards:[]};
+  limCards().forEach(function(d){if(!(d.balance>0))return;var f=function(row){return 100*Math.max(0,row.bal[d.id]||0)/d.limit;};
+    r.cards.push({id:d.id,name:shortName(d.id),a:monthOfK(crossK(a.rows,f,30)),b:monthOfK(crossK(b.rows,f,30))});});
+  return r;
+}
+function creditCompareHtml(){
+  if(C.cur&&C.cur.def&&C.cur.def.kind==='min')return '<p class="small muted" id="crMin">Protecting your score needs money beyond the minimums. Pick a pace with extra to use it.</p>';
+  var r=creditCompare();if(!r)return '';
+  var mo=function(x){return x==='now'?'already under':(x||'not in 10 years');};
+  var months=C.cur.def.kind==='months',amt=money0(Math.ceil(r.P));
+  var cost=r.extra>=0.5?'costs +'+money0(r.extra)+' in interest':(r.extra<=-0.5?'saves '+money0(-r.extra)+' in interest':'costs no extra interest');
+  var h='<p class="small" id="crCost">'+(months&&!creditOn()?'Paying one debt at a time at '+amt+'/mo, protecting your score '+cost+'.':'At '+amt+' a month, one debt at a time, protecting your score '+cost+' compared with your usual order.')+'</p><ul class="crl small muted" id="crList">';
+  function when(b,a){return b==='now'&&a==='now'?'already under':(b===a?mo(b)+' either way':mo(b)+' instead of '+mo(a));}
+  h+='<li>Overall under 30%: '+when(r.all[1],r.all[0])+'</li>';
+  r.cards.forEach(function(c){h+='<li>'+esc(c.name)+' under 30%: '+when(c.b,c.a)+'</li>';});
+  return h+'</ul>';
+}
+/* ---- Debts: tiles + overall line ---- */
+var _renderDebtsV3=renderDebts;
+renderDebts=function(){
+  _renderDebtsV3();
+  var box=$('debts');if(!box)return;
+  var ov=$('utilAll');if(!ov){ov=document.createElement('div');ov.id='utilAll';ov.className='uall';box.parentNode.insertBefore(ov,box);}
+  var u=utilAll();
+  ov.innerHTML=u?'<div class="lab">Credit used</div><p class="uall-t"><b class="num">'+upct(u.p)+'%</b> of your card limits ('+money0(u.bal)+' of '+money0(u.lim)+(data.sample?', example limits':'')+')</p>'+ubar(u.p,'ubAll')+'<p class="small muted">'+UTIL_HINT+'</p>':'';
+  ov.hidden=!u;
+  box.querySelectorAll('.tile[data-open]').forEach(function(t){
+    var d=debtById(t.dataset.open);if(!d||d.kind!=='card')return;
+    var L=limOf(d),h='',paid=d.balance!==null&&d.balance<=0.005;
+    if(L&&d.balance!==null){
+      var p=100*Math.max(0,d.balance)/L;
+      h+='<div class="t-util"><div class="t-ul num">'+utilLine(d)+(data.sample?' · example limit':'')+'</div>'+ubar(p)+'<div class="small t-uk">'+UTIL_HINT+'</div>';
+      if(p>90)h+='<div class="t-flag" role="note">Over 90% of the limit. Bringing this down helps your score most.</div>';
+      var rl=reportLine(d);if(rl)h+='<div class="t-rep">'+esc(rl)+'</div>';
+      h+='</div>';
+    }
+    if(paid)h+='<div class="t-keep small">'+KEEPOPEN+'</div>';
+    if(h){var w=document.createElement('div');w.innerHTML=h;var row=t.querySelector('.t-row');while(w.firstChild)t.insertBefore(w.firstChild,row);}
+    if(!L){var a=document.createElement('button');a.type='button';a.className='lnk addlim';a.dataset.addlim=d.id;a.textContent='Add limit';a.setAttribute('aria-label','Add the credit limit for '+d.name);t.insertAdjacentElement('afterend',a);}
+  });
+};
+document.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('[data-addlim]'):null;if(!b)return;e.preventDefault();e.stopPropagation();
+  openDebt(b.dataset.addlim);setTimeout(function(){var f=$('eLim');if(f){f.focus({preventScroll:false});}},60);},true);
+/* ---- Plan: overall + each card, and the toggle with what it costs ---- */
+var _renderV3Plan31=renderV3Plan;
+renderV3Plan=function(){
+  _renderV3Plan31();
+  var box=$('v3Plan');if(!box||box.hidden)return;var u=utilAll();
+  if(!u){   /* no card has a limit: no %, no toggle; one plain line if there are cards at all */
+    if(data.debts.some(function(d){return d.kind==='card'&&d.balance>0;})){var w0=document.createElement('p');w0.className='small muted';w0.id='planUtilNone';w0.textContent='Add your card limits on Debts to see how much of your credit you’re using.';var a0=box.querySelector('#v3sNote')||box.querySelector('#v3Strat')||box.querySelector('.psub');if(a0)a0.insertAdjacentElement('afterend',w0);}
+    return;}
+  var h='<div class="v3util" id="planUtil"><div class="lab" style="margin-top:18px">Credit used</div><p class="uall-t" id="planUtilAll"><b class="num">'+upct(u.p)+'%</b> of your card limits</p>'+ubar(u.p)+'<ul class="crl small" id="planUtilCards">';
+  limCards().forEach(function(d){h+='<li><span>'+esc(shortName(d.id))+'</span> <span class="muted num">'+utilLine(d)+'</span>'+(100*d.balance/d.limit>90?' <b class="t-flag-i">over 90%</b>':'')+'</li>';});
+  h+='</ul>';
+  if(creditOpt()){
+    h+='<label class="crtog"><input type="checkbox" id="crTog"'+(V3.credit?' checked':'')+'> <span><b>Protect my credit score</b><small class="muted">Extra goes first to cards over 90%, then 50%, then 30% of their limit, then back to your usual order.</small></span></label>';
+    h+=creditCompareHtml();
+    if(creditOn()&&C.cur&&C.cur.def&&C.cur.def.kind==='months')h+='<p class="small" id="crSwitch">With this on, your pace pays one debt at a time at the same '+money0(Math.ceil(C.cur.payment))+' a month, so the extra can go where it helps your score. Turn it off to spread the extra again.</p>';
+    else if(v3SpreadN())h+='<p class="small muted" id="crSpread">Your pace spreads the extra across every debt. Turn this on to pay one debt at a time at the same monthly amount instead.</p>';
+  }
+  h+='</div>';
+  var tm=box.querySelector('.psub');var w=document.createElement('div');w.innerHTML=h;var el=w.firstChild;
+  var after=box.querySelector('#v3sNote')||box.querySelector('#v3Strat')||tm;if(after)after.insertAdjacentElement('afterend',el);else box.appendChild(el);
+};
+document.addEventListener('change',function(e){if(e.target&&e.target.id==='crTog'){V3.credit=e.target.checked?true:undefined;if(!V3.credit)delete V3.credit;v3Save();renderAll();var t=$('crTog');if(t)t.focus({preventScroll:true});}});
+/* ---- Today: overall %, when it drops under 30% / 10% on this plan, and this paycheck's milestones ---- */
+function utilTodayHtml(cl){
+  var u=utilAll();if(!u)return '';
+  var h='<div class="tutil" id="todayUtil"><p class="small"><b>Credit used: '+upct(u.p)+'%</b> of your card limits.';
+  var rows=C.cur&&C.cur.sim&&C.cur.sim.rows;
+  if(rows&&rows.length){[30,10].forEach(function(L){if(u.p<L)return;var k=crossK(rows,allP,L);var mo=monthOfK(k);if(mo&&mo!=='now')h+=' Under '+L+'% by '+mo+' on this plan.';});}
+  h+='</p>';
+  var ms=[];
+  cycleItems(cl).forEach(function(it){if(it.checked||it.fixed)return;var d=debtById(it.id),L=limOf(d);if(!L||!(d.balance>0))return;
+    var b0=d.balance,b1=Math.max(0,b0-it.amount);
+    [10,30].some(function(t){if(b0>=t/100*L&&b1<t/100*L){ms.push('This payment gets '+shortName(d.id)+' under '+t+'%.');return true;}return false;});});
+  if(ms.length)h+='<p class="small ac" id="utilMs">'+esc(ms.join(' '))+'</p>';
+  return h+'</div>';
+}
+var _payBreakHtml31=payBreakHtml;
+payBreakHtml=function(cl){var h=_payBreakHtml31(cl);return h.replace(/<\/div>$/,utilTodayHtml(cl)+'</div>');};
+document.addEventListener('input',function(e){var t=e.target;if(t&&t.id&&/^(od|e)Lim$/.test(t.id)&&t.value){var n=$(t.id+'-n');if(n)n.hidden=true;}});
+/* Today insight: when Protect my credit score elevates the top debt, say why instead of "(highest rate)" */
+var _renderInsight31=renderInsight;
+renderInsight=function(){
+  _renderInsight31();
+  if(!creditOn()||C.debtFree)return;
+  var o=nextUp(null),w=o?creditWhy(o.id):'';if(!w)return;
+  var p=$('insight')&&$('insight').querySelector('p');
+  if(p)p.innerHTML=p.innerHTML.replace(/ first \((highest rate|smallest balance)\)\./,' first ('+esc(w)+').');
+};
+/* Compare payoff timelines + planNote: with toggle on, months paces run one debt at a time so show Month-1 rollover pays */
+var _cmpRow31=cmpRow;
+cmpRow=function(def){
+  var k=def[0],sc=C.sc&&C.sc[k];
+  if(!creditOn()||!sc||!sc.level)return _cmpRow31(def);
+  var b0=sc.bound;sc.level=false;sc.bound=[];
+  try{return _cmpRow31(def);}finally{sc.level=true;sc.bound=b0;}
+};
+var _planNote31=planNote;
+planNote=function(c){
+  if(!c||c.invalid||!creditOn()||c.def.kind==='min')return _planNote31(c);
+  return 'With Protect my credit score on, pays '+money0(Math.ceil(c.payment))+' a month one debt at a time (cards over 90%, 50%, then 30% first) and rolls freed-up payments forward.';
+};
+/* Shared lump-sum windfall allocator today ("Got extra this month?" + #otCard):
+   0) deferred-interest promo ONLY when due*pr < bal, up to shortfall (bal - due*pr);
+   1-3) 90% / 50% / 30% lines (fewest dollars first, ties -> higher APR);
+   4) remainder in usual avalanche/snowball order. */
+function windfallAlloc(inp,x,st){
+  var cr=creditOpt()||{lim:{},promo:{}},lim=cr.lim||{},pr=cr.promo||{};
+  var act=inp.filter(function(d){return d.balance>0.005;}).map(function(d){
+    var dd=debtById(d.id);return {id:d.id,bal:d.balance,apr:d.apr||0,due:dd?v3Min(dd):minDue({min:d.min},d.balance+d.balance*(d.apr||0)/1200,d.balance*(d.apr||0)/1200),pm:0,why:null,line:null};
+  });
+  var left=Math.max(0,x),paid=0,ord=[];
+  function pay(a,amt,why,linePct,limVal){
+    var p=Math.min(left,amt,a.bal);if(!(p>0.004))return;
+    p=Math.min(left,a.bal,Math.round(p*100)/100);if(!(p>0.004))return;
+    a.bal=Math.max(0,Math.round((a.bal-p)*100)/100);
+    a.pm=Math.round((a.pm+p)*100)/100;
+    left=Math.max(0,Math.round((left-p)*100)/100);
+    paid=Math.round((paid+p)*100)/100;
+    if(!a.why)a.why=why;
+    if(why==='util'&&linePct&&limVal&&a.bal<(linePct/100)*limVal-1e-9)a.line=linePct;
+    if(ord.indexOf(a.id)<0)ord.push(a.id);
+  }
+  act.filter(function(a){return pr[a.id]!=null&&pr[a.id]>=1&&a.due*pr[a.id]<a.bal-1e-9;})
+    .sort(function(a,b){return pr[a.id]-pr[b.id];})
+    .forEach(function(a){if(left>0.004){var sf=Math.ceil((a.bal-a.due*pr[a.id])*100-1e-9)/100;pay(a,sf,'promo',null,0);}});
+  [0.9,0.5,0.3].forEach(function(L){
+    act.filter(function(a){return lim[a.id]>0&&a.bal>=L*lim[a.id]-1e-9;})
+      .map(function(a){return {a:a,need:a.bal-(L*lim[a.id]-0.01)};})
+      .sort(function(a,b){return Math.abs(a.need-b.need)>1e-6?a.need-b.need:b.a.apr-a.a.apr;})
+      .forEach(function(c){if(left>0.004){var amt=Math.ceil(c.need*100-1e-9)/100;pay(c.a,amt,'util',Math.round(L*100),lim[c.a.id]);}});
+  });
+  _orderDebts0(act.filter(function(a){return a.bal>0.005;}),st).forEach(function(a){if(left>0.004)pay(a,a.bal,'norm',null,0);});
+  var byId={};act.forEach(function(a){byId[a.id]=a;});
+  var hits=[];
+  ord.forEach(function(id){
+    var a=byId[id],d=inp.filter(function(q){return q.id===id;})[0];
+    if(d)d.balance=a.bal;
+    hits.push({id:id,amt:a.pm,paid:a.bal<0.005,apr:a.apr,why:a.why,line:a.line});
+  });
+  return {hits:hits,left:left,paid:paid};
+}
+function windfallWhy(h){
+  if(h.why==='promo'||h.why==='util'){var w=creditWhy(h.id,'windfall');if(w)return w;}
+  if(data.settings.strategy==='snowball')return (h.apr?h.apr+'% interest, ':'')+'your smallest balance';
+  return h.apr?h.apr+'% interest, your highest rate':'0% interest';
+}
+var _extraCalc31=extraCalc;
+extraCalc=function(x){
+  if(!creditOn())return _extraCalc31(x);
+  var c=C.cur;if(!c||!c.sim||c.invalid)return {bad:'Fix the plan first.'};
+  var st=data.settings.strategy,inp=C.inp.map(function(d){return {id:d.id,balance:d.balance,apr:d.apr,min:d.min};});
+  var w=windfallAlloc(inp,x,st);
+  var opt=c.def.kind==='min'?{strategy:st}:{payment:c.payment,strategy:st};
+  var base=simulate(C.inp.map(function(d){return {id:d.id,balance:d.balance,apr:d.apr,min:d.min};}),opt),sim2=simulate(inp,opt);
+  var mv=(base.never||sim2.never)?null:Math.max(0,base.months-sim2.months),sv=(base.never||sim2.never)?null:Math.max(0,base.totalInterest-sim2.totalInterest);
+  return {hits:w.hits,left:w.left,months:mv,saved:sv,wasNever:base.never,nowOk:!sim2.never,credit:true};
+};
+var _extraHtml31=extraHtml;
+extraHtml=function(r,x){
+  if(!r||r.bad||!r.credit||!r.hits||!r.hits.length)return _extraHtml31(r,x);
+  var top=r.hits[0],w=windfallWhy(top),h='';
+  if(r.hits.length===1){
+    h+='<p class="ex-hit"><b>Put it on '+esc(shortName(top.id))+'</b>'+(w?' ('+esc(w)+')':'')+'.'+(top.paid?' That clears that debt.':'')+'</p>';
+  }else{
+    var rest=r.hits.slice(1).map(function(q){return esc(shortName(q.id))+' ('+money2(q.amt)+(q.paid?', paid off':'')+')';}).join(', ');
+    if(top.paid)h+='<p class="ex-hit"><b>Put '+money2(top.amt)+' on '+esc(shortName(top.id))+'</b>'+(w?' ('+esc(w)+')':'')+'. It clears that debt and the rest goes to '+rest+'.</p>';
+    else{
+      var stop=top.why==='util'&&top.line?'brings it under '+top.line+'% of its limit':(top.why==='promo'?'covers the promo shortfall so minimums clear it in time':w);
+      h+='<p class="ex-hit"><b>Put '+money2(top.amt)+' on '+esc(shortName(top.id))+'</b>'+(stop?' ('+esc(stop)+')':'')+', and the rest to '+rest+'.</p>';
+    }
+  }
+  if(r.wasNever&&r.nowOk)h+='<p class="ex-hit"><b>This makes your plan possible.</b></p>';
+  else if(r.months!==null){h+='<p class="ex-hit">'+(r.months>0?'You’d be debt-free <b>'+plural(r.months,'month')+' sooner</b>':'Your debt-free date stays the same')+' and save about <b>'+money0(r.saved)+'</b> in interest.'+(estItems().length?' <span class="chip est">Estimate</span>':'')+'</p>';}
+  if(r.left>0.005)h+='<p class="small muted">'+money0(r.left)+' is more than you owe on cards and loans.</p>';
+  return h;
+};
+var _renderOT31=renderOT;
+renderOT=function(){
+  _renderOT31();
+  if(creditOn()&&$('otNote'))$('otNote').innerHTML+=' With Protect my credit score on, cards over 30% drop under 30% first before the rest moves on.';
+};
+var _runOT31=runOT;
+runOT=function(){
+  if(!creditOn())return _runOT31();
+  var p=parseMoney($('otAmt').value,{required:true});
+  if(!p.ok||p.val<=0){$('otErr').textContent=p.ok?'Type how much extra you got, like 1000':p.err;$('otAmt').setAttribute('aria-invalid','true');$('otRes').innerHTML='';C.otHits=null;return;}
+  $('otErr').textContent='';$('otAmt').removeAttribute('aria-invalid');
+  var c=C.cur;if(!c||!c.sim){$('otRes').textContent='Fix the plan first.';return;}
+  var x=p.val,st=data.settings.strategy,inp=C.inp.map(function(d){return {id:d.id,balance:d.balance,apr:d.apr,min:d.min};});
+  var w=windfallAlloc(inp,x,st),hits=w.hits,left=w.left;
+  var sim2=simulate(inp,c.def.kind==='min'?{strategy:st}:(c.level?{levelPays:c.pays}:{payment:c.payment,strategy:st}));
+  var line;
+  if(c.never&&!sim2.never)line='This makes the plan possible: debt gets paid off by '+dMYs(addMonths(today,sim2.months))+'.';
+  else if(c.never)line='Still not enough to beat the interest. A bit more would help.';
+  else{var mv=c.months-sim2.months,sv=c.interest-sim2.totalInterest;line=(mv>0?'Finish moves up '+mv+' month'+(mv===1?'':'s'):'Finish date stays the same')+' · saves '+money0(Math.max(0,sv))+' interest';}
+  var extra=left>0.005?'<li>'+money0(left)+' is more than you owe on cards and loans. Everything gets paid off.</li>':'';
+  $('otRes').innerHTML='<div>'+esc(line)+'</div><ul>'+hits.map(function(h){
+    var tag=h.paid?' (paid off)':(h.why==='util'&&h.line?' (brings under '+h.line+'%)':(h.why==='promo'?' (promo shortfall)':''));
+    return '<li>'+esc(shortName(h.id))+': '+money2(h.amt)+tag+'</li>';
+  }).join('')+extra+'</ul><div style="margin-top:10px"><button class="btn" type="button" id="otSave">Save this to my balances</button></div>';
+  C.otHits=hits;C.otX=x;
+};
 
 /* ===== Tabs, events, init ===== */
 function renderEmpty(t){

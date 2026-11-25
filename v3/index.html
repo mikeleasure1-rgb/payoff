@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)" id="tcDark">
 <meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)" id="tcLight">
 <meta name="application-name" content="Payoff">
-<meta name="payoff-build" content="payoff-v3-2-4">
+<meta name="payoff-build" content="payoff-v3-2-5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Payoff">
@@ -1028,6 +1028,15 @@ details.mb-paid>summary{min-height:44px;display:flex;align-items:center;font-wei
 /* V3.3 N1: light mode rings were white-on-white (ringSvg draws #fff arc + white track for the dark tile). Give them a visible track and a green arc. */
 :root[data-theme="light"] .tmini.r32 svg circle:first-child{stroke:var(--track)}:root[data-theme="light"] .tmini.r32.r32-ok svg circle:last-child{stroke:var(--accent)}:root[data-theme="light"] .r32s.r32-ok .arc{stroke:var(--accent)}
 @media (prefers-color-scheme:light){:root[data-theme="auto"] .tmini.r32 svg circle:first-child{stroke:var(--track)}:root[data-theme="auto"] .tmini.r32.r32-ok svg circle:last-child{stroke:var(--accent)}:root[data-theme="auto"] .r32s.r32-ok .arc{stroke:var(--accent)}}
+/* V3.3 pace step: timeframes */
+.pc-opt{min-height:44px;padding:14px 16px}.pc-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}.pc-top b{font-size:17px}
+.pc-d{display:block;margin-top:4px;line-height:1.45}.pc-pay{font-weight:800;font-size:18px;white-space:nowrap}
+.pc-fit{display:inline-block;margin-top:4px;font-size:14px;font-weight:600}.pc-fit.ok{color:var(--green,var(--accent))}.pc-fit.bad{color:var(--text);background:var(--amber-bg);padding:2px 8px;border-radius:8px}
+.pc-lab{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}.pc-tag{font-size:12px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--amber-bg);color:var(--text);border:1px solid var(--amber,#b7791f)}
+.pc-custom{margin-top:12px}.pc-custom input{max-width:160px}
+/* V3.4: full-width Add a debt (top of the Debts list, and under the last tile when 2+) */
+.add-debt-wide{display:flex;width:100%;min-height:48px;margin-top:12px;justify-content:center;align-items:center;gap:8px;font-size:16px;font-weight:700;box-sizing:border-box}
+.add-debt-wide.top{margin:4px 0 14px}.add-debt-wide[hidden]{display:none}
 
 </style>
 </head>
@@ -5807,6 +5816,138 @@ sampleData=function(){
   return d;
 };
 
+/* ================= V3.3: setup "pace" step = debt-free timeframes =================
+   Options (Ops spec, V3.4): All in (recommended), 6 / 12 / 18 / 24 / 36 months, Pick my own (3 to 60 months). Over budget = "Tight" tag.
+   Each shows the monthly payment it takes and whether it fits, using the same numbers as the Plan tab's
+   "Compare payoff timelines" (runScenario level plans, dfDate, cmpFit). Over budget: says how much more a month.
+   36 months is a real preset (like 6/12/18/24); "Pick my own" is the existing Custom months pace. */
+SCEN_OK.push('36');
+SCEN.splice(5,0,['36','36 mo']);
+CMP.splice(5,0,['36','36 months']);
+var _compute33=compute;
+function curFrom33(k){C.cur=C.sc[k];C.ctx=null;C.df=null;
+  if(C.cur&&C.cur.sim){C.ctx=makeCtx(today,C.cur.sim,C.planInfo,C.fixInfo,{payAnchor:parseISO(data.settings.payAnchor),payFreq:data.income.freq,payNet:data.income.youCheck});C.df=debtFree(C.ctx);}}
+/* V3.4 (Finance Dude): "All in" is the fastest whole-month LEVEL plan (every debt finishes the same month). That level payment is
+   usually a bit under the money left for debt, because one month sooner as a level plan costs more than you have. But the same
+   full amount, rolled highest-rate-first, often DOES finish a month or more sooner. When it does, All in now sends everything left
+   (payment = the money left for debt, date from that run, $0 to spare). When it doesn't finish any sooner, All in keeps the level
+   plan and C.allInLeft says why the small leftover stays with you. */
+function allInFull33(){
+  var au=C.sc.auto;C.allInLeft=null;if(!au||!au.level||au.never||C.autoN==null||!(C.money>au.payment+0.5))return;
+  var pay=Math.min(C.money,Math.round(C.money)),st=data.settings.strategy,sim=simulate(C.inp,{payment:pay,strategy:st});   /* rounded like availR, so cmpFit shows $0 left */
+  if(sim.never||!(sim.months>0))return;
+  if(sim.months<au.months){
+    C.sc.auto={def:{key:'auto',label:'Your pace: '+plural(sim.months,'month'),kind:'amount',amount:pay},key:'auto',label:'Your pace: '+plural(sim.months,'month'),
+      payment:pay,sim:sim,never:sim.never,months:sim.months,interest:sim.totalInterest,allIn:true,levelN:au.months,levelPay:au.payment};
+    C.autoN=sim.months;
+  }else C.allInLeft={left:C.money-au.payment,months:au.months};
+}
+compute=function(){
+  _compute33.apply(this,arguments);
+  C.sc['36']=runScenario('36',C.inp);
+  allInFull33();
+  var k=data.settings.scenario;
+  if(k==='36'||(k==='auto'&&C.sc.auto&&C.sc.auto.allIn))curFrom33(k);
+};
+function allInInfo(){
+  /* what All in gives with all of your extra income going to debt (sliders neutral): read it, then put everything back */
+  var s=data.settings,sl0=s.sl,sc0=s.scenario;s.sl={ot:0,rentPct:100,extra:0};s.scenario='auto';compute();
+  var r={date:C.df&&C.df.date?C.df.date:null,pay:C.cur&&C.cur.payment?C.cur.payment:0,allIn:!!(C.cur&&C.cur.allIn),left:C.allInLeft};r.fit=fitFor(r.pay);
+  s.sl=sl0;s.scenario=sc0;compute();return r;
+}
+var PACE33=[['auto','All in (recommended)'],['6','6 months'],['12','12 months'],['18','18 months'],['24','24 months'],['36','36 months'],['custom','Pick my own']];
+var PACE_MIN=3,PACE_MAX=60;   /* Ops spec: setup's own timeframe is 3 to 60 months (the Plan tab's Custom box keeps its own 1 to 120) */
+function paceCustomSc(n){var s=data.settings,m0=s.customMode,n0=s.customMonths;s.customMode='months';s.customMonths=n;var r=runScenario('custom',C.inp);s.customMode=m0;s.customMonths=n0;return r;}
+/* an older saved Custom value outside 3 to 60 (set in the Plan tab's 1-120 box before V3.4) is kept as-is, not clamped */
+function paceLegacy(){return OB.paceSaved!=null&&OB.paceN===OB.paceSaved&&OB.paceN>=1&&OB.paceN<=120&&!(OB.paceN>=PACE_MIN&&OB.paceN<=PACE_MAX);}
+function paceInfo(k){
+  /* {pay, date, fit:{ok,spare|gap,hrs}} for one option, from the same scenarios the Plan tab shows */
+  var sc,date;
+  if(k==='auto'){var a=allInInfo();return {pay:a.pay,date:a.date,fit:cmpFit({payment:a.pay}),never:!a.date,auto:true,left:a.left,allIn:a.allIn};}
+  if(k==='custom'){if(!(OB.paceN>=PACE_MIN&&OB.paceN<=PACE_MAX)&&!paceLegacy())return null;sc=paceCustomSc(OB.paceN);}
+  else sc=C.sc[k];
+  if(!sc||sc.invalid)return null;
+  date=dfDate(sc);return {pay:sc.payment,date:date,fit:cmpFit(sc),never:!!sc.never};
+}
+function paceFitHtml(i){
+  if(!i)return '';
+  if(i.never)return '<span class="pc-fit bad">This doesn’t pay down the balance yet</span>';
+  if(i.fit.ok&&i.auto){
+    /* All in: never "to spare" next to "everything left goes to debt". $0 left, or a plain reason why a small amount stays with you */
+    if(i.fit.spare<=0)return '<span class="pc-fit ok">Fits your money · uses everything left for debt</span>';
+    return '<span class="pc-fit ok">Fits your money · '+money0(i.fit.spare)+' a month stays with you (paying it wouldn’t make you debt-free any sooner)</span>';}
+  if(i.fit.ok)return '<span class="pc-fit ok">Fits your money · '+money0(i.fit.spare)+' a month to spare</span>';
+  return '<span class="pc-fit bad">Needs '+money0(i.fit.gap)+' more a month than you have'+(i.fit.hrs?' (about '+i.fit.hrs+' extra hours each payday)':'')+'</span>';
+}
+function paceOptHtml(k,lab){
+  var on=OB.pace===k,i=paceInfo(k),sub='',id='pc-'+k;
+  /* V3.4: when All in is the faster rolled plan, say the order (as the Plan tab does): highest rate first (or smallest balance first) */
+  if(k==='auto')sub='Everything left after bills goes to debt'+(i&&i.allIn?', '+(data.settings.strategy==='snowball'?'smallest balance first':'highest rate first'):'')+(i&&i.date?' · debt-free by '+dMYs(i.date):'');
+  else if(k==='custom')sub=i&&i.date?(paceLegacy()?'Your saved timeframe: '+plural(OB.paceN,'month')+', by '+dMYs(i.date)+' (new picks are '+PACE_MIN+' to '+PACE_MAX+')':'Debt-free in '+plural(OB.paceN,'month')+', by '+dMYs(i.date)):'Choose how many months';
+  else sub=i&&i.date?'Debt-free by '+dMYs(i.date):'';
+  var pay=i?'<span class="pc-pay num">'+money0(Math.ceil(i.pay-1e-9))+' a month</span>':'';
+  var tight=i&&!i.never&&i.fit&&!i.fit.ok?' <span class="pc-tag">Tight</span>':'';
+  return '<button type="button" class="opt pc-opt" id="'+id+'" data-pace="'+k+'" aria-pressed="'+on+'" aria-describedby="'+id+'-d">'+
+    '<span class="pc-top"><span class="pc-lab"><b>'+esc(lab)+'</b>'+tight+'</span>'+pay+'</span>'+
+    '<span class="pc-d" id="'+id+'-d"><span class="small">'+esc(sub)+'</span>'+(i?'<br>'+paceFitHtml(i):'')+'</span></button>';
+}
+function paceBody33(){
+  compute();
+  if(!OB.pace){var sc=data.settings.scenario;OB.pace=data.settings.onboarded&&PACE33.some(function(o){return o[0]===sc;})?sc:'auto';}
+  if(OB.pace==='custom'&&OB.paceN==null){OB.paceN=data.settings.customMode==='months'?data.settings.customMonths:null;OB.paceSaved=OB.paceN;}
+  var h='<div class="pc-list" role="group" aria-labelledby="onbT">'+PACE33.map(function(o){return paceOptHtml(o[0],o[1]);}).join('')+'</div>';
+  h+='<div class="f pc-custom" id="paceCustom"'+(OB.pace==='custom'?'':' hidden')+'><label for="paceN">Months until debt-free <span class="small muted">('+PACE_MIN+' to '+PACE_MAX+')</span></label>'+
+     '<input id="paceN" type="text" inputmode="numeric" autocomplete="off" maxlength="3" placeholder="e.g. 30" value="'+(OB.paceN!=null?esc(String(OB.paceN)):'')+'" aria-describedby="paceN-e paceN-h">'+
+     '<div class="small muted" id="paceN-h">Your monthly payment and date update as you type.</div><div class="err" id="paceN-e" role="alert"></div></div>';
+  return h;
+}
+function paceRefresh(k){var b=$('pc-'+k);if(!b)return;var t=document.createElement('div');t.innerHTML=paceOptHtml(k,(PACE33.filter(function(o){return o[0]===k;})[0]||[])[1]);b.replaceWith(t.firstChild);}
+function paceRead(){
+  if(OB.pace!=='custom'){var i=paceInfo(OB.pace),b={'auto':'Everything left for debt (recommended)','6':'6 months','12':'12 months','18':'18 months','24':'24 months','36':'36 months'}[OB.pace];if(b)PACE_NAME[OB.pace]=b+(i&&i.date?' (debt-free by '+dMYs(i.date)+')':'');return true;}
+  if(paceLegacy()&&$('paceN')&&String($('paceN').value).trim()===String(OB.paceSaved)){setErr('paceN','');paceName();return true;}
+  var e=$('paceN'),p=parseMoney(e?e.value:'',{required:true,whole:true,min:PACE_MIN,max:PACE_MAX,unit:'months'});
+  if(!p.ok){setErr('paceN',String(e&&e.value||'').trim()?p.err:'Type how many months, from '+PACE_MIN+' to '+PACE_MAX);if(e)e.focus();return false;}
+  setErr('paceN','');OB.paceN=p.val;paceName();return true;
+}
+function paceName(){if(OB.paceN>=PACE_MIN||paceLegacy()){var i=paceInfo('custom');PACE_NAME.custom='Your own: '+plural(OB.paceN,'month')+(i&&i.date?' (debt-free by '+dMYs(i.date)+')':'');}}
+PACE_NAME={'auto':'Everything left for debt (recommended)','12':'12 months','18':'18 months','24':'24 months','36':'36 months','6':'6 months','custom':'Your own timeframe'};
+STEP.pace={t:function(){return 'How fast do you want to be debt-free?';},s:function(){return 'Pick a timeframe. Each one shows what it takes each month. You can change it any time on the Plan tab.';},b:paceBody33,r:paceRead};
+document.addEventListener('click',function(e){
+  var t=e.target&&e.target.closest?e.target.closest('#obBody [data-pace]'):null;if(!t)return;
+  e.stopPropagation();e.preventDefault();OB.pace=t.dataset.pace;
+  document.querySelectorAll('#obBody [data-pace]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.pace===OB.pace));});
+  var c=$('paceCustom');if(c){c.hidden=OB.pace!=='custom';if(OB.pace==='custom'){var n=$('paceN');if(n)setTimeout(function(){n.focus({preventScroll:true});try{c.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}catch(x){}},30);}else setErr('paceN','');}
+},true);
+document.addEventListener('input',function(e){if(!e.target||e.target.id!=='paceN')return;
+  var p=parseMoney(e.target.value,{required:true,whole:true,min:PACE_MIN,max:PACE_MAX,unit:'months'});OB.paceN=p.ok?p.val:(String(e.target.value).trim()===String(OB.paceSaved)?OB.paceSaved:null);if(p.ok){setErr('paceN','');paceName();}
+  paceRefresh('custom');var b=$('pc-custom');if(b)b.setAttribute('aria-pressed',String(OB.pace==='custom'));});
+var _finishWizard33=finishWizard;
+finishWizard=function(){
+  /* an older saved Custom value outside 3 to 60 (e.g. 90 months from the Plan box) is kept as-is unless it was changed here */
+  if(OB.pace==='custom'){if(OB.paceN>=PACE_MIN&&OB.paceN<=PACE_MAX){data.settings.customMode='months';data.settings.customMonths=OB.paceN;}
+    else if(!(OB.paceSaved!=null&&OB.paceN===OB.paceSaved))OB.pace='auto';}
+  return _finishWizard33.apply(this,arguments);
+};
+/* ---------- V3.4: clear "+ Add a debt" buttons inside the Debts section (iOS users couldn't find the small header button).
+   One right under the Debts heading (always), and a second under the last debt tile once there are 2+ debts. ---------- */
+function addDebtBtn(id){var b=document.createElement('button');b.type='button';b.id=id;b.className='btn add-debt-wide';
+  b.innerHTML='<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg>Add a debt';
+  b.addEventListener('click',function(e){e.preventDefault();openDebt(null);});return b;}
+function addDebtSync(){var b=$("addDebtEnd");if(b)b.hidden=!((typeof data!=="undefined"&&data&&data.debts||[]).length>=2);}
+(function(){
+  var hb=$('addDebt');if(hb){var tn=[].slice.call(hb.childNodes).filter(function(n){return n.nodeType===3&&n.nodeValue.trim();})[0];if(tn)tn.nodeValue='Add debt';}
+  var h=$('h-debts'),tiles=$('debts');if(!h||!tiles||$('addDebtTop'))return;
+  var t=addDebtBtn('addDebtTop');t.classList.add('top');h.parentNode.insertBefore(t,h.nextSibling);
+  var e=addDebtBtn('addDebtEnd');tiles.parentNode.insertBefore(e,tiles.nextSibling);
+  addDebtSync();try{new MutationObserver(addDebtSync).observe(tiles,{childList:true,subtree:true});}catch(x){}
+})();
+
+/* V3.4: when All in became the faster rolled run (not a level plan), keep Today's "One thing to know" tip working: what an extra $100 a month does */
+var _insightData34=insightData;
+insightData=function(){var c=C.cur;if(!c||!c.allIn||c.never)return _insightData34.apply(this,arguments);
+  var st=data.settings.strategy,s2=simulate(C.inp,{payment:c.payment+100,strategy:st});var o=nextUp(null);
+  return {months:c.months-s2.months,saved:c.interest-s2.totalInterest,first:o?o.name.split(' (')[0]:null,apr:o?o.apr:0};};
+
 /* ===================== V3.2 Calendar + bills by month =====================
    Every amount comes from what the person entered (bills, pay) or from the payoff plan's own dated payments (windowDays).
    Nothing is guessed: a bill with no due date is left off and counted, never stacked on one day. */
@@ -6344,6 +6485,36 @@ var _writeBills31=writeBills;
 writeBills=function(list){_writeBills31.apply(this,arguments);var P=BD_PENDING;BD_PENDING=null;if(!P)return;var bm=CALD().bm;
   data.bills.forEach(function(b){var v=P[String(b.name||'').trim().toLowerCase()];if(!v)return;var k=billKey(b),m=Object.assign({},bm[k]||{});delete m.day;delete m.next;if(v.day)m.day=v.day;if(v.next)m.next=v.next;bm[k]=m;});
   v3Save();};
+/* ---------- V3.4: marking a bill or payment paid logs a win; un-marking removes exactly that win ----------
+   One win per item per due date (id = 'pd:' + short hash of the item key + '|' + due date), whether it was marked on
+   Today, the Calendar or Bills by month, however often it's toggled. Copy: "Paid <name>" / "$120 · on time" (or "late"
+   when marked after the due date). Balances are untouched here: only Today's tick and "Lower balance" change them, as before.
+   Items that only count as paid by default (card and loan payments earlier this month) don't log a win until you mark them. */
+function pdHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return h.toString(36);}
+function pdWinId(okey){var m=/^(.*)\|(\d{4}-\d\d-\d\d)$/.exec(String(okey||''));return m?'pd:'+pdHash(m[1])+'|'+m[2]:null;}
+/* a debt payment ticked on Today is recorded in data.checked; that record stands even after the debt is paid off and drops off the calendar */
+function pdChecked(okey){var m=/^d:(.+)\|(\d{4}-\d\d-\d\d)$/.exec(String(okey||''));return m?data.checked[m[2]+'|'+m[1]]||null:null;}
+function pdSync(okey){
+  var id=pdWinId(okey);if(!id)return;var it=calItemByOkey(okey),ck=pdChecked(okey),has=data.wins.some(function(w){return w.id===id;});
+  var on=!!((it&&it.paid&&(isPaid(okey)||ck))||(!it&&ck));
+  if(on&&!has){/* F1: a logged debt payment uses the amount actually paid (data.checked, same as the toast and Activity), never the re-planned amount */
+    var due=it?iso(it.date):ck.date,name=it?it.name:ck.name,amt=ck&&ck.amount>0?ck.amount:(it?it.amt:0),late=iso(today)>due;
+    data.wins.push({id:id,title:'Paid '+String(name||'').split(' (')[0],detail:money0(amt)+' · '+(late?'late':'on time'),date:iso(today),big:false});data.fired[id]=1;save();}
+  else if(!on&&has){data.wins=data.wins.filter(function(w){return w.id!==id;});delete data.fired[id];save();}
+}
+var _togglePaid34=togglePaid;
+togglePaid=function(okey){var r=_togglePaid34.apply(this,arguments);pdSync(okey);try{if(typeof renderMoney==='function'&&!$('tab-money').hidden)renderMoney();}catch(e){}return r;};
+var _toggleCheck34=toggleCheck;
+toggleCheck=function(key){var r=_toggleCheck34.apply(this,arguments);var m=/^(\d{4}-\d\d-\d\d)\|(.+)$/.exec(String(key||''));if(m){pdSync('d:'+m[2]+'|'+m[1]);}return r;};
+var _lowYes34=lowYes;
+lowYes=function(){var L=LOW;var r=_lowYes34.apply(this,arguments);if(L)pdSync(L.okey);return r;};
+/* an Undo elsewhere (toast) can clear a paid mark without going through the toggles: drop wins whose item is no longer paid */
+function pdReconcile(){var n=data.wins.length;data.wins=data.wins.filter(function(w){if(!/^pd:/.test(w.id))return true;
+  var m=/\|(\d{4}-\d\d-\d\d)$/.exec(w.id);if(!m)return false;var d=parseISO(m[1]);if(!d)return false;
+  if(Object.keys(data.checked).some(function(k){var c=data.checked[k],mm=/^(\d{4}-\d\d-\d\d)\|(.+)$/.exec(k);return c&&mm&&pdWinId('d:'+mm[2]+'|'+mm[1])===w.id;}))return true;
+  return calItems(d,addDays(d,1),{all:true}).some(function(it){return it.okey&&pdWinId(it.okey)===w.id&&it.paid;});});if(data.wins.length!==n)save();}
+var _renderMoney34=renderMoney;
+renderMoney=function(){try{pdReconcile();}catch(e){}return _renderMoney34.apply(this,arguments);};
 
 /* ===== Tabs, events, init ===== */
 function renderEmpty(t){

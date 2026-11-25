@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)" id="tcDark">
 <meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)" id="tcLight">
 <meta name="application-name" content="Payoff">
-<meta name="payoff-build" content="payoff-v3-2-3">
+<meta name="payoff-build" content="payoff-v3-2-4">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Payoff">
@@ -1025,6 +1025,9 @@ details.mb-paid>summary{min-height:44px;display:flex;align-items:center;font-wei
 #needAsk{bottom:calc(var(--tabh,64px) + 16px + env(safe-area-inset-bottom,0px))}
 @media (max-width:370px){.seg3 button{font-size:12px;letter-spacing:-.15px}}
 .pastdue{display:inline-block;padding:0 6px;border-radius:6px;background:var(--amber-bg);color:var(--text);font-weight:600}.pp-split{border-top:0!important;padding-top:0!important}.pp-split .small{color:var(--muted)}
+/* V3.3 N1: light mode rings were white-on-white (ringSvg draws #fff arc + white track for the dark tile). Give them a visible track and a green arc. */
+:root[data-theme="light"] .tmini.r32 svg circle:first-child{stroke:var(--track)}:root[data-theme="light"] .tmini.r32.r32-ok svg circle:last-child{stroke:var(--accent)}:root[data-theme="light"] .r32s.r32-ok .arc{stroke:var(--accent)}
+@media (prefers-color-scheme:light){:root[data-theme="auto"] .tmini.r32 svg circle:first-child{stroke:var(--track)}:root[data-theme="auto"] .tmini.r32.r32-ok svg circle:last-child{stroke:var(--accent)}:root[data-theme="auto"] .r32s.r32-ok .arc{stroke:var(--accent)}}
 
 </style>
 </head>

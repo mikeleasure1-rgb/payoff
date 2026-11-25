@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)" id="tcDark">
 <meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)" id="tcLight">
 <meta name="application-name" content="Payoff">
-<meta name="payoff-build" content="payoff-v3-2-5">
+<meta name="payoff-build" content="payoff-v3-5-1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Payoff">
@@ -1037,6 +1037,74 @@ details.mb-paid>summary{min-height:44px;display:flex;align-items:center;font-wei
 /* V3.4: full-width Add a debt (top of the Debts list, and under the last tile when 2+) */
 .add-debt-wide{display:flex;width:100%;min-height:48px;margin-top:12px;justify-content:center;align-items:center;gap:8px;font-size:16px;font-weight:700;box-sizing:border-box}
 .add-debt-wide.top{margin:4px 0 14px}.add-debt-wide[hidden]{display:none}
+/* V3.5 */
+.sl .row{flex-wrap:wrap;row-gap:2px}
+.sl .row label{flex:1 1 11em;min-width:0;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+.sl .row .val{white-space:nowrap;margin-left:auto}
+.sl .hint{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+.due-card{margin-top:12px}
+.due-card .lab{display:block;font-size:13px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--muted)}
+.due-card .due-one{margin:6px 0 0;font-weight:700;font-size:16px;line-height:1.35;overflow-wrap:anywhere}
+.due-card .due-h{margin:6px 0 4px;font-size:17px}
+.due-card .due-list{list-style:none;margin:0;padding:0}
+.due-card .due-list li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line);overflow-wrap:anywhere}
+.due-card .rot-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.due-card .rot-b .btn{min-height:44px;flex:1 1 9em}
+.ci-last .ci-d{display:block;font-size:13px;margin-top:2px}
+.tile .t-warn{font-weight:700}
+.v35-int{margin:8px 0 4px}
+#dueCard{grid-column:1/-1}
+.pc-fit{max-width:100%;white-space:normal;overflow-wrap:anywhere;box-sizing:border-box}
+/* V3.5 polish */
+.btn{white-space:nowrap}
+.nw{white-space:nowrap}
+.rot-card .rot-s{display:block;-webkit-line-clamp:unset;overflow:visible}
+.rot-card .rot-b,.due-in .rot-b{display:flex;flex-wrap:wrap;gap:8px}
+.rot-card .rot-b .btn{flex:1 1 auto;min-height:46px;padding-left:16px;padding-right:16px}
+.rot-card .rot-b .btn.primary{flex-grow:2}
+.due-in .due-one{margin:0;font-weight:700;font-size:16px;line-height:1.35}
+.due-in .due-td+.due-td{margin-top:4px}
+.due-in .due-h{margin:0 0 4px;font-size:17px}
+.due-in .due-list{list-style:none;margin:0;padding:0}
+.due-in .due-list li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line)}
+.due-in .rot-b{margin-top:12px}
+.acts:not(.sample-only),.isample .acts.sample-only{display:flex;flex-wrap:wrap;gap:10px}
+.acts.sample-only{flex-wrap:wrap;gap:10px}
+.acts>.btn{flex:1 1 auto;min-height:48px;padding-left:16px;padding-right:16px}
+.sheet .btns .btn{flex:1 1 auto;padding-left:16px;padding-right:16px}
+.sheet .btns.ds35{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sheet .btns.ds35 .btn{min-height:48px;height:48px;width:100%;padding:0 12px}
+.sheet .btns.ds35 .btn.wide{grid-column:1/-1}
+.sheet .btns.ds35 [hidden]{display:none!important}
+#strat button{white-space:nowrap}
+.cf li .btn.mini{flex:0 0 auto;white-space:nowrap}
+.ck-sheet .field,.ck-sheet .fld{margin-top:8px}
+.ck-sheet #ckHint{margin:0 0 4px}
+.ck-sheet .ck-log{margin-top:8px}
+.ci-last .ci-d{display:block}
+#tab-cal .chip-btn{white-space:nowrap}
+.seg button{white-space:nowrap}
+.scmp{grid-template-columns:repeat(2,minmax(0,1fr))}
+.scol .btn{width:100%;padding-left:8px;padding-right:8px;font-size:15px}
+#stratBox{display:block}
+.more-d .btns .btn{flex:1 1 auto}
+@media (max-width:440px){.bgrid{grid-template-columns:1fr}.bgrid .chip-btn{min-height:48px;white-space:nowrap}}
+#dueBox{grid-column:1/-1}
+.due-card .rot-b .btn{flex:1 1 auto;padding-left:18px;padding-right:18px}
+.due-card .rot-b .btn.primary{flex-grow:2}
+/* V3.5 Batch B */
+.cf li [data-calpay]{justify-content:center;text-align:center;padding-left:18px;padding-right:18px}
+/* Batch B: month switcher gets breathing room (labels This month / Next month / Both) */
+.seg3 button{flex:1 1 auto;padding:0 4px;font-size:13px;letter-spacing:0}
+@media (max-width:370px){.seg3 button{font-size:13px;letter-spacing:0}}
+/* Batch B: Export / Import side by side at equal width */
+#expBtn,#impBtn{flex:1 1 0;min-width:0;padding-left:14px;padding-right:14px}
+/* Batch B: calendar range split rows keep amounts on one line */
+.calsplit .v{white-space:nowrap}
+.v3plan .ph,.nw{-webkit-hyphens:none;hyphens:none}
+.seg3 button{min-width:44px}
+/* .btn.mini picked up the .mini grid (2 columns): text sat left in a too-wide button. Mini buttons are plain centered pills. */
+.btn.mini{display:inline-flex;align-items:center;justify-content:center;grid-template-columns:none}
 
 </style>
 </head>
@@ -5178,7 +5246,7 @@ function renderV3Plan(){
   var box=$('v3Plan');if(!box)return;var c=C.cur;
   if(!hasPlan()||!c){box.hidden=true;return;}box.hidden=false;
   var dated=!c.invalid&&!c.never&&C.df&&C.df.date,pf=!c.invalid&&!c.never?cmpFit(c):null,ss=stratSavings(),st=data.settings.strategy;
-  var h='<div class="lab">'+(data.settings.scenario==='auto'?'Recommended pace: everything left for debt':esc(c.label))+'</div>';
+  var h='<div class="lab">'+(data.settings.scenario==='auto'?'Recommended pace: everything left <span class="nw">for debt</span>':esc(c.label))+'</div>';
   h+='<h2 class="ph">'+(dated?'Debt-free by '+esc(dMY(C.df.date)):(c.never?'Not paid off yet at this pace':'Your plan'))+'</h2>';
   h+='<p class="psub">'+(c.payment?money0(Math.ceil(c.payment))+' a month to cards and loans':'')+(c.never?'':' · about '+money0(c.interest)+' interest'+(estItems().length?' (estimate)':''))+'</p>';
   if(pf&&pf.ok===false)h+='<p class="warnbox" role="note">This pace needs '+money0(pf.gap)+' a month more than you have now.</p>';
@@ -6142,7 +6210,7 @@ function renderCalRange(rS,rE){
   h+='<p class="calrg num"><b>'+esc(dS(rS))+' – '+esc(dS(addDays(rE,-1)))+'</b> · '+plural(diffDays(rS,rE),'day')+'</p>';
   if(hidN)h+='<div class="calfb" role="status"><span>Filters hiding '+plural(hidN,'item')+'</span><button class="btn mini" type="button" data-calfr>Show all</button></div>';
   h+='<div class="caltot"><div><span class="lab">Still due</span><b class="num" id="calLeft">'+money0(t.left)+'</b></div><div><span class="lab">Already paid</span><b class="num" id="calPaid">'+money0(t.paid)+'</b></div><div><span class="lab">Total</span><b class="num" id="calDue">'+money0(t.due)+'</b></div></div>';
-  h+='<ul class="cf calsplit"><li><span>Bills</span><span class="v num" id="calBills">'+money0(t.bills)+(t.billsPaid?' <small>('+money0(t.billsPaid)+' paid)</small>':'')+'</span></li><li><span>Card and loan payments (from your plan)</span><span class="v num" id="calDebts">'+money0(t.debts)+(t.debtsPaid?' <small>('+money0(t.debtsPaid)+' paid)</small>':'')+'</span></li><li><span>Coming in</span><span class="v num" id="calInc">'+money0(t.income)+'</span></li></ul>';
+  h+='<ul class="cf calsplit"><li><span>Bills</span><span class="v num" id="calBills">'+money0(t.bills)+(t.billsPaid?' <small>('+money0(t.billsPaid)+' paid)</small>':'')+'</span></li><li><span>Card and loan payments</span><span class="v num" id="calDebts">'+money0(t.debts)+(t.debtsPaid?' <small>('+money0(t.debtsPaid)+' paid)</small>':'')+'</span></li><li><span>Coming in</span><span class="v num" id="calInc">'+money0(t.income)+'</span></li></ul>';
   if(t.income>0)h+='<p class="small">After everything due, '+(t.income-t.due>=0?'<b>'+money0(t.income-t.due)+'</b> is left from what comes in.':'what’s due is <b>'+money0(t.due-t.income)+' more</b> than what comes in in these days.')+'</p>';
   var by=Object.keys(t.by).map(function(k){return t.by[k];}).sort(function(a,b){return b.amt-a.amt;});
   h+='<details class="calby"'+(by.length<=6?' open':'')+'><summary>By item ('+by.length+')</summary><ul class="cf">'+by.map(function(b){return '<li><span>'+esc(b.name)+(b.n>1?' ×'+b.n:'')+'<small class="muted"> · '+esc(CAL_GLAB[b.grp]||'')+(b.est?' · estimate':'')+'</small></span><span class="v num">'+money0(b.amt)+(b.paid>=b.amt-0.005&&b.amt>0?' <small>paid</small>':(b.paid>0?' <small>'+money0(b.paid)+' paid</small>':''))+'</span></li>';}).join('')+'</ul></details>';
@@ -6193,7 +6261,7 @@ function renderCalSetup(){
   h+='<ul class="calbl">'+data.bills.map(function(b,i){var w=billWhen(b);return '<li><button type="button" class="qrow" data-calbill="'+i+'"><span><b>'+esc(b.name)+'</b><span class="small'+(w?' muted':' needday')+'">'+(w?esc(fm(b.entered!=null?b.entered:b.amount)+' · '+w+' · '+CAL_GLAB[billGrp(b)]+(billMeta(b).vary?' · varies':'')):'Needs a due day')+'</span></span>'+icon('chev')+'</button></li>';}).join('')+'</ul>';
   h+='<div class="acts" style="grid-template-columns:1fr"><button class="btn" type="button" data-edit="bills">Add or change bills</button></div>';
   h+='<h3 class="mh" style="margin-top:18px"><span>Money coming in</span></h3><ul class="cf">';
-  h+='<li><span>Paycheck'+(inc.youCheck>0?' · take-home per check '+money0(inc.youCheck):'')+'<small class="muted"> · '+esc(FREQ_LABEL[inc.freq]||'')+(data.settings.payEst?' · payday is a guess':'')+'</small></span><button class="btn mini" type="button" data-calpay>Payday</button></li>';
+  h+='<li><span>Paycheck'+(inc.youCheck>0?' · <span class="nw">take-home</span> per check <span class="nw">'+money0(inc.youCheck)+'</span>':'')+'<small class="muted"> · '+esc(FREQ_LABEL[inc.freq]||'')+(data.settings.payEst?' · payday is a guess':'')+'</small></span><button class="btn mini" type="button" data-calpay>Payday</button></li>';
   if(inc.extraOn&&inc.rent>0)h+='<li><span>'+esc(inc.extraName||'Rent received')+' · '+money0(inc.rent)+'/mo<small class="'+(D.rentDay?'muted':'needday')+'"> · '+(D.rentDay?'the '+ord(D.rentDay):'Needs a day')+'</small></span><button class="btn mini" type="button" data-calrent>Day</button></li>';
   if(inc.partnerOn&&inc.partnerCheck>0)h+='<li><span>Partner’s pay · '+money0(inc.partnerCheck)+'<small class="muted"> · '+(D.f.partner?'counted':'not counted (turn on in Filters)')+(D.pAnchor?' · next '+esc(dS(parseISO(D.pAnchor))):' · needs next payday')+'</small></span><button class="btn mini" type="button" data-calpanchor>Payday</button></li>';
   h+='</ul>';
@@ -6288,11 +6356,11 @@ var MB={mode:'this',off:0};
 function renderBillMonths(){
   var box=$('billMonths');if(!box)return;
   var base=new Date(today.getFullYear(),today.getMonth()+MB.off+(MB.mode==='next'?1:0),1),months=MB.mode==='both'?[base,new Date(base.getFullYear(),base.getMonth()+1,1)]:[base];
-  var h='<h2 id="mbH">Bills by month</h2><div class="mb-sw"><button class="icbtn" type="button" data-mbs="-1" aria-label="Earlier month"'+(MB.off<=0&&MB.mode!=='next'?' disabled':'')+'>'+icon('chev')+'</button><div class="chips sm" role="group" aria-labelledby="mbH"><button type="button" class="chip-btn" data-mbm="this" aria-pressed="'+(MB.mode==='this')+'">This month</button><button type="button" class="chip-btn" data-mbm="next" aria-pressed="'+(MB.mode==='next')+'">Next month</button><button type="button" class="chip-btn" data-mbm="both" aria-pressed="'+(MB.mode==='both')+'">This + next</button></div><button class="icbtn" type="button" data-mbs="1" aria-label="Later month">'+icon('chev')+'</button></div>';
+  var h='<h2 id="mbH">Bills by month</h2><div class="mb-sw"><button class="icbtn" type="button" data-mbs="-1" aria-label="Earlier month"'+(MB.off<=0&&MB.mode!=='next'?' disabled':'')+'>'+icon('chev')+'</button><div class="chips sm" role="group" aria-labelledby="mbH"><button type="button" class="chip-btn" data-mbm="this" aria-pressed="'+(MB.mode==='this')+'">This month</button><button type="button" class="chip-btn" data-mbm="next" aria-pressed="'+(MB.mode==='next')+'">Next month</button><button type="button" class="chip-btn" data-mbm="both" aria-pressed="'+(MB.mode==='both')+'" aria-label="This month and next">Both</button></div><button class="icbtn" type="button" data-mbs="1" aria-label="Later month">'+icon('chev')+'</button></div>';
   var allLeft=0;
   months.forEach(function(S){
     var mb=monthBills(S.getFullYear(),S.getMonth()),isCur=S.getFullYear()===today.getFullYear()&&S.getMonth()===today.getMonth();allLeft+=mb.left;
-    h+='<section class="mb-sec" aria-labelledby="mb-'+ymOf(S)+'"><h3 class="mh" id="mb-'+ymOf(S)+'"><span>'+esc(dMY(S))+'</span></h3><p class="mb-tot num" data-mbtot="'+ymOf(S)+'">Left this month <b>'+money0(mb.left)+'</b> · Paid '+money0(mb.paid)+' · Total '+money0(mb.total)+'</p><ul class="mb-list">';
+    h+='<section class="mb-sec" aria-labelledby="mb-'+ymOf(S)+'"><h3 class="mh" id="mb-'+ymOf(S)+'"><span>'+esc(dMY(S))+'</span></h3><p class="mb-tot num" data-mbtot="'+ymOf(S)+'"><span class="nw">Left this month <b>'+money0(mb.left)+'</b></span> · <span class="nw">Paid '+money0(mb.paid)+'</span> · <span class="nw">Total '+money0(mb.total)+'</span></p><ul class="mb-list">';
     h+=mb.items.map(function(it){return mbRow(it);}).join('');
     if(isCur){ /* early payments: a paid bill whose next date is within a week shows that date with its own box */
       var keys={};mb.items.forEach(function(it){keys[it.key]=1;});
@@ -6401,7 +6469,7 @@ function renderBillMonths(){
   var box=$('billMonths');if(!box)return;
   var base=new Date(today.getFullYear(),today.getMonth()+MB.off+(MB.mode==='next'?1:0),1),months=MB.mode==='both'?[base,new Date(base.getFullYear(),base.getMonth()+1,1)]:[base];
   var h='<h2 id="mbH">Bills by month</h2><p class="small muted" id="mbSub">Bills, fixed payments, and the card and loan payments in your plan.</p><div class="mb-sw"><button class="icbtn" type="button" data-mbs="-1" aria-label="Earlier month"'+(MB.off<=0&&MB.mode!=='next'?' disabled':'')+'>'+icon('chev')+'</button>'+
-    '<div class="seg3" role="group" aria-labelledby="mbH"><button type="button" data-mbm="this" aria-pressed="'+(MB.mode==='this')+'">This month</button><button type="button" data-mbm="next" aria-pressed="'+(MB.mode==='next')+'">Next month</button><button type="button" data-mbm="both" aria-pressed="'+(MB.mode==='both')+'">This + next</button></div>'+
+    '<div class="seg3" role="group" aria-labelledby="mbH"><button type="button" data-mbm="this" aria-pressed="'+(MB.mode==='this')+'">This month</button><button type="button" data-mbm="next" aria-pressed="'+(MB.mode==='next')+'">Next month</button><button type="button" data-mbm="both" aria-pressed="'+(MB.mode==='both')+'" aria-label="This month and next">Both</button></div>'+
     '<button class="icbtn" type="button" data-mbs="1" aria-label="Later month">'+icon('chev')+'</button></div>';
   var allLeft=0;
   months.forEach(function(S){
@@ -6412,7 +6480,7 @@ function renderBillMonths(){
     var un=rows.filter(function(r){return !r.it.paid;}),pd=rows.filter(function(r){return r.it.paid;});
     un.sort(function(a,b){return a.it.date-b.it.date;});pd.sort(function(a,b){return a.it.date-b.it.date;});
     var pdSum=pd.reduce(function(t,r){return t+(r.early?0:r.it.amt);},0);
-    h+='<section class="mb-sec" aria-labelledby="mb-'+ym+'"><h3 class="mh" id="mb-'+ym+'"><span>'+esc(dMY(S))+'</span></h3><p class="mb-tot num" data-mbtot="'+ym+'">Left this month <b>'+money0(mb.left)+'</b> · Paid '+money0(mb.paid)+' · Total '+money0(mb.total)+'</p><ul class="mb-list">';
+    h+='<section class="mb-sec" aria-labelledby="mb-'+ym+'"><h3 class="mh" id="mb-'+ym+'"><span>'+esc(dMY(S))+'</span></h3><p class="mb-tot num" data-mbtot="'+ym+'"><span class="nw">Left this month <b>'+money0(mb.left)+'</b></span> · <span class="nw">Paid '+money0(mb.paid)+'</span> · <span class="nw">Total '+money0(mb.total)+'</span></p><ul class="mb-list">';
     h+=un.map(function(r){return mbRow(r.it,r.early);}).join('');
     if(!rows.length)h+='<li class="muted small">No dated bills this month.</li>';
     else if(!un.length)h+='<li class="muted small mb-done">Everything this month is paid.</li>';
@@ -6515,6 +6583,428 @@ function pdReconcile(){var n=data.wins.length;data.wins=data.wins.filter(functio
   return calItems(d,addDays(d,1),{all:true}).some(function(it){return it.okey&&pdWinId(it.okey)===w.id&&it.paid;});});if(data.wins.length!==n)save();}
 var _renderMoney34=renderMoney;
 renderMoney=function(){try{pdReconcile();}catch(e){}return _renderMoney34.apply(this,arguments);};
+
+/* ===================== V3.5 (overrides only) ===================== */
+var V35_DUE_MSG='Due day has to be a day of the month, from 1 to 31.',V35_CLOSE_MSG='Closing day has to be a day of the month, from 1 to 31.',V35_DATE_MSG='That date isn’t valid.';
+function m35(n){n=Number(n)||0;return (Math.abs(n)<1&&Math.abs(n)>=0.005)?money2(n):money0(n);}
+function amt35(n){n=Math.round((Number(n)||0)*100)/100;return Math.abs(n-Math.round(n))<0.005?money0(n):money2(n);}
+/* --- data: due-reminder state survives normalize / backup / restore --- */
+var _normalize35=normalize;
+normalize=function(raw){
+  var out=_normalize35(raw),src=raw&&typeof raw==='object'?raw:{},du=src.due&&typeof src.due==='object'?src.due:{},res={seen:{},got:{}},lim=iso(addDays(today,-60)),n=0;
+  ['seen','got'].forEach(function(k){var o=du[k]&&typeof du[k]==='object'?du[k]:{};Object.keys(o).forEach(function(key){if(n>400||typeof key!=='string'||key.length>80)return;var m=/\|(\d{4}-\d\d-\d\d)$/.exec(key);if(!m||m[1]<lim)return;var v=o[key];if(k==='seen'){if(typeof v==='string'&&/^\d{4}-\d\d-\d\d$/.test(v)){res.seen[key]=v;n++;}}else if(v){res.got[key]=1;n++;}});});
+  out.due=res;
+  try{var rc=Array.isArray(src.checkins)?src.checkins:[];out.checkins.forEach(function(c){var r=rc.filter(function(x){return x&&x.id===c.id;})[0];if(r&&Array.isArray(r.diffs))c.diffs=r.diffs.filter(function(s){return typeof s==='string';}).slice(0,12).map(function(s){return s.slice(0,120);});});}catch(e){}
+  return out;
+};
+try{if(!data.due)data.due={seen:{},got:{}};}catch(e){}
+function due35(){if(!data.due||typeof data.due!=='object')data.due={seen:{},got:{}};if(!data.due.seen)data.due.seen={};if(!data.due.got)data.due.got={};return data.due;}
+
+/* --- 1. Backup reminder + Home Screen nudge --- */
+function bkText(){var b=data.settings.backupAt,d=b?parseISO(b):null;return d?'Last backup: '+dShortY(d)+'.':'You haven’t saved a backup file yet.';}
+var V35_NUDGE='Add Payoff to your Home Screen so Safari is less likely to clear your numbers. On iPhone: tap Share, then Add to Home Screen.',V35_STAND='This Home Screen app keeps its own copy. Back up to move it or protect it.';
+/* --- 3/4. rotator copy --- */
+var _rotPick35=rotPick;
+rotPick=function(){
+  var p=_rotPick35();if(!p)return p;
+  if(p.id==='inst'){var s5=data.settings,bk5=s5.backupAt,bd5=bk5?daysSinceISO(bk5):null;if(!data.sample&&(!bk5||bd5>=30)&&!snoozed('bk'))p={id:'bk',days:30};}
+  if(p.id==='bk'){p.lab='Backup';p.t='Save a backup file';p.sub=bkText()+' '+(isStandalone()?V35_STAND:V35_NUDGE);p.act='Save a backup file';p.days=30;}
+  else if(p.id==='ci'){p.lab='On track?';p.t='Are you on track?';p.sub='Type the balances on your latest statements. We’ll compare them to the plan and show a new debt-free date.';p.act='Update balances';p.pact='ci';p.alt={act:'ci0',label:'Nothing changed'};p.days=7;}
+  else if(p.id==='cu'){if(data.sample)return null;p.lab='Stay afloat first';p.t='Add a starter cushion?';p.sub='Set aside $500 or $1,000 each month for surprises. It’s off until you turn it on, and it doesn’t change your plan until then.';p.act='Set it up';p.days=90;}
+  return p;
+};
+function renderRot(){
+  var el=$('rotCard');if(!el)return;var p=rotPick();var rc=$('ringCard');if(rc)rc.classList.toggle('compact',!!p);
+  try{renderDue35();}catch(e){}
+  if(!p){el.hidden=true;el.innerHTML='';el.removeAttribute('data-rot');return;}
+  el.hidden=false;el.setAttribute('data-rot',p.id);
+  var pa=p.pact||(p.id==='ci'?'ci0':p.id);
+  el.innerHTML='<div class="rot-t"><span class="lab">'+esc(p.lab)+'</span>'+esc(p.t)+'</div>'+(p.sub?'<div class="rot-s">'+esc(p.sub)+'</div>':'')+'<div class="rot-b">'+(p.act?'<button type="button" class="btn primary" data-rotact="'+pa+'">'+esc(p.act)+'</button>':'')+(p.alt?'<button type="button" class="btn" data-rotact="'+p.alt.act+'">'+esc(p.alt.label)+'</button>':'')+'<button type="button" class="btn" '+(p.id==='inst'?'data-instno="1"':'data-rotno="'+p.id+'" data-days="'+p.days+'"')+'>'+esc(p.okLabel||'Not now')+'</button></div>';
+}
+
+/* --- 2. Due-date reminders (in-app, day before) --- */
+function dueItems35(){
+  if(!data.settings.onboarded)return {tm:[],td:[]};
+  var t0=sod(today),t1=addDays(t0,1),t2=addDays(t0,2),D=due35(),tm=[],td=[],seenK={};
+  var its=[];try{its=calItems(t0,t2,{all:true});}catch(e){its=[];}
+  its.forEach(function(it){
+    if(!(it.kind==='bill'||it.kind==='fixed'||it.kind==='debt')||it.past||it.paid||!it.okey||seenK[it.okey])return;
+    if(!(it.amt>0.004))return;seenK[it.okey]=1;
+    var dt=sod(it.date);if(D.got[it.okey])return;
+    if(+dt===+t1)tm.push(it);
+    else if(+dt===+t0){var s=D.seen[it.okey];if(!s||s>=iso(t0))td.push(it);}
+  });
+  return {tm:tm,td:td};
+}
+function renderDue35(){
+  var rc=$('rotCard');if(!rc)return;var el=$('dueCard');
+  if(!el){el=document.createElement('div');el.id='dueCard';el.className='card due-card';el.setAttribute('role','region');el.setAttribute('aria-labelledby','dueLab');rc.parentNode.insertBefore(el,rc);}
+  var r=dueItems35(),all=r.tm.concat(r.td);
+  if(!all.length){el.hidden=true;el.innerHTML='';return;}
+  var D=due35(),ch=false,ti=iso(today);all.forEach(function(it){if(!D.seen[it.okey]){D.seen[it.okey]=ti;ch=true;}});if(ch)try{save();}catch(e){}
+  function nm(it){return esc(String(it.name||'').split(' (')[0]);}
+  var h='';
+  if(r.tm.length){
+    h+='<span class="lab" id="dueLab">Due tomorrow</span>';
+    if(r.tm.length===1)h+='<p class="due-one">'+nm(r.tm[0])+' is due tomorrow · <span class="num">'+amt35(r.tm[0].amt)+'</span></p>';
+    else h+='<h3 class="due-h">Due tomorrow</h3><ul class="due-list">'+r.tm.map(function(it){return '<li><span>'+nm(it)+'</span><b class="num">'+amt35(it.amt)+'</b></li>';}).join('')+'</ul>';
+  }
+  if(r.td.length){
+    if(!r.tm.length)h+='<span class="lab" id="dueLab">Due today</span>';
+    h+=r.td.map(function(it){return '<p class="due-one due-td">Due today: '+nm(it)+' · <span class="num">'+amt35(it.amt)+'</span></p>';}).join('');
+  }
+  var first=(r.tm[0]||r.td[0]).date;
+  h+='<div class="rot-b"><button type="button" class="btn primary" id="dueCal" data-date="'+iso(first)+'">Show on Calendar</button><button type="button" class="btn" id="dueGot">Got it</button></div>';
+  el.innerHTML=h;el.hidden=false;
+  $('dueGot').onclick=function(){var D2=due35();all.forEach(function(it){D2.got[it.okey]=1;});save();renderDue35();try{var g=$('rotCard').querySelector('button');if(g)g.focus();}catch(e){}};
+  $('dueCal').onclick=function(){var d=parseISO(this.dataset.date);if(!d)return;showTab('cal');CAL.y=d.getFullYear();CAL.m=d.getMonth();CAL.day=sod(d);try{renderCal();}catch(e){}};
+}
+
+/* --- 3. Monthly "On track?" check-in --- */
+function openCheckin(){
+  var ds=checkinDebts();if(!ds.length){toast('Add a debt first');return;}
+  var body='<p class="small muted" id="ckHint">Type the balance from your latest statement. Leave it as it is if it already matches.</p>'+ds.map(function(d,i){return fld('ck'+i,esc(d.name.split(' (')[0])+' balance ($)',(Math.round(d.balance*100)/100).toFixed(2),{});}).join('')+
+    '<p class="small muted">Made a payment you haven’t logged? <button type="button" class="lnk" id="ckLog">Log a payment</button></p>';
+  openSheet('On track?',body,function(){
+    var vals=[],ok=true;
+    ds.forEach(function(d,i){var p=parseMoney($('ck'+i).value,{required:true,max:1e8});if(!p.ok){setErr('ck'+i,p.err);ok=false;}else{setErr('ck'+i,'');vals.push(p.val);}});
+    if(!ok){var bad=document.querySelector('#sheet [aria-invalid="true"]');if(bad)bad.focus();return false;}
+    var undo=undoSnap();$('sheet').close();doCheckin(vals,undo);return false;
+  },{ok:'Nothing changed'});
+  var f=$('sheetForm');if(f)f.addEventListener('input',function(){
+    var chg=ds.some(function(d,i){var el=$('ck'+i);if(!el)return false;var p=parseMoney(el.value,{required:true,max:1e8});return !p.ok||Math.abs(p.val-d.balance)>0.004;});
+    $('sheetOk').textContent=chg?'Update my plan':'Nothing changed';
+  });
+  $('ckLog').onclick=function(){$('sheet').close();openLog();};
+}
+function onTrack35(prevDf,nowDf){
+  if(!nowDf)return {k:'none',text:'At these payments the plan can’t finish yet. A little more each month gets it moving.'};
+  var lab=dMYs(parseISO(nowDf)),k='on';
+  if(prevDf){var d=diffDays(parseISO(nowDf),parseISO(prevDf));if(Math.abs(d)>=15)k=d>0?'ahead':'behind';}
+  return {k:k,text:(k==='ahead'?'You’re ahead: debt-free ':(k==='behind'?'You’re behind: debt-free ':'You’re on track: debt-free '))+lab+'.'};
+}
+function doCheckin(vals,undo){
+  var ds=checkinDebts();undo=undo||undoSnap();compute();
+  var prev=lastCheckinRec(),prevDf=prev&&prev.df?prev.df:(data.settings.baseDf||''),n=0,diffs=[];
+  if(vals)ds.forEach(function(d,i){var old=d.balance;if(Math.abs(vals[i]-old)>0.004)diffs.push(d.name.split(' (')[0]+': plan '+money2(old)+' · statement '+money2(vals[i]));if(setBalance(d,vals[i],'Monthly check-in'))n++;});
+  compute();
+  var nowDf=!C.cur.never&&C.df&&C.df.date?iso(C.df.date):'',v=onTrack35(prevDf,nowDf);
+  data.checkins.push({id:'c'+Date.now().toString(36),date:iso(today),note:v.text.slice(0,120),df:nowDf,months:C.cur&&!C.cur.never?C.cur.months:null,total:C.total,diffs:diffs.slice(0,12)});
+  delete data.settings.snooze.ci;var lp=lastPayday();if(lp)data.settings.ciPay=iso(lp);
+  var w=newWins();commit(v.text+(diffs.length?' '+diffs.join('. ')+'.':''),{undo:undo});celebrateQueue(w);
+}
+function lastCheckinLine(){
+  var c=lastCheckinRec();if(!c||!c.note)return '';var n=daysSinceISO(c.date);if(n===null||n>14)return '';
+  return '<p class="ci-last" id="ciLast"><b>Check-in '+esc(dShort(parseISO(c.date)))+'</b> · '+esc(c.note)+(c.diffs&&c.diffs.length?c.diffs.map(function(s){return '<span class="ci-d">'+esc(s)+'</span>';}).join(''):'')+'</p>';
+}
+
+/* --- 4. Starter cushion: None / $500 / $1,000 chips (default stays 0) --- */
+try{STEP.cushion.b=function(){return mf('cu','Kept aside each month',nf(data.settings.cushion),{ph:'e.g. 500',suf:'/month',hint:'Leave it blank for none. You can change it any time from Money.'})+chipsHtml('cuq',[['0','None'],['500','$500'],['1000','$1,000'],['100','$100'],['250','$250']],'',{label:'Quick amounts',cls:'sm'});};}catch(e){}
+
+/* --- 5. Plain-language warnings --- */
+var _parseMoney35=parseMoney;
+parseMoney=function(s,o){
+  var r=_parseMoney35(s,o);
+  if(o&&o.unit==='day'&&r&&!r.ok&&String(s==null?'':s).trim()!=='')r.err=V35_DUE_MSG;
+  return r;
+};
+var _dfRead35=dfRead;
+dfRead=function(){
+  var r=_dfRead35.apply(this,arguments);
+  try{var p=DF.p,c=$(p+'Close'),ce=$(p+'Close-e');if(c&&ce&&ce.textContent===V35_DUE_MSG)ce.textContent=V35_CLOSE_MSG;}catch(e){}
+  return r;
+};
+function gentleNever(){
+  var g=coverGap();
+  if(!g.length)return 'Right now each month’s interest is a bit more than this payment, so the balance can’t go down yet. A little more each month gets it moving.';
+  var x=g[0],o=g.length>1?' The same goes for '+(g.length-1===1?'one other debt':(g.length-1)+' other debts')+'.':'';
+  return esc(x.d.name||'This debt')+': the '+m35(x.d.min)+' minimum is less than the '+m35(x.intr)+' of interest it adds each month, so the balance can’t go down yet. Paying about '+money0(x.need)+' a month would start to bring it down.'+o;
+}
+function intWarn35(d){
+  var g=coverGap().filter(function(x){return x.d.id===d.id;})[0];if(!g)return '';
+  var mn=g.d.min,it=g.intr,same=money0(mn)===money0(it);
+  var f=function(v){return same?money2(v):m35(v);};
+  return 'The '+f(mn)+' minimum doesn’t cover the about '+f(it)+' of interest this adds each month, so paying only the minimum won’t bring the balance down. Paying about '+money0(g.need)+' a month would start to bring it down.';
+}
+
+/* --- 6. Sample tour on Accounts → Privacy and files --- */
+function trySample35(){
+  var bc=$('backupCard');if(!bc)return;var w=$('trySampleAcc');
+  var show=sampleAllowed()&&!data.sample;
+  if(!show){if(w)w.remove();return;}
+  if(!w){w=document.createElement('div');w.className='acts';w.id='trySampleAcc';w.style.marginTop='12px';w.innerHTML='<button class="btn" type="button" id="trySample3">Try with sample data</button>';var ref=$('deleteBtn');ref=ref?ref.closest('.acts'):null;if(ref)bc.insertBefore(w,ref);else bc.appendChild(w);
+    $('trySample3').onclick=function(){loadSample();};}
+}
+
+/* --- 8b. Under $1 left is never "done" --- */
+function pctPaid(d){if(!(d.start>0&&d.balance!==null))return 0;var p=Math.max(0,Math.min(100,Math.round((1-d.balance/d.start)*100)));if(d.balance>=0.005&&p>99)p=99;return p;}
+var _ringInfo35=ringInfo;
+ringInfo=function(d){
+  var r=_ringInfo35(d);
+  if(r&&d&&d.balance!==null&&d.balance>=0.005&&r.small!=='used'&&r.pct>99){var t=v3Type(d);r.pct=99;r.big='99%';if(isLoanT(t)){var o=v32Orig(d);r.say='99% of the '+money0(o||0)+' loan paid off';}else r={pct:99,cls:'ok',big:'99%',small:'paid',say:'99% paid since you added it'};}
+  return r;
+};
+var _countTo35=countTo;
+countTo=function(el,k,v,f){if(f===money0&&v>=0.005&&v<1)f=money2;return _countTo35(el,k,v,f);};
+var _renderRing35=renderRing;
+renderRing=function(){
+  var pg=C.progress,cap=!C.debtFree&&C.total>=0.005;if(cap&&C.progress>0.99)C.progress=0.99;
+  try{_renderRing35.apply(this,arguments);}finally{C.progress=pg;}
+  if(cap&&C.total<1){var hl=$('heroLeft');if(hl&&/^\$0$/.test(hl.textContent))hl.textContent=money2(C.total);var rs=document.querySelector('#ringCard .ring-sub b');if(rs)rs.textContent=money2(C.start-C.total);}
+};
+var _renderDebts35=renderDebts;
+renderDebts=function(){
+  _renderDebts35.apply(this,arguments);
+  try{document.querySelectorAll('#debts [data-open]').forEach(function(t){var d=debtById(t.dataset.open);if(!d||t.querySelector('.t-warn'))return;var w=intWarn35(d);if(!w)return;var x=document.createElement('div');x.className='t-sub t-warn';x.textContent='Minimum doesn’t cover the interest';var ref=t.querySelector('.t-row');if(ref)t.insertBefore(x,ref);else t.appendChild(x);});}catch(e){}
+};
+var _openDebtSheet35=openDebtSheet;
+openDebtSheet=function(id){
+  _openDebtSheet35.apply(this,arguments);
+  try{var d=debtById(id);if(!d)return;var w=intWarn35(d);if(!w)return;var sh=document.querySelector('#sheet .hd');if(!sh||$('v35Int'))return;var p=document.createElement('p');p.className='note warn v35-int';p.id='v35Int';p.setAttribute('role','note');p.textContent=w;sh.parentNode.insertBefore(p,sh.nextSibling);}catch(e){}
+};
+var _renderMoney35=renderMoney;
+renderMoney=function(){_renderMoney35.apply(this,arguments);try{trySample35();}catch(e){}var b=$('bkNote');if(b)b.textContent=bkText();};
+var _renderAll35=renderAll;
+renderAll=function(){var r=_renderAll35.apply(this,arguments);try{trySample35();}catch(e){}return r;};
+var _setErr35=setErr;
+setErr=function(id,msg){var inp=$(id);if(msg&&inp&&inp.type==='date'&&inp.validity&&inp.validity.badInput)msg=V35_DATE_MSG;return _setErr35(id,msg);};
+/* ===================== end V3.5 ===================== */
+/* ===================== V3.5 polish (Mike + Ops quality notes) ===================== */
+/* version line from the build */
+function ver35(){var m=document.querySelector('meta[name="payoff-build"]'),b=m?m.getAttribute('content')||'':'',x=/payoff-v(\d+)-(\d+)/.exec(b);return x?'Payoff V'+x[1]+'.'+x[2]:'Payoff';}
+function verLine35(){var v=$('verLine');if(v)v.textContent=ver35();}
+try{verLine35();}catch(e){}
+/* short single-line labels */
+function needLabel35(miss){var m=miss.map(function(s){return s==='statement closing day'?'closing day':s;});var t=m.length===1?'Add '+m[0]:(m.length===2?'Add '+m[0]+' & '+m[1]:'Add missing info');return t.length>32?'Add missing info':t;}
+var LBL35={'Add money received (overtime, side income, one-time)':'Add money received','Real minimums: they shrink as you pay':'Real minimums','Same payment every month':'Same each month','Update balance from my statement':'Update from statement','Undo the last one':'Undo last payment','Until next payday':'Until payday','Highest rate first':'Highest rate','Lowest balance first':'Lowest balance','Add payday reminder (.ics)':'Add payday reminder','Download calendar (.ics)':'Download calendar','Export my data':'Export data'};
+function polish35(root){
+  root=root||document;
+  root.querySelectorAll('button').forEach(function(b){
+    if(b.children.length>1)return;var tn=null;b.childNodes.forEach(function(n){if(n.nodeType===3&&n.nodeValue.trim())tn=n;});if(!tn)return;
+    var k=tn.nodeValue.trim();if(LBL35[k]){if(!b.getAttribute('aria-label'))b.setAttribute('aria-label',k);tn.nodeValue=LBL35[k];}
+  });
+  root.querySelectorAll('button[data-needinfo]').forEach(function(b){var d=debtById(b.dataset.needinfo);if(!d)return;var mi=missingInfo(d);if(mi.length)b.textContent=needLabel35(mi);});
+  ['slOtH','lbR'].forEach(function(id){var e=$(id);if(e&&/\b(in|from) Money\b/.test(e.textContent))e.textContent=e.textContent.replace(/\b(in|from) Money\b/g,'$1 Accounts');});
+  root.querySelectorAll('.cmp-need small,.hint,.small').forEach(function(e){if(e.children.length===0&&/\b(in|from) Money\b/.test(e.textContent))e.textContent=e.textContent.replace(/\b(in|from) Money\b/g,'$1 Accounts');});
+  verLine35();
+}
+var _renderAll35p=renderAll;
+renderAll=function(){var r=_renderAll35p.apply(this,arguments);try{polish35();}catch(e){}return r;};
+var _renderCal35p=renderCal;
+renderCal=function(){var r=_renderCal35p.apply(this,arguments);try{polish35($('tab-cal')||document);}catch(e){}return r;};
+var _renderPlan35p=typeof renderPlan==='function'?renderPlan:null;
+if(_renderPlan35p)renderPlan=function(){var r=_renderPlan35p.apply(this,arguments);try{polish35();}catch(e){}return r;};
+try{STEP.cushion.b=function(){return mf('cu','Kept aside each month',nf(data.settings.cushion),{ph:'e.g. 500',suf:'/month',hint:'Leave it blank for none. You can change it any time from Accounts.'})+chipsHtml('cuq',[['0','None'],['500','$500'],['1000','$1,000'],['100','$100'],['250','$250']],'',{label:'Quick amounts',cls:'sm'});};}catch(e){}
+/* install card: iPhone/iPad (any browser) gets Share wording; Android keeps the menu wording */
+function instKind(){
+  if(isStandalone()||instDismissed())return null;
+  var ua=navigator.userAgent||'',ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  if(ios)return snoozed('a2hs')?null:'ios';
+  if(isAndroid())return DEFERRED_INSTALL?'prompt':(/SamsungBrowser/.test(ua)?'sam':'menu');
+  return null;
+}
+var _installCard35=installCard;
+installCard=function(){var c=_installCard35();if(!c)return c;var k=instKind();
+  if(k==='ios'){c.lab='';c.t='Add Payoff to your Home Screen';c.sub='Tap Share, then Add to Home Screen. Safari is then less likely to clear your numbers. Back up now and then too.';}
+  else if(k==='menu'){c.lab='';c.t='Install Payoff on this phone';c.sub='Open the browser menu (the three dots at the top right), then tap Install app. Back up now and then too.';}
+  else if(k==='prompt'||k==='sam'){c.lab='';c.sub=c.sub.replace(/ Your numbers live only on this phone, so also tap Back up my data on the Accounts tab for a backup file\./,' Back up now and then too.');}
+  return c;};
+/* one promo card at a time: Due beats everything, then the usual rotation */
+var _rotPick35p=rotPick;
+rotPick=function(){
+  var p=_rotPick35p();if(!p)return p;
+  if(p.id==='ci'){p.lab='';p.sub='Type your latest statement balances to see your new debt-free date.';}
+  if(p.id==='bk')p.lab='';
+  return p;
+};
+/* Batch A: Due stays its own banner above the rotator (one-card rotation is Batch B) */
+function renderDue35(){
+  var rc=$('rotCard');if(!rc)return;var el=$('dueBox');
+  if(!el){el=document.createElement('div');el.id='dueBox';el.className='card due-card';rc.parentNode.insertBefore(el,rc);}
+  var r=dueItems35(),all=r.tm.concat(r.td);
+  if(!all.length){el.hidden=true;el.innerHTML='';return;}
+  var D=due35(),ch=false,ti=iso(today);all.forEach(function(it){if(!D.seen[it.okey]){D.seen[it.okey]=ti;ch=true;}});if(ch)try{save();}catch(e){}
+  el.innerHTML=dueHtml35(r);el.hidden=false;
+  $('dueGot').onclick=function(){var D2=due35();all.forEach(function(it){D2.got[it.okey]=1;});save();renderDue35();try{var g=$('rotCard').querySelector('button');if(g)g.focus();}catch(e){}};
+  $('dueCal').onclick=function(){var d=parseISO(this.dataset.date);if(!d)return;showTab('cal');CAL.y=d.getFullYear();CAL.m=d.getMonth();CAL.day=sod(d);try{renderCal();}catch(e){}};
+}
+function dueHtml35(r){
+  function nm(it){return esc(String(it.name||'').split(' (')[0]);}
+  var h='<div id="dueCard" class="due-in" role="group" aria-labelledby="dueLab">';
+  if(r.tm.length===1)h+='<p class="due-one" id="dueLab">'+nm(r.tm[0])+' is due tomorrow · <span class="num nw">'+amt35(r.tm[0].amt)+'</span></p>';
+  else if(r.tm.length>1)h+='<h3 class="due-h" id="dueLab">Due tomorrow</h3><ul class="due-list">'+r.tm.map(function(it){return '<li><span>'+nm(it)+'</span><b class="num nw">'+amt35(it.amt)+'</b></li>';}).join('')+'</ul>';
+  h+=r.td.map(function(it,i){return '<p class="due-one due-td"'+(!r.tm.length&&i===0?' id="dueLab"':'')+'>Due today: '+nm(it)+' · <span class="num nw">'+amt35(it.amt)+'</span></p>';}).join('');
+  var first=(r.tm[0]||r.td[0]).date;
+  h+='<div class="rot-b"><button type="button" class="btn primary" id="dueCal" data-date="'+iso(first)+'">Show on Calendar</button><button type="button" class="btn" id="dueGot">Got it</button></div></div>';
+  return h;
+}
+function renderRot(){
+  var el=$('rotCard');if(!el)return;renderDue35();var p=rotPick();var rc=$('ringCard');if(rc)rc.classList.toggle('compact',!!p);
+  if(!p){el.hidden=true;el.innerHTML='';el.removeAttribute('data-rot');return;}
+  el.hidden=false;el.setAttribute('data-rot',p.id);
+  if(p.id==='due'){
+    var r=p.due,all=r.tm.concat(r.td),D=due35(),ch=false,ti=iso(today);all.forEach(function(it){if(!D.seen[it.okey]){D.seen[it.okey]=ti;ch=true;}});if(ch)try{save();}catch(e){}
+    el.innerHTML=dueHtml35(r);
+    $('dueGot').onclick=function(){var D2=due35();all.forEach(function(it){D2.got[it.okey]=1;});save();renderRot();try{var g=$('rotCard').querySelector('button');if(g)g.focus();}catch(e){}};
+    $('dueCal').onclick=function(){var d=parseISO(this.dataset.date);if(!d)return;showTab('cal');CAL.y=d.getFullYear();CAL.m=d.getMonth();CAL.day=sod(d);try{renderCal();}catch(e){}};
+    return;
+  }
+  var pa=p.pact||(p.id==='ci'?'ci0':p.id);
+  el.innerHTML='<div class="rot-t">'+(p.lab?'<span class="lab">'+esc(p.lab)+'</span>':'')+esc(p.t)+'</div>'+(p.sub?'<div class="rot-s">'+esc(p.sub)+'</div>':'')+'<div class="rot-b">'+(p.act?'<button type="button" class="btn primary" data-rotact="'+pa+'">'+esc(p.act)+'</button>':'')+(p.alt?'<button type="button" class="btn" data-rotact="'+p.alt.act+'">'+esc(p.alt.label)+'</button>':'')+'<button type="button" class="btn" '+(p.id==='inst'?'data-instno="1"':'data-rotno="'+p.id+'" data-days="'+p.days+'"')+'>'+esc(p.okLabel||'Not now')+'</button></div>';
+}
+/* interest warning: plain wording */
+function intWarn35(d){
+  var g=coverGap().filter(function(x){return x.d.id===d.id;})[0];if(!g)return '';
+  var mn=g.d.min,it=g.intr,same=money0(mn)===money0(it),f=function(v){return same?money2(v):m35(v);};
+  return 'The '+f(mn)+' minimum doesn’t cover the roughly '+f(it)+' of interest it adds each month, so paying only the minimum won’t bring the balance down. Paying about '+money0(g.need)+' a month would start to bring it down.';
+}
+/* On track?: short sheet, short toast, date shown once and kept on one line */
+function openCheckin(){
+  var ds=checkinDebts();if(!ds.length){toast('Add a debt first');return;}
+  var body='<p class="small muted" id="ckHint">Type the balance from your latest statement. Leave it as it is if it already matches.</p><div class="ck35">'+ds.map(function(d,i){return fld('ck'+i,esc(d.name.split(' (')[0])+' balance ($)',(Math.round(d.balance*100)/100).toFixed(2),{});}).join('')+'</div>'+
+    '<p class="small muted ck-log">Paid something you haven’t logged? <button type="button" class="lnk" id="ckLog">Log a payment</button></p>';
+  openSheet('On track?',body,function(){
+    var vals=[],ok=true;
+    ds.forEach(function(d,i){var p=parseMoney($('ck'+i).value,{required:true,max:1e8});if(!p.ok){setErr('ck'+i,p.err);ok=false;}else{setErr('ck'+i,'');vals.push(p.val);}});
+    if(!ok){var bad=document.querySelector('#sheet [aria-invalid="true"]');if(bad)bad.focus();return false;}
+    var undo=undoSnap();$('sheet').close();doCheckin(vals,undo);return false;
+  },{ok:'Nothing changed'});
+  var f=$('sheetForm');if(f){f.classList.add('ck-sheet');f.addEventListener('input',function(){
+    var chg=ds.some(function(d,i){var el=$('ck'+i);if(!el)return false;var p=parseMoney(el.value,{required:true,max:1e8});return !p.ok||Math.abs(p.val-d.balance)>0.004;});
+    $('sheetOk').textContent=chg?'Update my plan':'Nothing changed';
+  });}
+  $('ckLog').onclick=function(){$('sheet').close();openLog();};
+}
+var _doCheckin35p=doCheckin;
+doCheckin=function(vals,undo){
+  var _c=commit;commit=function(msg,o){var t=String(msg||''),m=/^(You’re (?:ahead|behind|on track): debt-free [A-Z][a-z]{2} \d{4}\.|At these payments the plan can’t finish yet\.)/.exec(t);return _c(m?m[1]:t,o);};
+  try{return _doCheckin35p(vals,undo);}finally{commit=_c;}
+};
+function lastCheckinLine(){
+  var c=lastCheckinRec();if(!c||!c.note)return '';var n=daysSinceISO(c.date);if(n===null||n>14)return '';
+  var note=esc(c.note).replace(/([A-Z][a-z]{2}) (\d{4})/g,'<span class="nw">$1 $2</span>');
+  return '<p class="ci-last" id="ciLast"><b class="nw">Check-in '+esc(dShort(parseISO(c.date)))+'</b> · '+note+(c.diffs&&c.diffs.length?c.diffs.map(function(s){return '<span class="ci-d">'+esc(s)+'</span>';}).join(''):'')+'</p>';
+}
+/* account detail sheet: one primary, short secondary rows, one close path (X + Close) */
+var _openDebtSheet35p=openDebtSheet;
+openDebtSheet=function(id){
+  _openDebtSheet35p.apply(this,arguments);
+  try{
+    var d=debtById(id),f=$('sheetForm'),bt=f&&f.querySelector('.btns');if(!d||!bt)return;
+    bt.classList.add('ds35');
+    var need=bt.querySelector('[data-needinfo]'),upd=$('dsUpd'),ed=$('dsEdit'),pd=$('dsPaid'),ok=$('sheetOk'),cc=$('sheetCancel');
+    if(need){need.textContent=needLabel35(missingInfo(d));}
+    if(upd){upd.textContent='Update from statement';upd.setAttribute('aria-label','Update balance from my statement');}
+    var prim=need||upd||ed;
+    [need,upd,ed,pd].forEach(function(b){if(b){b.classList.remove('primary');b.classList.remove('wide');}});
+    if(prim){prim.classList.add('primary','wide');}
+    if(upd&&upd!==prim)upd.classList.add('wide');
+    if(ok){ok.hidden=true;ok.setAttribute('aria-hidden','true');ok.tabIndex=-1;}
+    if(cc){cc.textContent='Close';cc.classList.add('btn','wide','ds-close');cc.classList.remove('ghost');}
+    var order=[prim,upd!==prim?upd:null,ed!==prim?ed:null,pd,cc].filter(Boolean);order.forEach(function(b){bt.appendChild(b);});
+  }catch(e){}
+};
+var _openSheet35p=openSheet;
+openSheet=function(){var r=_openSheet35p.apply(this,arguments);try{polish35($('sheet'));}catch(e){}return r;};
+var _renderDebts35p=renderDebts;
+renderDebts=function(){var r=_renderDebts35p.apply(this,arguments);try{polish35($('tab-debts')||document);}catch(e){}return r;};
+var _renderMoney35p=renderMoney;
+renderMoney=function(){var r=_renderMoney35p.apply(this,arguments);try{polish35();}catch(e){}return r;};
+/* setup bills step: the bold line below already says "Leave out card and loan payments", so the sub doesn't repeat it */
+try{if(STEP.bills)STEP.bills.s=function(){return 'Tap each one, then type what you pay. Pick how often if it isn’t monthly and we do the math.';};}catch(e){}
+/* ===================== end V3.5 polish ===================== */
+/* ===================== V3.5 Batch B: one promo card on Today ===================== */
+/* Today shows ONE promo card in #rotCard. Order: Due today, Due tomorrow, Backup due, Install, On track,
+   then the older rotation (new win, payday, payday reminder, cushion, more detail). "One thing to know" (#insight) stays below as the one insight card.
+   After you dismiss the card (Not now, Got it, or the install card's dismiss) the slot stays empty until your next visit:
+   the next app open, or coming back to the app after at least a minute away. Taking a card's action is not a dismissal. */
+var ROT35={hold:false,away:0};
+function rotVisit35(){ROT35.hold=false;ROT35.away=0;}
+document.addEventListener('click',function(e){var t=e.target&&e.target.closest?e.target.closest('#rotCard [data-rotno],#rotCard [data-instno],#rotCard #dueGot'):null;if(!t)return;ROT35.hold=true;
+  setTimeout(function(){try{var a=document.activeElement;if(!a||a===document.body||!document.body.contains(a)){var n=$('insight'),g=n&&n.querySelector('button');if(g)g.focus({preventScroll:true});}}catch(x){}},0);},true);
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='hidden'){ROT35.away=Date.now();return;}
+  if(ROT35.hold&&ROT35.away&&Date.now()-ROT35.away>=60000){rotVisit35();try{renderRot();}catch(e){}}
+});
+function duePick35(){
+  var r=dueItems35();
+  if(r.td.length)return {id:'due',key:'due-td',due:{tm:[],td:r.td}};
+  if(r.tm.length)return {id:'due',key:'due-tm',due:{tm:r.tm,td:[]}};
+  return null;
+}
+function bkCard35(){
+  var s=data.settings,bk=s.backupAt,bd=bk?daysSinceISO(bk):null;
+  if(data.sample||(bk&&bd<30)||snoozed('bk'))return null;
+  return {id:'bk',key:'bk',lab:'',t:'Save a backup file',sub:bkText()+' '+(isStandalone()?V35_STAND:V35_NUDGE),act:'Save a backup file',days:30};
+}
+function ciCard35(){
+  var s=data.settings,since=daysSinceISO(lastCheckin()||s.setupAt);
+  if(since===null||since<30||snoozed('ci'))return null;
+  return {id:'ci',key:'ci',lab:'',t:'Are you on track?',sub:'Type your latest statement balances to see your new debt-free date.',act:'Update balances',pact:'ci',alt:{act:'ci0',label:'Nothing changed'},days:7};
+}
+var _rotPickB35=rotPick;
+rotPick=function(){
+  if(!data.settings.onboarded)return null;
+  var dp=null;try{dp=duePick35();}catch(e){dp=null;}
+  if(dp)return dp;
+  var base=_rotPickB35();if(!base)return null;   /* also handles "no plan yet" and first-run setupAt */
+  var p=bkCard35();if(p)return p;
+  p=installCard();if(p){p.key='inst';return p;}
+  p=ciCard35();if(p)return p;
+  base.key=base.key||base.id;return base;
+};
+function rotOrder35(){var o=[];try{var r=dueItems35();if(r.td.length)o.push('due-td');if(r.tm.length)o.push('due-tm');if(data.settings.onboarded&&_rotPickB35()){if(bkCard35())o.push('bk');if(installCard())o.push('inst');if(ciCard35())o.push('ci');}}catch(e){}return o;}
+/* Due no longer has its own box: it is the promo card when it wins */
+function renderDue35(){var ob=$('dueBox');if(ob)ob.remove();}
+function renderRot(){
+  var el=$('rotCard');if(!el)return;renderDue35();
+  var p=ROT35.hold?null:rotPick();var rc=$('ringCard');if(rc)rc.classList.toggle('compact',!!p);
+  if(!p){el.hidden=true;el.innerHTML='';el.removeAttribute('data-rot');el.removeAttribute('data-key');return;}
+  el.hidden=false;el.setAttribute('data-rot',p.id);el.setAttribute('data-key',p.key||p.id);
+  if(p.id==='due'){
+    var r=p.due,shown=r.tm.concat(r.td),D=due35(),ch=false,ti=iso(today);
+    shown.forEach(function(it){if(!D.seen[it.okey]){D.seen[it.okey]=ti;ch=true;}});if(ch)try{save();}catch(e){}
+    el.innerHTML=dueHtml35(r);
+    $('dueGot').onclick=function(){var D2=due35();shown.forEach(function(it){D2.got[it.okey]=1;});ROT35.hold=true;save();renderRot();};
+    $('dueCal').onclick=function(){var d=parseISO(this.dataset.date);if(!d)return;showTab('cal');CAL.y=d.getFullYear();CAL.m=d.getMonth();CAL.day=sod(d);try{renderCal();}catch(e){}};
+    return;
+  }
+  var pa=p.pact||(p.id==='ci'?'ci0':p.id);
+  el.innerHTML='<div class="rot-t">'+(p.lab?'<span class="lab">'+esc(p.lab)+'</span>':'')+esc(p.t)+'</div>'+(p.sub?'<div class="rot-s">'+esc(p.sub)+'</div>':'')+'<div class="rot-b">'+(p.act?'<button type="button" class="btn primary" data-rotact="'+pa+'">'+esc(p.act)+'</button>':'')+(p.alt?'<button type="button" class="btn" data-rotact="'+p.alt.act+'">'+esc(p.alt.label)+'</button>':'')+'<button type="button" class="btn" '+(p.id==='inst'?'data-instno="1"':'data-rotno="'+p.id+'" data-days="'+p.days+'"')+'>'+esc(p.okLabel||'Not now')+'</button></div>';
+}
+/* Batch B sweep: keep short dates, "Month YYYY" and "due the 7th" on one line in the Plan card and Activity (text is unchanged, only wrapped in .nw) */
+var NW35=/(due the \d{1,2}(?:st|nd|rd|th))|((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2}(?:, \d{4})?(?!\d))|((?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4})/g;
+function nwText35(root,re){
+  var R=re||NW35;if(!root)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),ns=[],n;
+  while((n=w.nextNode())){var pe=n.parentElement;if(!pe||pe.closest('.nw,.sr,button,input,select,option,textarea,script,style,svg,title,[contenteditable]'))continue;R.lastIndex=0;if(R.test(n.nodeValue))ns.push(n);}
+  ns.forEach(function(t){var s=t.nodeValue,f=document.createDocumentFragment(),i=0,m;R.lastIndex=0;
+    /* inside a flex/grid box, splitting a text node turns each piece into its own item and the spaces between them collapse:
+       keep short text whole in one no-break span instead, and leave longer text alone */
+    var d='';try{d=getComputedStyle(t.parentNode).display||'';}catch(e){}
+    if(/flex|grid/.test(d)){if(s.trim().length<=40){var w1=document.createElement('span');w1.className='nw';w1.textContent=s;t.parentNode.replaceChild(w1,t);}return;}
+    while((m=R.exec(s))){if(m.index>i)f.appendChild(document.createTextNode(s.slice(i,m.index)));var sp=document.createElement('span');sp.className='nw';sp.textContent=m[0];f.appendChild(sp);i=m.index+m[0].length;}
+    if(i<s.length)f.appendChild(document.createTextNode(s.slice(i)));t.parentNode.replaceChild(f,t);});
+}
+/* Ops polish: "debt-free" never breaks at its hyphen anywhere in the UI (kept as text, wrapped in .nw) */
+var DF35=/[Dd]ebt-free/g;
+function nwSweep35(){try{document.querySelectorAll('#tab-plan .v3plan .ph,#tab-plan .v3plan .tm-t small,#actCard>p,#toastT').forEach(function(r){nwText35(r);});nwText35(document.body,DF35);}catch(e){}}
+var _toastB35=toast;
+toast=function(){var r=_toastB35.apply(this,arguments);try{var t=$('toastT');if(t){nwText35(t);nwText35(t,DF35);}}catch(e){}return r;};
+var _renderRingB35=renderRing;
+renderRing=function(){var r=_renderRingB35.apply(this,arguments);try{nwText35($('ringCard'),DF35);}catch(e){}return r;};
+var _showTabB35=showTab;
+showTab=function(){var r=_showTabB35.apply(this,arguments);nwSweep35();return r;};
+var _openSheetB35=openSheet;
+openSheet=function(){var r=_openSheetB35.apply(this,arguments);try{nwText35($('sheet'),DF35);}catch(e){}return r;};
+var _renderAllB35=renderAll;
+renderAll=function(){var r=_renderAllB35.apply(this,arguments);nwSweep35();return r;};
+if(_renderPlan35p){var _renderPlanB35=renderPlan;renderPlan=function(){var r=_renderPlanB35.apply(this,arguments);nwSweep35();return r;};}
+var _renderMoneyB35=renderMoney;
+renderMoney=function(){var r=_renderMoneyB35.apply(this,arguments);nwSweep35();return r;};
+/* Ops polish: the cushion card has no eyebrow (title says it) */
+var _rotPickC35=rotPick;
+rotPick=function(){var p=_rotPickC35();if(p&&p.id==='cu')p.lab='';return p;};
+/* ===================== end V3.5 Batch B ===================== */
 
 /* ===== Tabs, events, init ===== */
 function renderEmpty(t){

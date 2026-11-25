@@ -4,7 +4,7 @@
    fetched network-first (fresh when online, cached when offline or when the network is slow), so a release shows up on the next open.
    Each folder keeps its own cache (payoff-root-..., payoff-v2-2-...) and cleanup deletes only that folder's older caches. The /payoff/ worker
    leaves the version folders (/payoff/v1/, /v2/, /v2-1/, ...) alone so each opens as itself. */
-var VERSION='payoff-v3-2-5';
+var VERSION='payoff-v3-5-1';
 var SCOPE=self.registration.scope;
 var FOLDER=(SCOPE.replace(/\/$/,'').split('/').pop()||'root');
 var PREFIX='payoff-'+(/^v\d/.test(FOLDER)?FOLDER:'root')+'-';

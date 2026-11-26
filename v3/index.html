@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)" id="tcDark">
 <meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)" id="tcLight">
 <meta name="application-name" content="Payoff">
-<meta name="payoff-build" content="payoff-v3-6-1">
+<meta name="payoff-build" content="payoff-v3-7-2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Payoff">
@@ -1169,6 +1169,60 @@ details.mb-paid>summary{min-height:44px;display:flex;align-items:center;font-wei
 /* V3.6 holds: a later check still short after holds (FD 3:00 PM) */
 .pd-ahead{margin-top:10px}
 .pd-ahead .pd-fix{display:block;margin-top:6px}
+/* V3.6 Ops 10:31 PM: each check’s own shortfall; combined total on its own line */
+.pd-across{display:block;margin-top:6px}
+.pd-xnote{display:block;margin-top:2px;font-weight:550}
+
+/* V3.7 Share my plan */
+.sh-full{width:100%;min-height:48px;margin-top:10px;justify-content:center}
+#shCard .sh-full{margin-top:12px}
+body.sh-open #tabs,body.sh-open #saveBar,body.sh-open #toast.show{/* keep toast visible */}
+body.sh-open .app>section.screen,body.sh-open #foot,body.sh-open #tabs,body.sh-open #saveBar,body.sh-open #sampleBar,body.sh-open .sample-bar{visibility:hidden}
+body.sh-open .sh-ov{visibility:visible}
+.sh-ov{position:fixed;inset:0;z-index:80;background:var(--bg);color:var(--text);overflow:auto;-webkit-overflow-scrolling:touch;padding:max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.sh-in{max-width:430px;margin:0 auto}
+.sh-top{display:flex;align-items:center;min-height:44px;margin:0 0 4px}
+.sh-back{font-weight:650;min-height:44px;padding:8px 8px 8px 0}
+.sh-smh{font-size:26px}
+.sh-card{margin-top:12px}
+.sh-row{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 0;border-top:1px solid var(--line)}
+.sh-row:first-of-type{border-top:0}
+.sh-rt{flex:1;min-width:0}
+.sh-rt b{display:block;font-weight:750}
+.sh-sw{flex:none;width:52px;height:32px;border-radius:999px;border:2px solid var(--line2);background:var(--quiet);padding:0;position:relative;min-width:52px}
+.sh-sw i{display:block;width:24px;height:24px;border-radius:50%;background:var(--muted);position:absolute;top:2px;left:2px;transition:left .15s}
+.sh-sw[aria-checked="true"]{background:var(--accent);border-color:var(--accent)}
+.sh-sw[aria-checked="true"] i{left:22px;background:var(--on-accent,#fff)}
+.sh-call{margin-top:12px;padding:10px 12px;border-radius:12px;font-size:14px;font-weight:600}
+.sh-call.a{background:var(--amber-bg);color:var(--text)}
+.sh-call.n{background:var(--quiet);color:var(--text);border:1px solid var(--line)}
+.sh-qr{margin:14px auto 8px;width:260px;height:260px;padding:12px;background:#fff;border-radius:16px;border:1px solid var(--line)}
+.sh-qr svg{display:block;width:236px;height:236px}
+.sh-linkbox{margin:8px 0 0;padding:10px 12px;border-radius:12px;background:var(--quiet);border:1px solid var(--line);font-size:13px;font-weight:600;word-break:break-all;text-align:left;color:var(--text)}
+.sh-tag{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.sh-ck{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:4px}
+.sh-ck h3,.sh-left h3{font-size:18px;font-weight:750;margin:0}
+.sh-big{font-size:34px;font-weight:800;letter-spacing:-.03em}
+.sh-acts{list-style:none;margin:8px 0 0;padding:0}
+.sh-acts li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-top:1px solid var(--line);min-height:48px}
+.sh-n{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid var(--line2);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.sh-acts li.paid .sh-n{background:var(--accent);border-color:var(--accent);color:var(--on-accent,#fff)}
+.sh-t{flex:1;min-width:0}
+.sh-acts b.num,.sh-left b.num{flex:none;font-weight:800}
+.sh-left{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.sh-neg{color:var(--red)}
+.sh-or{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.sh-on{flex:none;width:26px;height:26px;border-radius:50%;background:var(--quiet);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.sh-mo{margin:8px 0 0;padding:0 0 4px 18px}
+.sh-mo li{margin:8px 0;font-size:14px}
+.sh-safe{height:16px}
+#shConf{background:transparent;overflow:hidden}
+#shConf .sh-scrim{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+#shConf .sh-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--bg);color:var(--text);border-radius:20px 20px 0 0;padding:8px 16px max(20px,env(safe-area-inset-bottom));max-width:430px;margin:0 auto;box-shadow:0 -8px 32px rgba(0,0,0,.2)}
+#shConf .sh-sheet h2{margin:8px 0 0;font-size:22px}
+@media (min-width:700px){#shConf .sh-sheet{bottom:auto;top:50%;transform:translateY(-50%);border-radius:20px;padding:16px 20px 20px}}
+/* dark QR stays high-contrast (black on white) so it scans */
+:root[data-theme="dark"] .sh-qr, :root[data-theme="auto"] .sh-qr{background:#fff}
 
 </style>
 </head>
@@ -7299,6 +7353,13 @@ function pdOptions(P){
 }
 
 /* ---------- render ---------- */
+function pdPlanPace(){
+  var c=C.cur;if(!c||!(c.payment>0)||c.never)return null;
+  var f=(typeof F==='number'&&F>0)?F:(12/({weekly:52,biweekly:26,semimonthly:24,monthly:12}[data.income.freq]||26));
+  var mm=0;planList().forEach(function(d){if(d.balance>0.005&&!d.asBill)mm+=(typeof v3Min==='function'?v3Min(d):d.min||0);});
+  return {mo:c.payment,extraMo:Math.max(0,c.payment-mm),min:mm,per:Math.max(0,c.payment-mm)*f};
+}
+function pdLeftLabel(){var p=PD().extraPct;return p===50?'half of what’s left':p===100?'all of what’s left':p+'% of what’s left';}
 function pdWhy(id){
   var st=data.settings.strategy,d=debtById(id);if(!d)return '';
   return st==='snowball'?'Smallest balance goes first, so it’s gone soonest.':'Highest rate ('+d.apr+'%) goes first.';
@@ -7310,7 +7371,8 @@ function pdRow(n,o){
   var cls='pdr'+(o.paid?' paid':'')+(o.past?' past':'')+(o.x?' x':'');
   var box='<span class="pdn" aria-hidden="true">'+(o.paid?'<svg class="ico"><use href="#i-check"/></svg>':n)+'</span>';
   var body='<span class="pdr-tx"><span class="pdr-n">'+o.name+'</span>'+(o.sub?'<span class="pdr-s">'+o.sub+'</span>':'')+'</span><b class="num pdr-v">'+pdM(o.c)+'</b>';
-  return '<li class="'+cls+'"><button type="button" class="pdr-b" role="checkbox" aria-checked="'+(!!o.paid)+'" data-pdtick="'+esc(o.key)+'" aria-label="'+(o.paid?'Done. Tap to undo: ':'Mark done: ')+esc(o.aria)+' '+esc(pdM2(o.c))+'">'+box+body+'</button></li>';
+  var lab=o.x?(o.aria+(o.paid?'. Tap to undo':'')):(o.paid?'Done. Tap to undo: ':'Mark done: ')+o.aria+' '+pdM2(o.c);
+  return '<li class="'+cls+'"><button type="button" class="pdr-b" role="checkbox" aria-checked="'+(!!o.paid)+'" data-pdtick="'+esc(o.key)+'" aria-label="'+esc(lab)+'">'+box+body+'</button></li>';
 }
 function pdRows(P){
   var rows=[],n=0,r=P.r;
@@ -7320,15 +7382,17 @@ function pdRows(P){
     if(it.kind==='sa')sub=(it.pb?'Their own spending · ':'')+'Share '+it.sa.i+' of '+it.sa.n+' for '+esc(it.sa.m)+', split evenly';
     rows.push({key:it.okey,name:esc(it.kind==='min'?shortName(it.id)+' minimum':(it.kind==='sa'&&!it.pb?it.name+' set-aside':it.name)),aria:it.kind==='min'?shortName(it.id)+' minimum':it.name,sub:sub,c:it.c,paid:it.paid,past:it.tag==='past'});
   });
-  if(r.cush>0){var have=c36(PD().cushHave)-(P.cuDone||0);
-    rows.push({key:'cu',name:'Top up your cushion',aria:'Top up your cushion',sub:'Brings it from '+pdM(have)+' to '+pdM(Math.min(have+r.cush,c36(PD().cushGoal)))+(have+r.cush<c36(PD().cushGoal)?' of your '+pdM(c36(PD().cushGoal))+' goal':', your goal'),c:r.cush,paid:P.cuDone!=null});}
   (r.holds||[]).forEach(function(h){var T=parseISO(h.t),lab='the '+dShort(T)+' check';
     var sub=h.after>0?'Covers '+pdM(h.amt)+' of that check’s '+pdM(h.gap)+' gap, so it’s '+pdM(h.after)+' short instead.':'Keep it in your account: without it, that check is '+pdM(h.gap)+' short.';
     rows.push({key:h.key,name:'Hold for '+esc(lab),aria:'Hold '+pdM2(h.amt)+' for '+lab,sub:sub,c:h.amt,paid:h.done});});
+  if(r.cush>0){var have=c36(PD().cushHave)-(P.cuDone||0);
+    rows.push({key:'cu',name:'Top up your cushion',aria:'Top up your cushion',sub:'Brings it from '+pdM(have)+' to '+pdM(Math.min(have+r.cush,c36(PD().cushGoal)))+(have+r.cush<c36(PD().cushGoal)?' of your '+pdM(c36(PD().cushGoal))+' goal':', your goal'),c:r.cush,paid:P.cuDone!=null});}
   r.extras.forEach(function(x,i){var d=debtById(x.id);if(!d)return;var cb=d.kind==='card'?pdCloseBy(d,P.D):null;
     var sub=(i===0?pdWhy(x.id):'Then the next in line, since '+esc(shortName(r.extras[0].id))+' is paid off.');
     if(cb)sub='<b class="pd-by">Send by '+esc(dWk(cb.by))+'</b>, before the statement closes '+esc(dShort(cb.close))+'. '+sub;
-    rows.push({key:'x:'+x.id,name:'Extra to '+esc(shortName(x.id)),aria:'Extra to '+shortName(x.id),sub:sub,c:x.amt,paid:!!x.done,x:1});});
+    var pace=pdPlanPace(),xl=pdLeftLabel();
+    sub=(sub?sub+' ':'')+'<span class="pd-xnote" id="pdXNote">'+esc(xl.charAt(0).toUpperCase()+xl.slice(1))+' after bills, holds and cushion.'+(pace?' Your Plan tab pace: about '+money0(pace.per)+' per check ('+money0(pace.mo)+'/mo).':'')+'</span>';
+    rows.push({key:'x:'+x.id,name:'Extra to '+esc(shortName(x.id)),aria:(x.done?'Paid ':'Pay ')+pdM2(x.amt)+' to '+shortName(x.id),sub:sub,c:x.amt,paid:!!x.done,x:1});});
   if(!r.short&&r.extra===0&&hasPlan()&&P.r.pool===0&&PD().extraPct===0)rows.push({key:'',name:'Extra to debt',aria:'',sub:'Off: your extra share is 0%.',c:0,paid:false,info:1});
   return rows.map(function(o){if(o.info)return '<li class="pdr info"><div class="pdr-b"><span class="pdn" aria-hidden="true">–</span><span class="pdr-tx"><span class="pdr-n">'+o.name+'</span><span class="pdr-s">'+o.sub+'</span></span><b class="num pdr-v">$0</b></div></li>';if(!o.paid)n++;return pdRow(n,o);}).join('');
 }
@@ -7365,25 +7429,41 @@ function pdHtml(P){
   h+=pdInsights(P);
   return h+'</section>';
 }
-/* a later check still short after holds: say it plainly. When the checks from now to the end of that check's window bring in
-   less than is due, say that too (exact totals), then offer the cushion as the first fix. */
+/* a later check still short after holds: say that check's own gap plainly. When the checks from now to the end of THAT
+   check's window bring in less than is due, say so with exact totals (that window only). If more than one check is short
+   (including this one), the combined total is a separate line, never mixed into one check's gap. Then offer the cushion. */
 function pdAheadInfo(P){
-  if(!P.hc||!P.later)return null;var st=[];P.hc.later.forEach(function(x,i){if(x&&x.short>0)st.push({j:i,D:P.later[i-1].D,c:x.short});});if(!st.length)return null;
-  var j=st[0].j,inc=P.r.check,due=P.r.step1;for(var k=0;k<j;k++){inc+=P.later[k].check;due+=P.later[k].step1;}
-  return {st:st,inc:inc,due:due,end:addDays(P.later[j-1].D2,-1),have:Math.max(0,c36(PD().cushHave))};
+  if(!P.hc||!P.later)return null;
+  var st=[];P.hc.later.forEach(function(x,i){if(x&&x.short>0)st.push({j:i,D:P.later[i-1].D,c:x.short});});
+  var mine=P.r.short||0,all=[];if(mine)all.push({D:P.D,c:mine});st.forEach(function(x){all.push({D:x.D,c:x.c});});
+  if(!st.length&&all.length<2)return null;
+  var inc=0,due=0,end=null,s=0;
+  if(st.length){var j=st[0].j;s=st[0].c;inc=P.r.check;due=P.r.step1;for(var k=0;k<j;k++){inc+=P.later[k].check;due+=P.later[k].step1;}end=addDays(P.later[j-1].D2,-1);}
+  var across=null,tot=0;all.forEach(function(x){tot+=x.c;});if(all.length>1)across={dates:all.map(function(x){return x.D;}),c:tot};
+  return {st:st,inc:inc,due:due,end:end,s:s,mine:mine,across:across,have:Math.max(0,c36(PD().cushHave))};
 }
+function pdDatesList(ds){var n=ds.map(function(d){return dShort(d);});return n.length===2?n[0]+' and '+n[1]:n.slice(0,-1).join(', ')+' and '+n[n.length-1];}
 function pdAheadHtml(P){
-  var a=pdAheadInfo(P);if(!a)return '';var f=a.st[0];
-  var h='<div class="pd-tight pd-ahead" role="note" id="pdAhead"><b>Your '+esc(dShort(f.D))+' check will be '+pdM(f.c)+' short, even after holds.</b> ';
-  if(a.due>a.inc)h+='From '+esc(dShort(P.D))+' to '+esc(dShort(a.end))+' your checks bring in '+pdM(a.inc)+', but '+pdM(a.due)+' is due: '+pdM(a.due-a.inc)+' less than you need. ';
-  if(a.st.length>1)h+='Your '+esc(dShort(a.st[1].D))+' check is '+pdM(a.st[1].c)+' short too'+(a.st.length>2?' (plus '+plural(a.st.length-2,'more check')+')':'')+'. ';
-  h+='<span class="pd-fix" id="pdAheadFix"><b>First fix: use your cushion.</b> '+(a.have>0?'You have '+pdM(a.have)+' set aside'+(a.have>=f.c?', enough to cover it.':', which covers '+pdM(a.have)+' of it.'):'It’s empty right now, so next: move a bill to a later check, or pay minimums only. Every minimum stays on time.')+'</span></div>';
+  var a=pdAheadInfo(P);if(!a)return '';
+  var h='<div class="pd-tight pd-ahead" role="note" id="pdAhead">';
+  if(a.mine){
+    h+='<b>This check is '+pdM(a.mine)+' short.</b> ';
+    if(a.across)h+='<span class="pd-across" id="pdAcross">Across '+esc(pdDatesList(a.across.dates))+': '+pdM(a.across.c)+' short.</span>';
+    if(a.st.length)h+='Your '+esc(dShort(a.st[0].D))+' check will be '+pdM(a.st[0].c)+' short, even after holds'+(a.st.length>1?', plus '+plural(a.st.length-1,'more check'):'')+'. ';
+  }else{
+    if(a.st.length){var f=a.st[0];h+='<b>Your '+esc(dShort(f.D))+' check will be '+pdM(f.c)+' short, even after holds.</b> ';
+      if(a.due>a.inc&&a.due-a.inc===a.s)h+='From '+esc(dShort(P.D))+' to '+esc(dShort(a.end))+' your checks bring in '+pdM(a.inc)+', but '+pdM(a.due)+' is due: '+pdM(a.s)+' less than you need. ';}
+    if(a.st.length>1)h+='Your '+esc(dShort(a.st[1].D))+' check will be '+pdM(a.st[1].c)+' short'+(a.st.length>2?', plus '+plural(a.st.length-2,'more check'):'')+'. ';
+    if(a.across)h+='<span class="pd-across" id="pdAcross">Across '+esc(pdDatesList(a.across.dates))+': '+pdM(a.across.c)+' short.</span>';
+  }
+  var need=a.mine||(a.st[0]&&a.st[0].c)||0;
+  h+='<span class="pd-fix" id="pdAheadFix"><b>First fix: use your cushion.</b> '+(a.have>0?'You have '+pdM(a.have)+' set aside'+(a.have>=need?', enough to cover it.':', which covers '+pdM(a.have)+' of it.'):'It’s empty right now, so next: move a bill to a later check, or pay minimums only. Every minimum stays on time.')+'</span></div>';
   return h;
 }
 function pdNextKey(P){
   var it=P.items.filter(function(x){return !x.paid;})[0];if(it)return it.okey;
-  if(P.r.cush>0&&P.cuDone==null)return 'cu';
   var hh=(P.r.holds||[]).filter(function(h){return !h.done;})[0];if(hh)return hh.key;
+  if(P.r.cush>0&&P.cuDone==null)return 'cu';
   var x=P.r.extras.filter(function(e){return !e.done;})[0];return x?'x:'+x.id:'';
 }
 var _renderPayCard36=renderPayCard;
@@ -7441,8 +7521,8 @@ togglePaid=function(okey){var r=_togglePaid36.apply(this,arguments);try{var pd=P
 /* ---------- settings sheet ---------- */
 function pdOpenSet(){
   var pd=PD();
-  var body='<p class="small muted" style="margin:0 0 6px">How each check splits what’s left after bills and minimums.</p>'+
-    '<div class="f"><label for="pdPct" id="pdPct-l">Extra to debt: <b id="pdPctV">'+pd.extraPct+'%</b> of what’s left</label><input id="pdPct" class="pd-range" type="range" min="0" max="100" step="5" value="'+pd.extraPct+'" aria-describedby="pdPct-h"><div class="small muted hint" id="pdPct-h">The rest is yours to spend. 0% sends only minimums.</div></div>'+
+  var body='<p class="small muted" style="margin:0 0 6px">How each check splits what’s left after bills, holds and cushion.</p>'+
+    '<div class="f"><label for="pdPct" id="pdPct-l">Extra to debt: <b id="pdPctV">'+pd.extraPct+'%</b> of what’s left</label><input id="pdPct" class="pd-range" type="range" min="0" max="100" step="5" value="'+pd.extraPct+'" aria-describedby="pdPct-h"><div class="small muted hint" id="pdPct-h">This is a share of what’s left after this check’s bills, holds and cushion — not the Plan tab payment. The rest is yours to spend. 0% sends only minimums.</div></div>'+
     mf('pdCg','Cushion goal',nf(pd.cushGoal)||'0',{ph:'e.g. 200',hint:'Each check tops it up to this amount before any extra goes to debt.'})+
     mf('pdCh','In your cushion now',nf(pd.cushHave)||'0',{ph:'e.g. 0',hint:'What you have set aside today. Ticking “Top up” adds to it.'});
   openSheet('Payday plan',body,function(){
@@ -7473,6 +7553,2672 @@ loadSample=function(){
     v3Save();renderAll();}catch(e){}
   return r;
 };
+
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: www.d-project.com
+//
+// Licensed under the MIT license:
+//  opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var shQR = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvg = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="'+'ht'+'tp:'+'//www.w3.org/2000/svg'+'"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImg = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+var qrcode=shQR;
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+/* ===================== V3.7: Share my plan (snapshot link, no server) =====================
+   Override file only. The plan is gzip + base64url in the URL hash (#s= open, #p= passcode-locked).
+   Hidden amounts and names are removed from the link data itself. A passcode must be 8+ characters
+   and encrypts the payload (WebCrypto AES-GCM, PBKDF2-HMAC-SHA256). Honest copy: this is a snapshot
+   and it can't be recalled once sent. Example data in tests only. */
+var SH_ITER=600000,SH_MIN=8;
+
+function shB64(u8){var s='',i=0;for(;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,Math.min(i+0x8000,u8.length)));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function shUnb64(t){t=String(t||'').replace(/-/g,'+').replace(/_/g,'/');while(t.length%4)t+='=';var s=atob(t),u=new Uint8Array(s.length),i=0;for(;i<s.length;i++)u[i]=s.charCodeAt(i);return u;}
+function shU8(s){return new TextEncoder().encode(s);}
+function shStr(u8){return new TextDecoder().decode(u8);}
+async function shGzip(u8){var stream=new Blob([u8]).stream().pipeThrough(new CompressionStream('gzip'));return new Uint8Array(await new Response(stream).arrayBuffer());}
+async function shGunzip(u8){var stream=new Blob([u8]).stream().pipeThrough(new DecompressionStream('gzip'));return new Uint8Array(await new Response(stream).arrayBuffer());}
+
+async function shEncode(obj){var json=JSON.stringify(obj),raw=shU8(json),gz=await shGzip(raw);return {json:json,raw:raw,gz:gz,b64:shB64(gz)};}
+async function shDecodeB64(b64){var gz=shUnb64(b64),raw=await shGunzip(gz);return {raw:raw,gz:gz,obj:JSON.parse(shStr(raw)),text:shStr(raw)};}
+
+async function shKey(pass,salt){var mat=await crypto.subtle.importKey('raw',shU8(pass),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:SH_ITER,hash:'SHA-256'},mat,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);}
+/* Locked envelope (plain, all of it): 1 version byte + 16-byte salt + 12-byte IV + AES-GCM ciphertext. Nothing else is readable before the
+   passcode: no mode flags, counts or titles. The plaintext inside is a 4-byte length + the gzip data + zero padding to a 512-byte multiple,
+   so the length only shows a size bucket. */
+async function shLock(obj,pass){
+  if(!pass||String(pass).length<SH_MIN)throw new Error('pass-short');
+  var enc=await shEncode(obj),n=enc.gz.length,tot=Math.ceil((4+n)/512)*512,fr=new Uint8Array(tot);
+  fr[0]=(n>>>24)&255;fr[1]=(n>>>16)&255;fr[2]=(n>>>8)&255;fr[3]=n&255;fr.set(enc.gz,4);
+  var salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+  var key=await shKey(String(pass),salt),ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,fr));
+  var blob=new Uint8Array(29+ct.length);blob[0]=1;blob.set(salt,1);blob.set(iv,17);blob.set(ct,29);
+  return {b64:shB64(blob),kind:'p',obj:obj,gz:enc.gz};
+}
+async function shUnlock(b64,pass){
+  if(!pass||String(pass).length<SH_MIN)throw new Error('pass-short');
+  var blob=shUnb64(b64);
+  if(blob.length<30+16||blob[0]!==1)throw new Error('bad');
+  var salt=blob.subarray(1,17),iv=blob.subarray(17,29),ct=blob.subarray(29);
+  try{var key=await shKey(String(pass),salt),fr=new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:iv},key,ct)),n=((fr[0]<<24)>>>0)+(fr[1]<<16)+(fr[2]<<8)+fr[3],gz=fr.subarray(4,4+n),raw=await shGunzip(gz);return {raw:raw,gz:gz,obj:JSON.parse(shStr(raw)),text:shStr(raw)};}
+  catch(e){if(e&&e.message==='pass-short')throw e;throw new Error('pass-wrong');}
+}
+
+function shOrigin(){return (location.href||'').split('#')[0];}
+function shUrl(kind,b64){return shOrigin()+'#'+kind+'='+b64;}
+function shParseHash(h){h=h==null?location.hash:h;var m=/^#(s|p)=([A-Za-z0-9_-]+)$/.exec(h||'');return m?{kind:m[1],b64:m[2]}:null;}
+
+async function shLink(opt){
+  opt=opt||{};
+  var obj=opt.obj||shSnap({hideAmt:!!opt.hideAmt,hideNames:!!opt.hideNames});
+  if(opt.pass!=null&&opt.pass!==''){
+    if(String(opt.pass).length<SH_MIN)return {err:'pass-short',obj:obj};
+    var L=await shLock(obj,opt.pass),url=shUrl('p',L.b64);
+    return {url:url,len:url.length,kind:'p',obj:obj,b64:L.b64,payload:L.b64.length};
+  }
+  var E=await shEncode(obj),url=shUrl('s',E.b64);
+  return {url:url,len:url.length,kind:'s',obj:obj,b64:E.b64,json:E.json,raw:E.raw,gz:E.gz,payload:E.b64.length};
+}
+
+/* ---------- snapshot of the current plan ----------
+   The link carries ONE view snapshot (v:2, kind:'view') built from scratch with an allow-list of keys. Nothing is copied from the
+   saved plan: no ids, internal keys (b:slug, d:id, sa:...), notes, nicknames, calendar/checklist/paid state, pay anchor, due or statement
+   close days, tax/filing/state, hours/rates, settings, income names. Only what the shared page shows:
+     ck  this check (dates + amounts)         it  its lines                 or  payoff order        mo  monthly plan        df  debt-free month
+   Hide dollar amounts: no $ amount, interest rate, percent, balance, payoff or close date (only the visible payday dates and the
+   debt-free month stay). Hide names: every debt, bill and set-aside name is replaced by a generic label before it is written.
+   Save a copy rebuilds a SKETCH from these view fields only (see shApply). */
+function shC(n){return Math.round((Number(n)||0)*100);}
+function shDebtOrder(){ /* payoff order first, then everything else, so Card 1 is the next card in line */
+  var ids=planList().filter(function(d){return (d.balance==null||d.balance>0.005)&&!d.asBill;}).map(function(d){return {id:d.id,bal:shC(d.balance||0),apr:d.apr||0,kind:d.kind,name:d.name};});
+  var ord=(typeof pdOrder==='function'?pdOrder(ids,data.settings.strategy):ids).map(function(o){return o.id;});
+  data.debts.forEach(function(d){if(ord.indexOf(d.id)<0)ord.push(d.id);});
+  return ord;
+}
+function shNames(hide){
+  var M={d:{},b:{},s:{},sn:0,bn:0},ord=shDebtOrder(),ci=0,li=0;
+  ord.forEach(function(id){var d=debtById(id);if(!d)return;if(!hide){M.d[id]=d.name;return;}M.d[id]=d.kind==='card'?'Card '+(++ci):'Loan '+(++li);});
+  (data.bills||[]).forEach(function(b,i){M.b[String(b.name||'').trim().toLowerCase()]=hide?'Bill '+(i+1):b.name;});
+  M.bill=function(name){var k=String(name||'').trim().toLowerCase();if(M.b[k]!=null)return M.b[k];return hide?'Bill '+((data.bills||[]).length+(++M.bn)):name;};
+  M.sa=function(name){if(!hide)return name;var k=String(name||'').trim().toLowerCase();if(!M.s[k])M.s[k]='Set aside '+(++M.sn);return M.s[k];};
+  M.debt=function(id,fallback){return M.d[id]!=null?M.d[id]:(hide?'Loan '+(++li):fallback);};
+  return M;
+}
+function shViewItems(P,M){
+  if(!P)return [];
+  var out=[];
+  (P.items||[]).forEach(function(it){
+    var k=it.kind==='min'?'m':(it.kind==='sa'?'s':(it.kind==='fixed'?'f':'b')),n;
+    if(it.kind==='min')n=M.debt(it.id,shortName(it.id))+' minimum';
+    else if(it.kind==='fixed'&&it.id)n=M.debt(it.id,it.name);
+    else if(it.kind==='sa')n=M.sa(it.name);
+    else n=M.bill(it.name);
+    var row={k:k,n:n,a:it.c};
+    if(it.date)row.due=iso(it.date);
+    if(it.kind==='sa'&&it.sa)row.note='Share '+it.sa.i+' of '+it.sa.n+' for '+it.sa.m+', split evenly';
+    out.push(row);
+  });
+  (P.r.holds||[]).forEach(function(h){out.push({k:'h',n:'Hold for next check',a:h.amt,note:h.after>0?'Covers '+pdM(h.amt)+' of the next short check’s '+pdM(h.gap)+' gap.':'Without this, the next short check is '+pdM(h.gap)+' short.'});});
+  if(P.r.cush>0)out.push({k:'c',n:'Top up your cushion',a:P.r.cush,note:'Refill toward the '+pdM(c36(PD().cushGoal))+' goal'});
+  (P.r.extras||[]).forEach(function(x){var d=debtById(x.id);out.push({k:'x',n:'Extra to '+(d?M.debt(x.id,shortName(x.id)):'a debt'),a:x.amt});});
+  return out;
+}
+function shOrderRows(M){
+  return shDebtOrder().map(function(id){
+    var d=debtById(id);if(!d||(d.balance!=null&&d.balance<=0.005)||d.asBill)return null;
+    var row={n:M.debt(id,d.name),k:d.kind||'card'};
+    if(d.apr!=null&&d.apr!=='')row.r=+d.apr;
+    if(d.balance!=null)row.bal=shC(d.balance);
+    if(C.df&&C.df.per&&C.df.per[id]&&C.df.per[id].date)row.by=iso(C.df.per[id].date);
+    if(d.kind==='card'&&d.limit>0&&d.balance!=null)row.used=Math.round(d.balance/d.limit*100);
+    if(C.pd&&C.pd.r){var x=(C.pd.r.extras||[]).filter(function(e){return e.id===id;})[0],mn=0;(C.pd.items||[]).forEach(function(it){if(it.kind==='min'&&it.id===id)mn+=it.c;});if(d.balance!=null)row.left=shC(d.balance)-mn-(x?x.amt:0);}
+    return row;
+  }).filter(Boolean);
+}
+function shSnap(opt){
+  opt=opt||{};var hA=!!opt.hideAmt,hN=!!opt.hideNames;
+  var P=(typeof pdBuild==='function'?pdBuild():null)||C.pd,M=shNames(hN);
+  var df=C.df&&C.df.date?C.df.date:null,mi=0;
+  data.debts.forEach(function(d){if(d.balance>0.005&&d.apr>0&&!d.asBill)mi+=d.balance*d.apr/1200;});
+  var pack={v:2,kind:'view',on:iso(today),hide:{},or:[],mo:{st:data.settings.strategy==='snowball'?'snowball':'avalanche'}};
+  if(hA)pack.hide.a=1;if(hN)pack.hide.n=1;
+  if(df)pack.df=iso(df).slice(0,7);
+  pack.or=shOrderRows(M);
+  if(!hA&&mi>=0.5)pack.mo.int=Math.round(mi*100);
+  if(P&&P.r&&P.r.extras&&P.r.extras[0]){var d0=debtById(P.r.extras[0].id);if(d0)pack.mo.extra=M.debt(d0.id,d0.name);}
+  if(P){pack.ck={d:iso(P.D),to:iso(addDays(P.D2,-1)),nx:iso(P.D2)};
+    if(!hA){pack.ck.a=P.r.check;pack.ck.l=P.r.free;if(P.r.short)pack.ck.short=P.r.short;if(P.dep){if(P.dep.you)pack.ck.you=P.dep.you;if(P.dep.partner)pack.ck.partner=P.dep.partner;}}
+    pack.it=shViewItems(P,M);}
+  else pack.ck={d:iso(today)};
+  if(hA){
+    pack.or.forEach(function(r){delete r.r;delete r.bal;delete r.left;delete r.used;delete r.by;});
+    (pack.it||[]).forEach(function(it){delete it.a;delete it.note;});
+  }
+  return pack;
+}
+function shHasLocalPlan(){try{return !!(data&&data.settings&&data.settings.onboarded&&((typeof hasPlan==='function'&&hasPlan())||(data.bills&&data.bills.length)||(data.income&&data.income.youCheck>0)));}catch(e){return false;}}
+/* Save a copy: a SKETCH built only from what the shared page shows (no hidden backup travels in the link).
+   Debts come from the payoff order (name, kind, rate, balance), their minimums and due days from the minimum lines, fixed payments
+   (e.g. a mortgage) from their lines, bills from the bill lines (amount and due day), and your paycheck from this check. Pay
+   frequency, pay anchor, set-asides, limits and everything else are NOT in the link: the recipient sets those up. */
+function shApply(snap){
+  if(!snap||snap.v!==2||snap.kind!=='view'||!Array.isArray(snap.or)||!Array.isArray(snap.it||[]))throw new Error('bad');
+  function dl(c){return c==null?null:Math.round(c)/100;}
+  function dayOf(iso0){var d=iso0?parseISO(iso0):null;return d?d.getDate():null;}
+  var debts=[],byName={},bills=[],bm={};
+  function dbt(n,k){var key=String(n).toLowerCase();if(byName[key])return byName[key];var d={id:'d'+(debts.length+1),kind:k||'card',name:String(n),balance:null,apr:null,min:null,limit:null,dueDay:1,est:{},note:''};debts.push(d);byName[key]=d;return d;}
+  snap.or.forEach(function(r){var d=dbt(r.n,r.k);if(r.bal!=null)d.balance=dl(r.bal);if(r.r!=null)d.apr=+r.r;});
+  (snap.it||[]).forEach(function(it){
+    var dd=dayOf(it.due);
+    if(it.k==='m'){var d=dbt(String(it.n).replace(/ minimum$/,''),'card');if(it.a!=null)d.min=dl(it.a);if(dd)d.dueDay=dd;}
+    else if(it.k==='f'){var f=dbt(it.n,'mortgage');if(f.kind==='card'&&f.balance==null)f.kind='mortgage';if(it.a!=null)f.min=dl(it.a);if(dd)f.dueDay=dd;}
+    else if(it.k==='b'){var nm=String(it.n),a=it.a==null?0:dl(it.a);bills.push({name:nm,amount:a,entered:a,freq:'monthly',est:0});if(dd)bm['b:'+nm.trim().toLowerCase()]={day:dd};}
+  });
+  var ck=snap.ck||{},you=ck.you!=null?ck.you:(ck.partner==null&&ck.a!=null?ck.a:null);
+  var raw={app:'payoff-share',version:1,created:iso(today),sample:false,history:[],wins:[],fired:{},checked:{},checkins:[],debts:debts,bills:bills,partnerBudget:[],
+    income:{youCheck:you==null?0:dl(you),freq:'biweekly'},
+    settings:{strategy:(snap.mo&&snap.mo.st)==='snowball'?'snowball':'avalanche',onboarded:true}};
+  if(you!=null&&ck.d)raw.settings.payAnchor=ck.d;
+  data=normalize(raw);data.settings.onboarded=true;data.sample=false;
+  if(typeof v3Clean==='function'){V3=v3Clean({d:{},cal:{bm:bm,paid:{}}});}
+  try{$('onb').close();}catch(e){}
+  save();if(typeof syncInputs==='function')syncInputs();compute();
+  try{var D=CALD(),S=addDays(today,-45);calItems(S,today,{all:true}).forEach(function(it){if((it.kind==='bill'||it.kind==='fixed')&&it.okey)D.paid[it.okey]=1;});pdDebtMins(S,sod(today)).forEach(function(it){D.paid[it.okey]=1;});}catch(e){}
+  if(typeof v3Save==='function')v3Save();
+  showTab('today');renderAll();
+}
+
+/* ---------- UI ---------- */
+function shEl(html){var d=document.createElement('div');d.innerHTML=html;return d.firstElementChild;}
+function shEnsure(){['shPage','shView','shPass','shErr','shConf'].forEach(function(id){if($(id))return;var el=document.createElement('div');el.id=id;el.className='sh-ov';el.hidden=true;el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');document.body.appendChild(el);});}
+function shHideAll(){['shPage','shView','shPass','shErr','shConf'].forEach(function(id){var e=$(id);if(e){e.hidden=true;e.innerHTML='';}});document.body.classList.remove('sh-open','sh-viewing');}
+function shShow(id,html,aria){shEnsure();shHideAll();document.body.classList.add('sh-open');var e=$(id);e.hidden=false;e.innerHTML=html;if(aria)e.setAttribute('aria-labelledby',aria);var f=e.querySelector('[data-shfocus]');if(f)try{f.focus({preventScroll:true});}catch(x){}return e;}
+function shBackLive(){shHideAll();if(!location.hash||location.hash==='#')return;try{history.replaceState(null,'',shOrigin()+(location.search||''));}catch(e){location.hash='';}}
+
+function shToggleRow(id,title,sub,on){
+  return '<div class="sh-row"><div class="sh-rt"><b id="'+id+'-l">'+title+'</b><div class="muted small">'+sub+'</div></div>'+
+    '<button type="button" class="sh-sw" id="'+id+'" role="switch" aria-checked="'+(on?'true':'false')+'" aria-labelledby="'+id+'-l"><i></i></button></div>';
+}
+function shOpen(){
+  shEnsure();
+  var h='<div class="sh-in" id="shSheet">'+
+    '<div class="sh-top"><button type="button" class="lnk sh-back" data-sh="close" data-shfocus>‹ Back</button></div>'+
+    '<p class="eyebrow">Accounts</p><h1 id="shH">Share my plan</h1>'+
+    '<div class="card sh-card">'+
+    '<p class="small" style="margin:0 0 8px">A view-only snapshot for whoever you send it to. They can open it in a browser — no account needed.</p>'+
+    shToggleRow('shHideA','Hide dollar amounts','No $ amounts or interest rates, and no payoff dates that could give them away.',false)+
+    shToggleRow('shHideN','Hide debt names','Renames them Card 1, Bill 2, and so on.',false)+
+    shToggleRow('shLock','Lock with a passcode','The link opens only with the code. Send the code separately. Use at least 8 characters.',false)+
+    '<div class="f" id="shPassBox" hidden><label for="shPassIn">Passcode</label><input id="shPassIn" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters"><div class="err" id="shPassErr" role="alert"></div><p class="small muted hint">Don’t put the passcode in the same message as the link.</p></div>'+
+    '<div class="sh-call a" role="note">This is a snapshot; send a new link after changes.</div>'+
+    '<div class="sh-call n" role="note"><b>Links can’t be taken back once sent.</b> Anyone who has the link (and the passcode, if you set one) can open it. A new link doesn’t retire an old one.</div>'+
+    '<button type="button" class="btn primary sh-full" data-sh="copy" id="shCopy">Copy link</button>'+
+    '<button type="button" class="btn sh-full" data-sh="msg" id="shMsg">Messages</button>'+
+    '<button type="button" class="btn sh-full" data-sh="qr" id="shQrBtn">QR code</button>'+
+    '<p class="small muted" id="shLen" style="margin-top:10px"></p>'+
+    '</div>'+
+    '<p class="note">Estimates only, not financial advice. Your plan travels only inside this link. Nothing is stored online.</p>'+
+    '</div>';
+  shShow('shPage',h,'shH');
+  shWireSheet();shRefreshLink();
+}
+function shOpts(){return {hideAmt:$('shHideA')&&$('shHideA').getAttribute('aria-checked')==='true',hideNames:$('shHideN')&&$('shHideN').getAttribute('aria-checked')==='true',pass:$('shLock')&&$('shLock').getAttribute('aria-checked')==='true'?(($('shPassIn')||{}).value||''):''};}
+var SH_LAST=null;
+async function shRefreshLink(){
+  var o=shOpts(),err=$('shPassErr'),box=$('shPassBox');
+  if(box)box.hidden=!($('shLock')&&$('shLock').getAttribute('aria-checked')==='true');
+  if(err)err.textContent='';
+  if(o.pass===''){ /* lock off or empty */ }
+  try{
+    if($('shLock')&&$('shLock').getAttribute('aria-checked')==='true'&&o.pass.length&&o.pass.length<SH_MIN){if(err)err.textContent='Use at least 8 characters.';SH_LAST={err:'pass-short'};var n=$('shLen');if(n)n.textContent='';return;}
+    var L=await shLink(o);SH_LAST=L;
+    var n=$('shLen');if(n&&L.url)n.textContent='Link length: '+L.len+' characters.';
+  }catch(e){SH_LAST={err:'bad'};if(err)err.textContent='Couldn’t build the link. Try again.';}
+}
+async function shNeedLink(){
+  if(!SH_LAST||SH_LAST.err)await shRefreshLink();
+  if(SH_LAST&&SH_LAST.err==='pass-short'){var e=$('shPassErr');if(e)e.textContent='Use at least 8 characters.';var i=$('shPassIn');if(i)i.focus();return null;}
+  if($('shLock')&&$('shLock').getAttribute('aria-checked')==='true'&&(!SH_LAST||!SH_LAST.url)){var e2=$('shPassErr');if(e2)e2.textContent='Enter a passcode of at least 8 characters.';return null;}
+  return SH_LAST;
+}
+async function shCopy(btn){
+  var L=await shNeedLink();if(!L||!L.url)return;
+  function ok(){toast('Link copied');if(btn){var t=btn.textContent;btn.textContent='Copied';setTimeout(function(){btn.textContent=t;},1600);}}
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(L.url);ok();return;}}catch(e){}
+  var ta=document.createElement('textarea');ta.value=L.url;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok();}catch(e){toast('Copy the link from the box');}document.body.removeChild(ta);
+}
+async function shMsg(){
+  var L=await shNeedLink();if(!L||!L.url)return;
+  var text='A view-only snapshot of a Payoff plan. It’s a snapshot, not a live share.';
+  if(navigator.share){try{await navigator.share({title:'Payoff plan',text:text,url:L.url});return;}catch(e){if(e&&e.name==='AbortError')return;}}
+  location.href='sms:?&body='+encodeURIComponent(text+'\n'+L.url);
+}
+async function shOpenQR(){
+  var L=await shNeedLink();if(!L||!L.url)return;
+  var svg='';try{var qr=shQR(0,'M');qr.addData(L.url);qr.make();svg=qr.createSvg(4,2);}catch(e){svg='<p class="err">Couldn’t draw a QR code. Copy the link instead.</p>';}
+  var short=L.url.length>48?L.url.slice(0,40)+'…':L.url;
+  var h='<div class="sh-in" id="shQr">'+
+    '<div class="sh-top"><button type="button" class="lnk sh-back" data-sh="sheet" data-shfocus>‹ Back</button></div>'+
+    '<p class="eyebrow">Share my plan</p><h1 id="shQrH" class="sh-smh">QR code</h1>'+
+    '<div class="card sh-card" style="text-align:center">'+
+    '<p class="small" style="margin:0">Whoever you send this to can scan it and open the snapshot in a browser.</p>'+
+    '<div class="sh-qr" id="shQrBox">'+svg+'</div>'+
+    '<div class="sh-linkbox" id="shQrUrl">'+esc(short)+'</div>'+
+    '<button type="button" class="btn primary sh-full" data-sh="copy">Copy link</button>'+
+    '<p class="small muted" style="margin-top:12px">Same snapshot you’d send with Copy link or Messages. The plan travels inside the link. Nothing is stored online.</p>'+
+    '</div>'+
+    '<p class="note">Estimates only, not financial advice. Your plan travels only inside this link. Nothing is stored online.</p>'+
+    '</div>';
+  shShow('shPage',h,'shQrH');
+  var box=$('shQrBox'),im=box&&box.querySelector('svg');if(im){im.setAttribute('width','260');im.setAttribute('height','260');im.style.width='260px';im.style.height='260px';im.setAttribute('aria-label','QR code for this snapshot link');}
+}
+
+function shMd(ym){if(!ym)return '';var p=ym.split('-'),mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][(+p[1]||1)-1];return mo+' '+(p[0]||'');}
+function shMoney(c,hide){if(hide||c==null)return '';return typeof pdM==='function'?pdM(c):(c<0?'−':'')+'$'+(Math.abs(c)/100).toFixed(c%100?2:0);}
+function shViewHtml(snap){
+  var hide=!!(snap.hide&&snap.hide.a),ck=snap.ck||{},it=snap.it||[],or=snap.or||[],mo=snap.mo||{};
+  var df=snap.df?shMd(snap.df):'';
+  var h='<div class="sh-in sh-v" id="shViewIn"><p class="eyebrow">Shared plan</p>';
+  h+='<h1 id="shVH">'+(df?'Debt free<br>'+esc(df):'Shared payoff plan')+'</h1>';
+  h+='<p class="muted small" style="margin:0 4px">'+(df?'Estimated, if this pace holds. ':'')+'This is a snapshot, not a live share.</p>';
+  h+='<div class="card sh-card"><div class="sh-tag">Payday plan</div>';
+  h+='<div class="sh-ck"><div><h3>'+(ck.d?esc(dShort(parseISO(ck.d)))+' check':'This check')+'</h3><div class="muted small">';
+  if(ck.to&&ck.nx)h+='Covers to '+esc(dShort(parseISO(ck.to)))+' · next check '+esc(dWk(parseISO(ck.nx)));
+  h+='</div></div>'+(hide||ck.a==null?'':'<div class="num sh-big">'+shMoney(ck.a)+'</div>')+'</div>';
+  if(it.length){h+='<ol class="sh-acts">';it.forEach(function(row,i){h+='<li class="'+(row.x?'paid':'')+'"><span class="sh-n" aria-hidden="true">'+(row.x?'✓':(i+1))+'</span><div class="sh-t"><b>'+esc(row.n)+'</b>'+(row.due||row.note?'<div class="muted small">'+(row.due?'Due '+esc(dWk(parseISO(row.due))):'')+(row.due&&row.note?' · ':'')+(row.note?esc(row.note):'')+'</div>':'')+'</div>'+(hide||row.a==null?'':'<b class="num">'+shMoney(row.a)+'</b>')+'</li>';});h+='</ol>';}
+  if(!hide&&ck.l!=null)h+='<div class="sh-left"><div><h3>'+(ck.l<0?'Short':'Left to spend')+'</h3></div><b class="num'+(ck.l<0?' sh-neg':'')+'">'+shMoney(ck.l)+'</b></div>';
+  h+='</div>';
+  if(or.length){h+='<div class="card sh-card"><div class="sh-tag">Payoff order</div>';or.forEach(function(row,i){var bits=[];if(!hide&&row.r!=null)bits.push(row.r+'%');if(!hide&&row.left!=null)bits.push('about '+shMoney(row.left)+' left after this check');if(row.by)bits.push((!hide&&row.left!=null?'Closed by ':'Closes ')+dShort(parseISO(row.by)));if(!hide&&row.used!=null)bits.push('about '+row.used+'% of the limit used');h+='<div class="sh-or"><span class="sh-on">'+(i+1)+'</span><div><b>'+esc(row.n)+'</b>'+(bits.length?'<div class="muted small">'+esc(bits.join(' · '))+'</div>':'')+'</div></div>';});h+='</div>';}
+  h+='<div class="card sh-card"><div class="sh-tag">Monthly plan</div><ul class="sh-mo">';
+  h+='<li>Keep every minimum current each month.</li>';
+  if(mo.extra)h+='<li>This month’s extra goes to '+esc(mo.extra)+' first'+(mo.st==='snowball'?' (smallest balance).':hide?'.':' (highest rate).')+'</li>';
+  if(!hide&&mo.int!=null)h+='<li>Your debt costs about <b>'+shMoney(mo.int)+' a month</b> in interest right now.</li>';
+  if(df)h+='<li>Debt free date stays <b>'+esc(df)+'</b> if this pace holds.</li>';
+  h+='</ul></div>';
+  h+='<p class="note">This is a snapshot, not a live share, and not financial advice. It will not update if the plan changes. Links can’t be taken back once sent.</p>';
+  h+='<p class="note">'+(hide?'Amounts are hidden, so a saved copy has names and dates only. ':'')+'Save a copy makes a starting sketch from what you see here: the debts, balances and bills shown. You’ll set up your own pay schedule and anything missing.</p>';
+  h+='<button type="button" class="btn primary sh-full" data-sh="save" id="shSave">Save a copy to my app</button>';
+  h+='<button type="button" class="btn quiet sh-full" data-sh="own" id="shOwn">Make your own plan</button>';
+  h+='<div class="sh-safe"></div></div>';
+  return h;
+}
+var SH_SNAP=null;
+function shShowView(snap){
+  SH_SNAP=snap;document.body.classList.add('sh-viewing');
+  shShow('shView',shViewHtml(snap),'shVH');
+}
+function shShowPass(b64){
+  var h='<div class="sh-in" id="shPassInW"><p class="eyebrow">View only snapshot</p><h1 id="shPH" class="sh-smh">Enter the passcode</h1>'+
+    '<div class="card sh-card"><p class="small" style="margin:0">This plan is locked. Ask whoever sent it for the passcode — they should have sent it separately from the link.</p>'+
+    '<div class="f" style="margin-top:12px"><label for="shUnlockIn">Passcode</label><input id="shUnlockIn" type="password" autocomplete="current-password" minlength="8" data-shfocus placeholder="At least 8 characters"><div class="err" id="shUnlockErr" role="alert"></div></div>'+
+    '<button type="button" class="btn primary sh-full" data-sh="unlock" id="shUnlock" style="margin-top:16px">Unlock plan</button>'+
+    '<p class="small muted" style="margin-top:12px;text-align:center">This is a snapshot, not a live share. Nothing here can be edited.</p></div></div>';
+  shShow('shPass',h,'shPH');$('shPass').dataset.b64=b64;
+}
+function shShowErr(msg){
+  var h='<div class="sh-in"><p class="eyebrow">Shared plan</p><h1 id="shEH">This link can’t be opened</h1>'+
+    '<div class="card sh-card"><p class="small">'+esc(msg)+'</p>'+
+    '<button type="button" class="btn primary sh-full" data-sh="dismiss" data-shfocus>Close</button></div></div>';
+  shShow('shErr',h,'shEH');
+}
+function shShowConfirm(){
+  /* Keep mine is the default (primary). Replace is the danger action. Never overwrite without this. */
+  var h='<div class="sh-scrim" data-sh="keep"></div><div class="sh-sheet" role="document">'+
+    '<div class="grab" aria-hidden="true"></div><h2 id="shCH">You already have a plan</h2>'+
+    '<p class="small muted" style="margin:6px 0 0">Saving this snapshot would replace the plan now on this phone. That can’t be undone, except by a backup you already saved.</p>'+
+    '<button type="button" class="btn primary sh-full" data-sh="keep" id="shKeep" data-shfocus>Keep mine</button>'+
+    '<button type="button" class="btn danger sh-full" data-sh="replace" id="shReplace">Replace my plan</button>'+
+    '<p class="muted small" style="margin-top:10px;text-align:center">Keep mine stays on your current plan and leaves this snapshot alone.</p>'+
+    '</div>';
+  shEnsure();var e=$('shConf');e.hidden=false;e.innerHTML=h;e.setAttribute('aria-labelledby','shCH');document.body.classList.add('sh-open');
+  var f=$('shKeep');if(f)try{f.focus({preventScroll:true});}catch(x){}
+}
+function shDoSave(force){
+  if(!SH_SNAP)return;
+  if(!force&&shHasLocalPlan()){shShowConfirm();return;}
+  try{shApply(SH_SNAP);shBackLive();toast('Saved a copy of the snapshot');}
+  catch(e){shShowErr('This snapshot can’t be saved as a plan. Ask whoever sent it for a new link.');}
+}
+function shKeep(){ /* default: do not overwrite */ var c=$('shConf');if(c){c.hidden=true;c.innerHTML='';} }
+function shOwn(){var had=shHasLocalPlan();shBackLive();if(!had)try{openOnboarding(0);}catch(e){}}
+
+async function shBoot(h){
+  var p=shParseHash(h);if(!p)return false;
+  try{
+    if(p.kind==='p'){shShowPass(p.b64);return true;}
+    var D=await shDecodeB64(p.b64);if(!D.obj||D.obj.v!==2)throw new Error('bad');
+    shShowView(D.obj);return true;
+  }catch(e){shShowErr('This link looks incomplete or damaged. Ask whoever sent it for a new one.');return true;}
+}
+async function shDoUnlock(){
+  var b64=($('shPass')||{}).dataset&&$('shPass').dataset.b64,pass=($('shUnlockIn')||{}).value||'',err=$('shUnlockErr');
+  if(err)err.textContent='';
+  if(pass.length<SH_MIN){if(err)err.textContent='Use at least 8 characters.';return;}
+  try{var D=await shUnlock(b64,pass);shShowView(D.obj);}
+  catch(e){if(err)err.textContent=e&&e.message==='pass-short'?'Use at least 8 characters.':'That passcode doesn’t unlock this plan. Check it and try again.';}
+}
+
+function shWireSheet(){
+  [['shHideA','shHideN','shLock']].forEach(function(){});
+  ['shHideA','shHideN','shLock'].forEach(function(id){var b=$(id);if(!b)return;b.addEventListener('click',function(){var on=b.getAttribute('aria-checked')!=='true';b.setAttribute('aria-checked',on?'true':'false');shRefreshLink();});});
+  var inp=$('shPassIn');if(inp)inp.addEventListener('input',function(){shRefreshLink();});
+}
+document.addEventListener('click',function(e){
+  var t=e.target&&e.target.closest?e.target.closest('[data-sh]'):null;if(!t)return;
+  var a=t.dataset.sh;e.preventDefault();
+  if(a==='open')shOpen();
+  else if(a==='close'||a==='dismiss')shBackLive();
+  else if(a==='sheet')shOpen();
+  else if(a==='copy')shCopy(t);
+  else if(a==='msg')shMsg();
+  else if(a==='qr')shOpenQR();
+  else if(a==='save')shDoSave(false);
+  else if(a==='keep')shKeep();
+  else if(a==='replace')shDoSave(true);
+  else if(a==='own')shOwn();
+  else if(a==='unlock')shDoUnlock();
+});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&$('shUnlockIn')&&document.activeElement===$('shUnlockIn')){e.preventDefault();shDoUnlock();}});
+
+var _renderMoney37=renderMoney;
+renderMoney=function(){
+  var r=_renderMoney37.apply(this,arguments);
+  try{
+    if(!$('shCard')){
+      var host=$('saveCard')||$('backupCard');
+      if(host){var c=document.createElement('div');c.className='card';c.id='shCard';
+        c.innerHTML='<h2 id="h-share">Share my plan</h2><p class="note" style="margin-top:6px">A view-only snapshot for whoever you send it to. They can open it in a browser — no account needed.</p><button type="button" class="btn primary sh-full" data-sh="open" id="shOpenBtn" style="margin-top:12px">Share my plan</button>';
+        host.parentNode.insertBefore(c,host.nextSibling);}
+    }
+
+  }catch(e){}
+  return r;
+};
+/* events.js (later in the same bundle) defines showTab / openOnboarding and then boots the app.
+   Hook after that init so a shared link can replace the welcome screen. */
+window.addEventListener('hashchange',function(){try{if(shParseHash())shBoot();}catch(e){}});
+setTimeout(function(){
+  if(typeof showTab==='function'&&!showTab._sh){var _s=showTab;showTab=function(){return _s.apply(this,arguments);};showTab._sh=1;}
+  if(typeof openOnboarding==='function'&&!openOnboarding._sh){var _o=openOnboarding;openOnboarding=function(){if(shParseHash())return;return _o.apply(this,arguments);};openOnboarding._sh=1;}
+  try{if(shParseHash()){try{$('onb').close();}catch(e){}shBoot();}}catch(e){if(window.console)console.error(e);}
+},0);
 
 /* ===== Tabs, events, init ===== */
 function renderEmpty(t){

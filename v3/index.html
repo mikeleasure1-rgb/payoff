@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)" id="tcDark">
 <meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)" id="tcLight">
 <meta name="application-name" content="Payoff">
-<meta name="payoff-build" content="payoff-v3-5-1">
+<meta name="payoff-build" content="payoff-v3-6-1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Payoff">
@@ -1105,6 +1105,70 @@ details.mb-paid>summary{min-height:44px;display:flex;align-items:center;font-wei
 .seg3 button{min-width:44px}
 /* .btn.mini picked up the .mini grid (2 columns): text sat left in a too-wide button. Mini buttons are plain centered pills. */
 .btn.mini{display:inline-flex;align-items:center;justify-content:center;grid-template-columns:none}
+
+/* ===== V3.6 payday plan ===== */
+#payCard.pd-on #pcBreak,#payCard.pd-on #doHero{display:none}
+.pdp{margin:16px 0 4px;padding:16px 0 0;border-top:1px solid var(--line)}
+.pdp-hd{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pdp-t{font-size:22px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:0}
+.pdp-set{min-height:44px;padding:0 4px;font-size:var(--t2);flex:none}
+.pdp-top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:8px}
+.pdp-k{font-size:12px;font-weight:750;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);min-width:0}
+.pdp-k .nw{white-space:nowrap}
+.pdp-amt{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1;white-space:nowrap}
+.pdp-sub{font-size:var(--t1);color:var(--muted);margin-top:4px}.pdp-sub .nw{white-space:nowrap}
+.pdp-note{font-size:var(--t1);color:var(--muted);margin:10px 0 0;padding:9px 12px;border-radius:12px;background:var(--quiet2)}
+.pd-tight{margin-top:12px;padding:12px 14px;border-radius:16px;background:var(--amber-bg);color:var(--amber);font-size:var(--t2);line-height:1.4}
+.pd-tight b{font-weight:800}
+.pdl{list-style:none;margin:12px 0 0;padding:4px 12px;border-radius:18px;background:var(--green-bg);border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)}
+.short .pdl{background:var(--quiet2);border-color:var(--line)}
+.pdr{border-top:1px solid var(--line)}
+.pdr:first-child{border-top:0}
+.pdr-b{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:flex-start;gap:12px;padding:12px 0;min-height:44px;cursor:pointer;color:var(--text);-webkit-tap-highlight-color:transparent}
+.pdr-b:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:10px}
+.pdn{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;background:var(--s1);color:var(--muted);border:1.5px solid var(--line2);margin-top:-2px}
+.pdn .ico{width:16px;height:16px;stroke-width:2.6}
+.pdr.paid .pdn{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.pdr.paid .pdr-n,.pdr.paid .pdr-v{color:var(--muted)}
+.pdr.paid .pdr-v{text-decoration:line-through;text-decoration-thickness:1.5px}
+.pdr-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pdr-n{font-weight:700;font-size:var(--t3);line-height:1.25;overflow-wrap:anywhere}
+.pdr-s{font-size:var(--t1);color:var(--muted);line-height:1.35}
+.pdr-v{font-weight:750;font-size:var(--t3);white-space:nowrap;margin-left:4px}
+.pdr.x .pdr-v{color:var(--accent-text)}
+.pdr.paid.x .pdr-v{color:var(--muted)}
+.pd-by{color:var(--accent-text);font-weight:750}
+.pd-past{display:inline-block;padding:0 7px;border-radius:999px;background:var(--red-bg);color:var(--red);font-weight:750;white-space:nowrap}
+.pdr.info .pdr-b{cursor:default}
+.pd-free{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;padding:0 2px}
+.pd-fl{font-weight:800;font-size:var(--t4);letter-spacing:-.01em}
+.pd-fs{font-size:var(--t1);color:var(--muted)}
+.pd-fv{font-size:30px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.pd-free.neg .pd-fv{color:var(--red)}
+.pd-sum{font-size:12px;color:var(--muted);margin-top:4px;padding:0 2px}
+.pd-oh{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:16px 2px 6px}
+.pdo{list-style:none;margin:0;padding:0;counter-reset:pdo}
+.pdo li{counter-increment:pdo;position:relative;padding:12px 14px 12px 46px;border:1px solid var(--line2);border-radius:16px;margin-top:8px;background:var(--s1)}
+.pdo li::before{content:counter(pdo,lower-alpha);position:absolute;left:14px;top:12px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:var(--green-bg);color:var(--accent-text)}
+.pdo li.no::before{background:var(--quiet2);color:var(--muted)}
+.pdo li b{display:block;font-size:var(--t2);font-weight:750}
+.pdo li span{display:block;font-size:var(--t1);color:var(--muted);margin-top:2px;line-height:1.4}
+.pd-never{font-size:var(--t1);margin:12px 0 0;padding:11px 14px;border-radius:14px;background:var(--quiet2);color:var(--text);line-height:1.4}
+.pd-next{width:100%;margin-top:14px;white-space:nowrap}
+.pd-all{margin:14px 0 0;font-weight:700;color:var(--accent-text);text-align:center}
+.pdi{list-style:none;margin:14px 0 0;padding:0;border-top:1px solid var(--line)}
+.pdi li{padding:10px 2px;border-bottom:1px solid var(--line);font-size:var(--t2);line-height:1.4}
+.pdi li:last-child{border-bottom:0}
+.pdi-col{display:flex;flex-direction:column;align-items:flex-start}
+.pdi .lnk{min-height:44px;display:inline-flex;align-items:center;margin-bottom:-8px}
+.pd-range{width:100%;min-height:44px;accent-color:var(--accent)}
+@media (max-width:380px){.pdp-amt{font-size:30px}.pd-fv{font-size:26px}.pdl{padding:2px 10px;margin-left:-6px;margin-right:-6px}}
+
+.pdo-mv{display:block;margin-top:6px;color:var(--text);font-weight:650}
+.pdo-warn{display:block;margin-top:3px;padding:6px 10px;border-radius:10px;background:var(--amber-bg);color:var(--amber);font-weight:600}
+/* V3.6 holds: a later check still short after holds (FD 3:00 PM) */
+.pd-ahead{margin-top:10px}
+.pd-ahead .pd-fix{display:block;margin-top:6px}
 
 </style>
 </head>
@@ -7005,6 +7069,410 @@ renderMoney=function(){var r=_renderMoneyB35.apply(this,arguments);nwSweep35();r
 var _rotPickC35=rotPick;
 rotPick=function(){var p=_rotPickC35();if(p&&p.id==='cu')p.lab='';return p;};
 /* ===================== end V3.5 Batch B ===================== */
+
+/* ===================== V3.6: Payday plan on Today ("This check: do this") =====================
+   Math rules: specs/V3.6-PAYDAY-MATH.md (Finance Dude). Cents in integers; every line adds up to the check exactly.
+   - This check pays every unpaid bill / minimum due in [D, D2) plus anything due in [D2, D2+3 days). Unpaid past-due items first.
+     (Set-asides that repeat every payday are not pulled back from D2: they are that check's own.)
+   - Cushion top-up = max(0, goal - cushion now), capped at what is left.
+   - Extra to debt = (left after bills and cushion) x extra share (default 50%), rounded down to the cent, to ONE target debt
+     (avalanche: highest rate, tie -> smaller balance; snowball: smallest balance, tie -> higher rate); never more than its balance; spills over.
+   - Free to spend = check - everything above. A short check shows the negative, never $0, and offers: cushion, move a bill
+     with 3+ days of slack after the next check, minimums only. It never suggests skipping a minimum.
+   - Overtime counts only once it is marked received, and only on the check it lands in.
+   - Items marked paid before this check are left out; items ticked from this plan (or paid on/after payday) stay with a check mark.
+   New data lives in data.settings.pd so Back up / Restore / Export / Import keep it. */
+var PD_DEF={cushGoal:200,cushHave:0,extraPct:50};
+function pdBlank(){return {cushGoal:PD_DEF.cushGoal,cushHave:PD_DEF.cushHave,extraPct:PD_DEF.extraPct,done:{},paidAt:{}};}
+function pdClean(o){
+  var s=o&&typeof o==='object'&&!Array.isArray(o)?o:{},out=pdBlank();
+  function money(v,def){var n=Number(v);return (typeof v==='number'||typeof v==='string')&&v!==''&&isFinite(n)&&n>=0&&n<=1e9?Math.round(n*100)/100:def;}
+  out.cushGoal=money(s.cushGoal,PD_DEF.cushGoal);out.cushHave=money(s.cushHave,PD_DEF.cushHave);
+  var p=Number(s.extraPct);out.extraPct=(s.extraPct!=null&&s.extraPct!==''&&isFinite(p))?Math.max(0,Math.min(100,Math.round(p))):PD_DEF.extraPct;
+  var lim=iso(addDays(today,-75)),n=0;
+  if(s.done&&typeof s.done==='object'&&!Array.isArray(s.done))Object.keys(s.done).sort().slice(-6).forEach(function(k){
+    if(!/^\d{4}-\d\d-\d\d$/.test(k)||k<lim)return;var src=s.done[k],o2={};if(!src||typeof src!=='object')return;
+    Object.keys(src).slice(0,80).forEach(function(key){if(typeof key!=='string'||key.length>90)return;var v=src[key];
+      if(v===1||v===true)o2[key]=1;else if(v&&typeof v==='object'){var a=Number(v.a);if(isFinite(a)&&a>=0&&a<=1e9)o2[key]={a:Math.round(a*100)/100,h:String(v.h||'').slice(0,40)};}});
+    out.done[k]=o2;});
+  if(s.paidAt&&typeof s.paidAt==='object'&&!Array.isArray(s.paidAt))Object.keys(s.paidAt).forEach(function(key){
+    if(n>300||typeof key!=='string'||key.length>90)return;var v=s.paidAt[key];if(typeof v==='string'&&/^\d{4}-\d\d-\d\d$/.test(v)&&v>=lim){out.paidAt[key]=v;n++;}});
+  return out;
+}
+function PD(){var s=data.settings;if(!s.pd||typeof s.pd!=='object'||!s.pd.done)s.pd=pdClean(s.pd);return s.pd;}
+/* storage: new installs, old saves (V3.5 / V3.4 have no pd) and restored backups all get a clean pd */
+var _starter36=starter;
+starter=function(){var d=_starter36.apply(this,arguments);try{d.settings.pd=pdBlank();}catch(e){}return d;};
+var _normalize36=normalize;
+normalize=function(raw){
+  var out=_normalize36.apply(this,arguments),src=raw&&raw.data&&raw.app?raw.data:raw,st=src&&src.settings||{};
+  out.settings.pd=pdClean(st.pd);return out;
+};
+try{if(data&&data.settings&&!data.settings.pd)data.settings.pd=pdBlank();}catch(e){}
+
+/* ---------- money helpers (integer cents) ---------- */
+function c36(n){return Math.round((Number(n)||0)*100);}
+function pdM(c){c=Math.round(c);var neg=c<0,a=Math.abs(c),d=Math.floor(a/100),r=a%100,s='$'+d.toLocaleString('en-US')+(r?'.'+('0'+r).slice(-2):'');return (neg?'−':'')+s;}
+function pdM2(c){c=Math.round(c);var a=Math.abs(c);return (c<0?'−':'')+'$'+Math.floor(a/100).toLocaleString('en-US')+'.'+('0'+(a%100)).slice(-2);}
+
+/* ---------- the pure calculator (tested directly with Finance Dude's numbers) ----------
+   inp: {check (cents), items:[{c (cents),...}], cushGoal, cushHave (cents), extraPct (0-100), strategy,
+         debts:[{id,bal (cents),apr,minHere (cents of this debt's unpaid minimum already in items)}], extraDone:{id:cents}} */
+function pdCalc(inp){
+  var check=Math.round(inp.check),step1=0;inp.items.forEach(function(it){step1+=Math.round(it.c);});
+  var avail=check-step1,short=avail<0?-avail:0;
+  /* FD, Nov 25 3:00 PM: the cushion yields to holds. Order: bills/minimums/set-asides, holds for later checks, cushion, extra, free.
+     A cushion top-up already ticked stays as ticked (that money has moved), so it comes off first. */
+  var cushNeed=Math.max(0,Math.round(inp.cushGoal)-Math.round(inp.cushHave)),cush=0,hu=0,holds=[],sp=Math.max(0,avail);
+  if(inp.cushDone!=null){cush=Math.min(Math.round(inp.cushDone),sp);sp-=cush;}
+  (inp.holds||[]).forEach(function(h){var a=Math.min(Math.max(0,Math.round(h.c)),sp-hu);if(a>0){holds.push({key:h.key,t:h.t,amt:a,gap:h.gap,after:h.after,done:!!h.done});hu+=a;}});
+  if(inp.cushDone==null)cush=Math.min(cushNeed,sp-hu);
+  var left=sp-hu-(inp.cushDone==null?cush:0),pool=Math.floor(left*Math.max(0,Math.min(100,inp.extraPct))/100);
+  var order=pdOrder(inp.debts,inp.strategy),extras=[],done=inp.extraDone||{},used=0;
+  /* extra already sent from this check stays as sent */
+  order.forEach(function(d){var a=done[d.id];if(a!=null){a=Math.min(Math.round(a),Math.max(0,pool-used));if(a>0){extras.push({id:d.id,amt:a,done:true});used+=a;}}});
+  order.forEach(function(d){if(done[d.id]!=null)return;var room=Math.max(0,Math.round(d.bal)-Math.round(d.minHere||0)),a=Math.min(room,pool-used);if(a>0){extras.push({id:d.id,amt:a});used+=a;}});
+  var free=check-step1-cush-hu-used;
+  return {check:check,step1:step1,cush:cush,cushNeed:cushNeed,holds:holds,hold:hu,extras:extras,extra:used,free:free,short:short,pool:pool,sum:step1+cush+hu+used+free,order:order.map(function(d){return d.id;})};
+}
+/* V3.6 holds (FD, Nov 25 2:22 PM; cushion yields to holds 3:00 PM): look ahead 60 days of checks in date order. A later check
+   that would be short is covered by the checks before it, nearest first, from what each has left after its bills, minimums and
+   set-asides. Only then does each check (in date order) top up the cushion from what is still left. A check shows short only
+   if the earlier checks can't cover it (a partial hold reduces the shortfall). All in cents.
+   inp: {spare0: what the current check has left after bills (and after a cushion top-up already ticked) (cents, >=0),
+         fixed:{j:cents} holds already ticked in the current check for later check j, cush0: the current check may top up the
+         cushion (false when already ticked), cush: cushion still needed, later:[{check (incl. held-in from earlier ticked
+         holds), step1}]}
+   out: {holds:[{from,to,amt}], cush0, spare0, later:[null,{cush,heldIn,gap,short,spare}...]} (index 0 = the current check) */
+function pdHoldCalc(inp){
+  var L=inp.later||[],remC=Math.max(0,Math.round(inp.cush||0)),fx=inp.fixed||{},spare=[Math.max(0,Math.round(inp.spare0||0))],info=[null],holds=[];
+  Object.keys(fx).forEach(function(j){var a=Math.min(Math.round(fx[j]),spare[0]);if(a>0){spare[0]-=a;holds.push({from:0,to:+j,amt:a,done:true});}});
+  L.forEach(function(c,k){var j=k+1,hin=0;holds.forEach(function(h){if(h.to===j)hin+=h.amt;});
+    var avail=Math.round(c.check)+hin-Math.round(c.step1),gap=avail<0?-avail:0,rem=gap;
+    for(var i=j-1;i>=0&&rem>0;i--){if(i===0&&fx[j]!=null)continue;var t=Math.min(spare[i],rem);if(t>0){spare[i]-=t;rem-=t;hin+=t;holds.push({from:i,to:j,amt:t});}}
+    spare.push(Math.max(0,avail));info.push({cush:0,heldIn:hin,gap:gap,short:rem});});
+  /* the cushion takes what is left after holds, check by check in date order */
+  var c0=inp.cush0===false?0:Math.min(remC,spare[0]);remC-=c0;spare[0]-=c0;
+  info.forEach(function(x,i){if(!x)return;var cu=Math.min(remC,spare[i]);remC-=cu;spare[i]-=cu;x.cush=cu;x.spare=spare[i];});
+  return {holds:holds,later:info,cush0:c0,spare0:spare[0]};
+}
+/* avalanche: highest rate (tie -> smaller balance); snowball: smallest balance (tie -> higher rate); balance 0 is skipped */
+function pdOrder(debts,st){
+  return debts.filter(function(d){return Math.round(d.bal)>0;}).slice().sort(function(a,b){
+    var ar=+a.apr||0,br=+b.apr||0;
+    if(st==='snowball')return (a.bal-b.bal)||(br-ar)||(a.id<b.id?-1:1);
+    return (br-ar)||(a.bal-b.bal)||(a.id<b.id?-1:1);});
+}
+
+/* ---------- paydays ---------- */
+function pdNthWd(y,m,wd,n){var d=new Date(y,m,1),k=(wd-d.getDay()+7)%7;return new Date(y,m,1+k+7*(n-1));}
+function pdLastWd(y,m,wd){var d=new Date(y,m+1,0),k=(d.getDay()-wd+7)%7;return new Date(y,m,d.getDate()-k);}
+function pdHolidays(y){
+  var fx=[[0,1],[5,19],[6,4],[10,11],[11,25]].map(function(x){return new Date(y,x[0],x[1]);}),out={};
+  fx.forEach(function(d){out[iso(d)]=1;var w=d.getDay();if(w===6)out[iso(addDays(d,-1))]=1;if(w===0)out[iso(addDays(d,1))]=1;});
+  [pdNthWd(y,0,1,3),pdNthWd(y,1,1,3),pdLastWd(y,4,1),pdNthWd(y,8,1,1),pdNthWd(y,9,1,2),pdNthWd(y,10,4,4)].forEach(function(d){out[iso(d)]=1;});
+  return out;
+}
+function pdBizDay(d){var g=0;while(g<10){var w=d.getDay(),h=pdHolidays(d.getFullYear());if(w!==0&&w!==6&&!h[iso(d)])return d;d=addDays(d,-1);g++;}return d;}
+/* twice-a-month paydays on a weekend or bank holiday move to the business day before */
+function pdAdj(d,freq){return d&&((freq||data.income.freq)==='semimonthly')?pdBizDay(sod(d)):d;}
+/* V3.6 rule 2 (FD, Nov 25 1:04 PM): every paycheck the user enters counts, whoever it belongs to. All paydays (yours and,
+   when partner pay is on with a payday set, your partner's) form one list; each deposit covers its own window, from its date
+   to the next deposit. Two checks on the same day are one deposit. */
+function pdPartnerOn(){var inc=data.income;return !!(inc.partnerOn&&inc.partnerCheck>0&&CALD().pAnchor);}
+function pdDeposits(S,E){
+  var m={},inc=data.income;
+  function put(d,who,amt,fq){d=pdAdj(d,fq);var k=iso(d);if(!m[k])m[k]={date:d,you:0,partner:0};m[k][who]+=c36(amt);}
+  if(inc.youCheck>0)paydaysIn(addDays(S,-3),addDays(E,3),'you').forEach(function(d){put(d,'you',inc.youCheck,inc.freq);});
+  if(pdPartnerOn())paydaysIn(addDays(S,-3),addDays(E,3),'partner').forEach(function(d){put(d,'partner',inc.partnerCheck,inc.partnerFreq);});
+  return Object.keys(m).sort().map(function(k){return m[k];}).filter(function(x){return x.date>=S&&x.date<E;});
+}
+function pdChecks(){
+  var L=pdDeposits(addDays(today,-75),addDays(today,140));if(!L.length)return null;
+  var i=0;while(i<L.length&&L[i].date<sod(today))i++;if(i>=L.length-1)return null;
+  var cur=L[i],nx=L[i+1],pv=i>0?L[i-1]:null;
+  return {D:cur.date,D2:nx.date,P:pv?pv.date:addDays(cur.date,-diffDays(cur.date,nx.date)),dep:cur,list:L};
+}
+/* V3.6 rule 3: set-asides (bills with no due day, bills set aside every payday, and a partner's own budget) are split evenly
+   across the month's checks, to the cent (the first checks of the month take the leftover cents). Never pulled into an earlier check. */
+function pdSetAsides(ck){
+  var D=ck.D,y=D.getFullYear(),mo=D.getMonth(),M1=new Date(y,mo,1),M2=new Date(y,mo+1,1);
+  var mon=pdDeposits(M1,M2),n=mon.length,idx=0;mon.forEach(function(x,k){if(iso(x.date)===iso(D))idx=k;});if(!n)return [];
+  var src=[],ymL=D.toLocaleDateString('en-US',{month:'short'});
+  data.bills.forEach(function(b){
+    if(b.freq==='paycheck'){var a=b.entered!=null?b.entered:b.amount,k=paydaysIn(M1,M2,'you').length;if(a>0&&k)src.push({key:billKey(b),name:b.name,c:c36(a)*k});return;}
+    if(!billDated(b)&&b.amount>0)src.push({key:billKey(b),name:b.name,c:c36(b.amount)});});
+  if(data.income.partnerOn){var pb=0;(data.partnerBudget||[]).forEach(function(x){pb+=c36(x.amount);});if(pb>0)src.push({key:'pb',name:'Partner’s own budget',c:pb,pb:1});}
+  return src.map(function(x){var base=Math.floor(x.c/n),r=x.c-base*n;return {kind:'sa',okey:'sa:'+x.key+'|'+iso(D),name:x.name,c:base+(idx<r?1:0),amt:(base+(idx<r?1:0))/100,date:D,sa:{i:idx+1,n:n,m:ymL},pb:!!x.pb};}).filter(function(x){return x.c>0;});
+}
+
+/* money ticked as held in an earlier check for the check on day T */
+function pdHeldIn(T,ex){var pd=PD(),t=0,from=[];Object.keys(pd.done).forEach(function(DS){if(DS>=T||DS===ex)return;var h=pd.done[DS]['h:'+T];if(h&&h.c>0){t+=Math.round(h.c);from.push(DS);}});return {c:t,from:from};}
+/* the later checks within 60 days of the current one: their unpaid bills, minimums and set-asides (items already in an
+   earlier check's list are not counted twice) */
+function pdLater(ck,seen0){
+  var L=ck.list,i0=L.indexOf(ck.dep),out=[],seen={},lim=addDays(ck.D,60);Object.keys(seen0).forEach(function(k){seen[k]=1;});
+  for(var k=i0+1;k>0&&k<L.length-1&&L[k].date<lim;k++){
+    var D=L[k].date,D2=L[k+1].date,step1=0,DS=iso(D),dn=PD().done[DS]||{};
+    pdRawItems(D,D2).concat(pdRawItems(D2,addDays(D2,3))).forEach(function(it){if(it.paid||seen[it.okey])return;seen[it.okey]=1;step1+=c36(it.amt);});
+    pdSetAsides({D:D}).forEach(function(it){if(!dn[it.okey])step1+=it.c;});
+    var ot=0;CALD().inc.forEach(function(x){if(x.type!=='ot'||!x.recv)return;var d=parseISO(x.date);if(d&&d>=D&&d<D2)ot+=c36(x.amount);});
+    out.push({D:D,D2:D2,dep:L[k],check:L[k].you+L[k].partner+ot+pdHeldIn(DS,iso(ck.D)).c,step1:step1});
+  }
+  return out;
+}
+
+/* ---------- items for one check ---------- */
+function pdPaidDate(it){ /* when it was marked paid: iso or '' (unknown = paid before V3.6) */
+  if(it.kind==='min'){var ck=data.checked[iso(it.date)+'|'+it.id];if(ck){var h=data.history.filter(function(x){return x.id===ck.hid;})[0];return h?h.date:'';}}
+  return PD().paidAt[it.okey]||'';
+}
+function pdDebtMins(S,E){
+  var out=[];
+  planList().forEach(function(d){
+    if(d.asBill||!(d.balance>0.005)&&!Object.keys(data.checked).some(function(k){return data.checked[k].debtId===d.id;}))return;
+    var dd=d.dueDay||1;
+    monthsSpan(S,E,function(y,mo){var dt=new Date(y,mo,Math.min(dd,dim(y,mo)));if(dt<S||dt>=E)return;
+      var key=iso(dt)+'|'+d.id,ok='d:'+d.id+'|'+iso(dt),ck=data.checked[key],paid=!!ck||isPaid(ok);
+      if(!paid&&!(d.balance>0.005))return;
+      var mn=ck?ck.amount:v3Min(d);if(!(mn>0.004))return;
+      out.push({date:dt,kind:'min',id:d.id,okey:ok,ckey:key,name:d.name,amt:Math.round(mn*100)/100,paid:paid,debt:d,moved:dt.getDate()!==dd});});
+  });
+  return out;
+}
+function pdRawItems(S,E){
+  var out=[];
+  calItems(S,E,{all:true}).forEach(function(it){if(it.bill&&it.bill.freq==='paycheck')return;if(it.kind==='bill'||it.kind==='fixed')out.push({date:it.date,kind:it.kind,okey:it.okey,name:it.name,amt:it.amt,paid:!!it.paid,est:!!it.est,freq:it.bill?it.bill.freq:'',debt:it.debt||null,id:it.debt?it.debt.id:''});});
+  return out.concat(pdDebtMins(S,E));
+}
+function pdKeep(it,D,done){ /* an item marked paid stays in this plan only when it was ticked here or paid on/after payday */
+  if(!it.paid)return true;if(done[it.okey])return true;var p=pdPaidDate(it);return !!p&&p>=iso(D);
+}
+function pdBuild(){
+  var ck=pdChecks();if(!ck)return null;
+  var D=ck.D,D2=ck.D2,DS=iso(D),pd=PD(),done=pd.done[DS]||{},items=[],seen={};
+  function add(it,tag){if(seen[it.okey])return;seen[it.okey]=1;it.tag=tag;items.push(it);}
+  /* 1. unpaid past-due items from the current pay period come first */
+  var pS=ck.P,pE=D<today?D:today;
+  if(pE>pS)pdRawItems(pS,pE).forEach(function(it){if(!it.paid||(done[it.okey]&&it.paid))add(it,'past');});
+  pdRawItems(D,D2).forEach(function(it){if(pdKeep(it,D,done))add(it,'');});
+  pdRawItems(D2,addDays(D2,3)).forEach(function(it){if(it.freq==='paycheck')return;if(pdKeep(it,D,done))add(it,'grace');});
+  items.forEach(function(it){it.c=c36(it.amt);});
+  pdSetAsides(ck).forEach(function(it){it.paid=!!done[it.okey];add(it,'sa');});
+  items.sort(function(a,b){var pa=a.tag==='past'?0:(a.tag==='sa'?2:1),pb=b.tag==='past'?0:(b.tag==='sa'?2:1);return (pa-pb)||(a.date-b.date)||(a.kind==='min'?1:0)-(b.kind==='min'?1:0)||(a.name<b.name?-1:1);});
+  /* check = take-home + overtime marked received that lands in this check */
+  var ot=[],otWait=[];CALD().inc.forEach(function(x){if(x.type!=='ot')return;var d=parseISO(x.date);if(!d||d<D||d>=D2)return;(x.recv?ot:otWait).push(x);});
+  var otC=0;ot.forEach(function(x){otC+=c36(x.amount);});
+  var held=pdHeldIn(DS),check=ck.dep.you+ck.dep.partner+otC+held.c;
+  /* debts that can take extra; minHere = this debt's unpaid minimum already in the list */
+  var debts=planList().filter(function(d){return d.balance>0.005&&!d.asBill;}).map(function(d){var mh=0;items.forEach(function(it){if(it.kind==='min'&&it.id===d.id&&!it.paid)mh+=it.c;});return {id:d.id,bal:c36(d.balance),apr:d.apr||0,minHere:mh,name:d.name};});
+  var xd={};Object.keys(done).forEach(function(k){var m=/^x:(.+)$/.exec(k);if(m&&done[k]&&done[k].a!=null)xd[m[1]]=c36(done[k].a);});
+  /* a debt paid down by this check's extra: count its balance before that payment for the cap */
+  debts.forEach(function(d){if(xd[d.id]!=null)d.bal+=xd[d.id];});
+  Object.keys(xd).forEach(function(id){if(!debts.some(function(d){return d.id===id;})){var d=debtById(id);if(d)debts.push({id:id,bal:c36(d.balance)+xd[id],apr:d.apr||0,minHere:0,name:d.name});}});
+  var cuDone=done.cu&&done.cu.a!=null?c36(done.cu.a):null;
+  var inp={check:check,items:items,cushGoal:c36(pd.cushGoal),cushHave:c36(pd.cushHave)-(cuDone||0),extraPct:pd.extraPct,strategy:data.settings.strategy,debts:debts,extraDone:xd,cushDone:cuDone};
+  var r=pdCalc(inp),later=[],hc=null;
+  /* look ahead: hold money for later checks that would come up short (FD's single-check math is unchanged when none would) */
+  try{later=pdLater(ck,seen);var fixed={};later.forEach(function(c,k){var h=done['h:'+iso(c.D)];if(h&&h.c!=null)fixed[k+1]=Math.round(h.c);});
+    var cushLeft=cuDone!=null?Math.max(0,c36(pd.cushGoal)-c36(pd.cushHave)):r.cushNeed;
+    hc=pdHoldCalc({spare0:r.short?0:check-r.step1-(cuDone!=null?r.cush:0),fixed:fixed,cush0:cuDone==null,cush:cushLeft,later:later});
+    var hs=[];hc.holds.forEach(function(h){if(h.from!==0)return;var c=later[h.to-1],T=iso(c.D),ex=hs.filter(function(x){return x.t===T;})[0];
+      if(ex){ex.c+=h.amt;return;}hs.push({key:'h:'+T,t:T,c:h.amt,done:!!h.done,gap:hc.later[h.to].gap,after:hc.later[h.to].short});});
+    if(hs.length){inp.holds=hs;r=pdCalc(inp);}
+  }catch(e){if(window.console)console.error(e);}
+  var before=[];if(D>today)pdRawItems(today,D).forEach(function(it){if(!it.paid)before.push(it);});
+  return {ck:ck,D:D,D2:D2,items:items,r:r,held:held,later:later,hc:hc,ot:ot,otWait:otWait,otC:otC,base:ck.dep.you+ck.dep.partner,dep:ck.dep,before:before,done:done,cuDone:cuDone,debts:debts};
+}
+/* shortfall options in Finance Dude's order: (a) cushion, (b) a bill with 3+ days of slack after the next check, (c) minimums only */
+function pdOptions(P){
+  var r=P.r,short=r.short,have=c36(PD().cushHave)-(P.cuDone||0),o=[];
+  o.push({k:'a',t:'Use your cushion',s:have<=0?'Your cushion is empty right now, so it can’t help with this one.':(have>=short?'You have '+pdM(have)+' set aside. Using '+pdM(short)+' covers it and leaves '+pdM(have-short)+'.':'You have '+pdM(have)+' set aside. It covers '+pdM(have)+' of the '+pdM(short)+'.'),ok:have>0});
+  /* V3.6 rule 1 (FD, Nov 25 1:04 PM): any bill due ON or AFTER the next payday can move to that check (this overrides the 3-day
+     pull-in for option b). Due within 2 days of that payday: warn it'll be paid close to its due date. Bills due before the next
+     payday never move. Minimums and set-asides are never offered. */
+  var mv=P.items.filter(function(it){return !it.paid&&(it.kind==='bill'||it.kind==='fixed')&&it.date>=P.D2;}),mvC=0;mv.forEach(function(it){mvC+=it.c;});
+  var nd=dShort(P.D2),bs=mv.map(function(it){var g=diffDays(P.D2,it.date);return '<span class="pdo-mv">'+esc(it.name)+' · '+pdM(it.c)+' · due '+esc(dWk(it.date))+(g<=2?'<span class="pdo-warn" role="note">'+(g===0?'Due the same day as your '+esc(nd)+' check':'Due '+plural(g,'day')+' after your '+esc(nd)+' check')+', so it’ll be paid close to its due date.</span>':'')+'</span>';}).join('');
+  o.push({k:'b',t:'Move a bill to your next check',s:mv.length?(mvC>=short?'Moving '+(mv.length===1?'this':'these')+' to your '+esc(nd)+' check covers it.':'Moving '+(mv.length===1?'this':'these')+' to your '+esc(nd)+' check covers '+pdM(mvC)+' of the '+pdM(short)+'.')+bs:'Nothing here can wait: every bill is due before your '+esc(nd)+' check.',ok:mv.length>0,mv:mv});
+  o.push({k:'c',t:'Pay minimums only',s:'This check already sends nothing extra to debt. Every minimum here is still paid on time.',ok:true});
+  return o;
+}
+
+/* ---------- render ---------- */
+function pdWhy(id){
+  var st=data.settings.strategy,d=debtById(id);if(!d)return '';
+  return st==='snowball'?'Smallest balance goes first, so it’s gone soonest.':'Highest rate ('+d.apr+'%) goes first.';
+}
+function pdCloseBy(d,from){ /* first statement close whose send-by day (3 days before) is on or after the check */
+  var m=v3Meta(d.id);if(!m.close)return null;for(var k=0;k<4;k++){var y=from.getFullYear(),mo=from.getMonth()+k,c=new Date(y,mo,Math.min(m.close,dim(new Date(y,mo,1).getFullYear(),new Date(y,mo,1).getMonth()))),by=addDays(c,-3);if(by>=sod(from)&&by>=sod(today))return {close:c,by:by};}return null;
+}
+function pdRow(n,o){
+  var cls='pdr'+(o.paid?' paid':'')+(o.past?' past':'')+(o.x?' x':'');
+  var box='<span class="pdn" aria-hidden="true">'+(o.paid?'<svg class="ico"><use href="#i-check"/></svg>':n)+'</span>';
+  var body='<span class="pdr-tx"><span class="pdr-n">'+o.name+'</span>'+(o.sub?'<span class="pdr-s">'+o.sub+'</span>':'')+'</span><b class="num pdr-v">'+pdM(o.c)+'</b>';
+  return '<li class="'+cls+'"><button type="button" class="pdr-b" role="checkbox" aria-checked="'+(!!o.paid)+'" data-pdtick="'+esc(o.key)+'" aria-label="'+(o.paid?'Done. Tap to undo: ':'Mark done: ')+esc(o.aria)+' '+esc(pdM2(o.c))+'">'+box+body+'</button></li>';
+}
+function pdRows(P){
+  var rows=[],n=0,r=P.r;
+  P.items.forEach(function(it){
+    var due=it.tag==='past'?'<span class="pd-past">Past due</span> '+esc(dWk(it.date)):'Due '+esc(dWk(it.date));
+    var sub=due+(it.kind==='min'?' · minimum':'')+(it.tag==='grace'?' · paid now so it’s never late':'')+(it.est?' · amount varies':'');
+    if(it.kind==='sa')sub=(it.pb?'Their own spending · ':'')+'Share '+it.sa.i+' of '+it.sa.n+' for '+esc(it.sa.m)+', split evenly';
+    rows.push({key:it.okey,name:esc(it.kind==='min'?shortName(it.id)+' minimum':(it.kind==='sa'&&!it.pb?it.name+' set-aside':it.name)),aria:it.kind==='min'?shortName(it.id)+' minimum':it.name,sub:sub,c:it.c,paid:it.paid,past:it.tag==='past'});
+  });
+  if(r.cush>0){var have=c36(PD().cushHave)-(P.cuDone||0);
+    rows.push({key:'cu',name:'Top up your cushion',aria:'Top up your cushion',sub:'Brings it from '+pdM(have)+' to '+pdM(Math.min(have+r.cush,c36(PD().cushGoal)))+(have+r.cush<c36(PD().cushGoal)?' of your '+pdM(c36(PD().cushGoal))+' goal':', your goal'),c:r.cush,paid:P.cuDone!=null});}
+  (r.holds||[]).forEach(function(h){var T=parseISO(h.t),lab='the '+dShort(T)+' check';
+    var sub=h.after>0?'Covers '+pdM(h.amt)+' of that check’s '+pdM(h.gap)+' gap, so it’s '+pdM(h.after)+' short instead.':'Keep it in your account: without it, that check is '+pdM(h.gap)+' short.';
+    rows.push({key:h.key,name:'Hold for '+esc(lab),aria:'Hold '+pdM2(h.amt)+' for '+lab,sub:sub,c:h.amt,paid:h.done});});
+  r.extras.forEach(function(x,i){var d=debtById(x.id);if(!d)return;var cb=d.kind==='card'?pdCloseBy(d,P.D):null;
+    var sub=(i===0?pdWhy(x.id):'Then the next in line, since '+esc(shortName(r.extras[0].id))+' is paid off.');
+    if(cb)sub='<b class="pd-by">Send by '+esc(dWk(cb.by))+'</b>, before the statement closes '+esc(dShort(cb.close))+'. '+sub;
+    rows.push({key:'x:'+x.id,name:'Extra to '+esc(shortName(x.id)),aria:'Extra to '+shortName(x.id),sub:sub,c:x.amt,paid:!!x.done,x:1});});
+  if(!r.short&&r.extra===0&&hasPlan()&&P.r.pool===0&&PD().extraPct===0)rows.push({key:'',name:'Extra to debt',aria:'',sub:'Off: your extra share is 0%.',c:0,paid:false,info:1});
+  return rows.map(function(o){if(o.info)return '<li class="pdr info"><div class="pdr-b"><span class="pdn" aria-hidden="true">–</span><span class="pdr-tx"><span class="pdr-n">'+o.name+'</span><span class="pdr-s">'+o.sub+'</span></span><b class="num pdr-v">$0</b></div></li>';if(!o.paid)n++;return pdRow(n,o);}).join('');
+}
+function pdInsights(P){
+  var out=[];
+  try{limCards().forEach(function(d){var t=reportLine(d);if(t)out.push('<b>'+esc(shortName(d.id))+':</b> '+esc(t.charAt(0).toLowerCase()+t.slice(1))+'.');});}catch(e){}
+  out=out.slice(0,2);
+  var mi=0;data.debts.forEach(function(d){if(d.balance>0.005&&d.apr>0&&!d.asBill)mi+=d.balance*d.apr/1200;});
+  if(mi>=0.5)out.push('Your debts cost about <b>'+money0(mi)+' a month</b> in interest right now.');
+  var inc=data.income;if(inc.partnerOn&&inc.partnerCheck>0&&!CALD().pAnchor)out.push('<span class="pdi-col" id="pdPartnerAsk"><span>Your partner’s pay isn’t counted yet: add their next payday.</span><button type="button" class="lnk" data-calpanchor>Add partner’s payday</button></span>');
+  return out.length?'<ul class="pdi" id="pdInsights">'+out.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>':'';
+}
+function pdHtml(P){
+  var r=P.r,D=P.D,h='<section class="pdp'+(r.short?' short':'')+'" id="pdPlan" aria-labelledby="pdH">';
+  h+='<div class="pdp-hd"><h2 id="pdH" class="pdp-t">This check: do this</h2><button type="button" class="lnk pdp-set" data-pdgo="set" aria-label="Payday plan settings">Settings</button></div>';
+  h+='<div class="pdp-top"><div class="pdp-k">'+esc(dShort(D))+' check</div><b class="num pdp-amt" id="pdAmt">'+pdM(r.check)+'</b></div>';
+  var sub=[];if(P.dep.you&&P.dep.partner)sub.push('Your '+pdM(P.dep.you)+' + partner’s '+pdM(P.dep.partner));
+  if(P.otC)sub.push('Includes '+pdM(P.otC)+' overtime you marked received');if(P.dep.partner&&!P.dep.you)sub.push('Partner’s check');if(P.held&&P.held.c)sub.push('Includes '+pdM(P.held.c)+' held from your '+P.held.from.map(function(x){return esc(dShort(parseISO(x)));}).join(' and ')+' check');sub.push('<span class="nw">Covers '+esc(dShort(D))+(diffDays(D,P.D2)>1?' – '+esc(dShort(addDays(P.D2,-1))):' only')+'</span>');sub.push('<span class="nw">next check '+esc(dWk(P.D2))+'</span>');
+  h+='<div class="pdp-sub">'+sub.join(' · ')+'</div>';
+  if(P.otWait.length){var w=0;P.otWait.forEach(function(x){w+=c36(x.amount);});h+='<p class="pdp-note" id="pdOtWait">'+pdM(w)+' overtime isn’t counted yet. It’s added to this check once you mark it received on Calendar.</p>';}
+  if(P.before.length){var b=0;P.before.forEach(function(it){b+=c36(it.amt);});h+='<p class="pdp-note" id="pdBefore">Before then: '+pdM(b)+' ('+plural(P.before.length,'item')+') is still due by '+esc(dShort(addDays(D,-1)))+' from your current check.</p>';}
+  if(r.short)h+='<div class="pd-tight" role="note" id="pdTight"><b>Tight check: '+pdM(r.short)+' short.</b> Bills and minimums due before your next check come to '+pdM(r.step1)+'. Here’s the order that keeps everything on time.</div>';
+  h+=pdAheadHtml(P);
+  var rows=pdRows(P);
+  h+=rows?'<ol class="pdl" id="pdList">'+rows+'</ol>':'<p class="pdp-note" id="pdNone">Nothing is due from this check.</p>';
+  var fl=r.free<0?'Short':'Free to spend',fs=r.free<0?'this check comes up short by':'from this check, after all of the above';
+  h+='<div class="pd-free'+(r.free<0?' neg':'')+'" id="pdFree"><div><div class="pd-fl">'+fl+'</div><div class="pd-fs">'+fs+'</div></div><b class="num pd-fv" id="pdFreeV">'+pdM(r.free)+'</b></div>';
+  h+='<div class="pd-sum" id="pdSum">Adds up to this check: '+pdM2(r.sum)+'</div>';
+  if(r.short){h+='<h3 class="pd-oh" id="pdOptH">Ways to cover the '+pdM(r.short)+'</h3><ol class="pdo" id="pdOpts">'+pdOptions(P).map(function(o){return '<li class="'+(o.ok?'':'no')+'" data-opt="'+o.k+'"><b>'+o.t+'</b><span>'+o.s+'</span></li>';}).join('')+'</ol>';
+    h+='<p class="pd-never" id="pdNever">Every minimum stays on time. Never skip one: a 30-day late payment hurts your credit score far more than a short week.</p>';}
+  var next=pdNextKey(P);
+  if(next)h+='<button type="button" class="btn primary pd-next" id="pdNext" data-pdtick="'+esc(next)+'">Mark the next one done</button>';
+  else if(P.items.length||r.cush||r.extras.length)h+='<p class="pd-all" id="pdAll">All done for this check. Nice work.</p>';
+  h+=pdInsights(P);
+  return h+'</section>';
+}
+/* a later check still short after holds: say it plainly. When the checks from now to the end of that check's window bring in
+   less than is due, say that too (exact totals), then offer the cushion as the first fix. */
+function pdAheadInfo(P){
+  if(!P.hc||!P.later)return null;var st=[];P.hc.later.forEach(function(x,i){if(x&&x.short>0)st.push({j:i,D:P.later[i-1].D,c:x.short});});if(!st.length)return null;
+  var j=st[0].j,inc=P.r.check,due=P.r.step1;for(var k=0;k<j;k++){inc+=P.later[k].check;due+=P.later[k].step1;}
+  return {st:st,inc:inc,due:due,end:addDays(P.later[j-1].D2,-1),have:Math.max(0,c36(PD().cushHave))};
+}
+function pdAheadHtml(P){
+  var a=pdAheadInfo(P);if(!a)return '';var f=a.st[0];
+  var h='<div class="pd-tight pd-ahead" role="note" id="pdAhead"><b>Your '+esc(dShort(f.D))+' check will be '+pdM(f.c)+' short, even after holds.</b> ';
+  if(a.due>a.inc)h+='From '+esc(dShort(P.D))+' to '+esc(dShort(a.end))+' your checks bring in '+pdM(a.inc)+', but '+pdM(a.due)+' is due: '+pdM(a.due-a.inc)+' less than you need. ';
+  if(a.st.length>1)h+='Your '+esc(dShort(a.st[1].D))+' check is '+pdM(a.st[1].c)+' short too'+(a.st.length>2?' (plus '+plural(a.st.length-2,'more check')+')':'')+'. ';
+  h+='<span class="pd-fix" id="pdAheadFix"><b>First fix: use your cushion.</b> '+(a.have>0?'You have '+pdM(a.have)+' set aside'+(a.have>=f.c?', enough to cover it.':', which covers '+pdM(a.have)+' of it.'):'It’s empty right now, so next: move a bill to a later check, or pay minimums only. Every minimum stays on time.')+'</span></div>';
+  return h;
+}
+function pdNextKey(P){
+  var it=P.items.filter(function(x){return !x.paid;})[0];if(it)return it.okey;
+  if(P.r.cush>0&&P.cuDone==null)return 'cu';
+  var hh=(P.r.holds||[]).filter(function(h){return !h.done;})[0];if(hh)return hh.key;
+  var x=P.r.extras.filter(function(e){return !e.done;})[0];return x?'x:'+x.id:'';
+}
+var _renderPayCard36=renderPayCard;
+renderPayCard=function(){
+  var r=_renderPayCard36.apply(this,arguments),pc=$('payCard');
+  try{
+    if(window.__payoffLegacyToday){pc.classList.remove('pd-on');return r;}
+    var P=pdBuild();C.pd=P;if(!P){pc.classList.remove('pd-on');return r;}
+    var hd=pc.querySelector('.hd'),wrap=document.createElement('div');wrap.innerHTML=pdHtml(P);
+    if(hd&&hd.nextSibling)pc.insertBefore(wrap.firstChild,hd.nextSibling);else pc.appendChild(wrap.firstChild);
+    pc.classList.add('pd-on');
+    /* the header names the same check as the plan (with two earners the next deposit can be the partner's) */
+    var hn=hd&&hd.querySelector('.num'),hs=hd&&hd.querySelector('.small.muted');
+    if(hn&&hn.textContent!==dWk(P.D)){var n=diffDays(today,P.D);hn.textContent=dWk(P.D);if(hs)hs.textContent=(n===0?'Today':n===1?'Tomorrow':'In '+n+' days');}
+  }catch(e){pc.classList.remove('pd-on');if(window.console)console.error(e);}
+  return r;
+};
+
+/* ---------- ticking lines off ---------- */
+function pdFind(P,key){
+  var it=P.items.filter(function(x){return x.okey===key;})[0];if(it)return {t:'item',it:it};
+  if(key==='cu')return {t:'cu'};var hm=(P.r.holds||[]).filter(function(h){return h.key===key;})[0];if(hm)return {t:'h',h:hm};var m=/^x:(.+)$/.exec(key);if(m){var x=P.r.extras.filter(function(e){return e.id===m[1];})[0];if(x)return {t:'x',x:x};}
+  return null;
+}
+function pdDone(DS){var pd=PD();if(!pd.done[DS])pd.done[DS]={};var ks=Object.keys(pd.done).sort();while(ks.length>6){delete pd.done[ks.shift()];}return pd.done[DS];}
+function pdTick(key){
+  var P=pdBuild();if(!P)return;var f=pdFind(P,key);if(!f)return;var DS=iso(P.D),dn=pdDone(DS),pd=PD(),msg='',undo=null;
+  if(f.t==='item'&&f.it.kind==='sa'){var sa=f.it;if(dn[sa.okey]){delete dn[sa.okey];msg='Unmarked '+sa.name;}else{dn[sa.okey]=1;msg='Set aside '+pdM(sa.c)+' for '+sa.name;var sk=sa.okey;undo=function(){delete dn[sk];save();renderAll();};}}
+  else if(f.t==='item'){var it=f.it,on=!it.paid;
+    if(it.kind==='min'){var d=debtById(it.id);if(!d)return;
+      if(it.paid){var ck=data.checked[it.ckey];if(ck)undoEntry(ck.hid);delete data.checked[it.ckey];if(isPaid(it.okey))togglePaid(it.okey);delete dn[it.okey];msg='Unmarked. Balance put back.';}
+      else{var amt=Math.round(Math.min(it.amt,d.balance!=null?d.balance:it.amt)*100)/100;var h=applyPayment(d,amt,iso(today),'From your payday plan');
+        data.checked[it.ckey]={hid:h.id,debtId:d.id,name:d.name,amount:amt,date:iso(it.date),fixed:h.fixed};dn[it.okey]=1;try{pdSync(it.okey);}catch(e){}
+        msg='Logged '+money2(amt)+' to '+shortName(d.id);undo=function(){undoEntry(h.id);delete data.checked[it.ckey];delete dn[it.okey];try{pdSync(it.okey);}catch(e){}save();renderAll();};}}
+    else{togglePaid(it.okey);if(isPaid(it.okey)){dn[it.okey]=1;pd.paidAt[it.okey]=iso(today);msg='Marked '+it.name+' paid';undo=function(){if(isPaid(it.okey))togglePaid(it.okey);delete dn[it.okey];delete pd.paidAt[it.okey];save();renderAll();};}
+      else{delete dn[it.okey];delete pd.paidAt[it.okey];msg='Unmarked '+it.name;}}
+  }else if(f.t==='h'){var hk=f.h.key,hT=dShort(parseISO(f.h.t));
+    if(dn[hk]){delete dn[hk];msg='Hold for the '+hT+' check undone';}
+    else{dn[hk]={c:f.h.amt};msg='Holding '+pdM(f.h.amt)+' for the '+hT+' check';undo=function(){delete dn[hk];save();renderAll();};}
+  }else if(f.t==='cu'){
+    if(dn.cu){pd.cushHave=Math.max(0,Math.round((pd.cushHave-dn.cu.a)*100)/100);delete dn.cu;msg='Cushion top-up undone';}
+    else{var a=P.r.cush/100;pd.cushHave=Math.round((pd.cushHave+a)*100)/100;dn.cu={a:a};msg='Cushion now '+pdM(c36(pd.cushHave));undo=function(){pd.cushHave=Math.max(0,Math.round((pd.cushHave-a)*100)/100);delete dn.cu;save();renderAll();};}
+  }else{var x=f.x,d2=debtById(x.id);if(!d2)return;var k='x:'+x.id;
+    if(dn[k]){if(dn[k].h)undoEntry(dn[k].h);delete dn[k];msg='Extra payment undone. Balance put back.';}
+    else{var a2=Math.round(Math.min(x.amt/100,d2.balance)*100)/100;var h2=applyPayment(d2,a2,iso(today),'Extra from your payday plan');dn[k]={a:a2,h:h2.id};msg='Logged '+money2(a2)+' extra to '+shortName(d2.id);
+      undo=function(){undoEntry(h2.id);delete dn[k];save();renderAll();};}}
+  var wins=(typeof newWins==='function')?newWins():[];save();renderAll();
+  toast(msg,undo?{undo:undo}:undefined);if(wins&&wins.length&&typeof celebrateQueue==='function')celebrateQueue(wins);
+  var b=document.querySelector('[data-pdtick="'+CSS.escape(key)+'"]:not(#pdNext)')||$('pdNext');if(b)try{b.focus({preventScroll:true});}catch(e){}
+}
+/* bills marked paid anywhere (Calendar, Accounts) record the day, so a bill paid on or after payday stays in that check's plan */
+var _togglePaid36=togglePaid;
+togglePaid=function(okey){var r=_togglePaid36.apply(this,arguments);try{var pd=PD();if(isPaid(okey))pd.paidAt[okey]=pd.paidAt[okey]||iso(today);else delete pd.paidAt[okey];save();}catch(e){}return r;};
+
+/* ---------- settings sheet ---------- */
+function pdOpenSet(){
+  var pd=PD();
+  var body='<p class="small muted" style="margin:0 0 6px">How each check splits what’s left after bills and minimums.</p>'+
+    '<div class="f"><label for="pdPct" id="pdPct-l">Extra to debt: <b id="pdPctV">'+pd.extraPct+'%</b> of what’s left</label><input id="pdPct" class="pd-range" type="range" min="0" max="100" step="5" value="'+pd.extraPct+'" aria-describedby="pdPct-h"><div class="small muted hint" id="pdPct-h">The rest is yours to spend. 0% sends only minimums.</div></div>'+
+    mf('pdCg','Cushion goal',nf(pd.cushGoal)||'0',{ph:'e.g. 200',hint:'Each check tops it up to this amount before any extra goes to debt.'})+
+    mf('pdCh','In your cushion now',nf(pd.cushHave)||'0',{ph:'e.g. 0',hint:'What you have set aside today. Ticking “Top up” adds to it.'});
+  openSheet('Payday plan',body,function(){
+    var g=parseMoney($('pdCg').value,{required:true}),hv=parseMoney($('pdCh').value,{required:true});
+    if(!g.ok){setErr('pdCg',g.err);$('pdCg').focus();return false;}if(!hv.ok){setErr('pdCh',hv.err);$('pdCh').focus();return false;}
+    pd.extraPct=Math.max(0,Math.min(100,Math.round(+$('pdPct').value||0)));pd.cushGoal=Math.round(g.val*100)/100;pd.cushHave=Math.round(hv.val*100)/100;
+    commit('Payday plan saved');},{ok:'Save'});
+  var rg=$('pdPct');if(rg)rg.addEventListener('input',function(){$('pdPctV').textContent=rg.value+'%';});
+}
+document.addEventListener('click',function(e){
+  var t=e.target&&e.target.closest?e.target.closest('[data-pdtick],[data-pdgo]'):null;if(!t)return;
+  if(t.dataset.pdtick!=null){e.preventDefault();pdTick(t.dataset.pdtick);return;}
+  var g=t.dataset.pdgo;if(g==='set'){pdOpenSet();return;}
+  if(g==='calsetup'){showTab('cal');setTimeout(function(){var s=$('calSetup');if(s)s.scrollIntoView({block:'start'});},60);}
+});
+
+/* ---------- example data (made-up numbers): example bills dated before today count as already paid,
+   so the sample tour doesn't open on made-up past-due items. ---------- */
+/* the two-earner example: the partner is paid monthly on the 26th (made-up), so both checks count (rule 2) */
+var _sampleData36=sampleData;
+sampleData=function(){var d=_sampleData36.apply(this,arguments);try{var D=CALD();D.pAnchor=iso(new Date(today.getFullYear(),today.getMonth(),26));}catch(e){}return d;};
+var _loadSample36=loadSample;
+loadSample=function(){
+  var r=_loadSample36.apply(this,arguments);
+  try{var D=CALD();
+    var S=addDays(today,-45);calItems(S,today,{all:true}).forEach(function(it){if((it.kind==='bill'||it.kind==='fixed')&&it.okey)D.paid[it.okey]=1;});
+    pdDebtMins(S,sod(today)).forEach(function(it){D.paid[it.okey]=1;});
+    v3Save();renderAll();}catch(e){}
+  return r;
+};
 
 /* ===== Tabs, events, init ===== */
 function renderEmpty(t){
